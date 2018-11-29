@@ -16,6 +16,20 @@ class Validator {
 
         return ErrorCollection.invalidModel(model);
     }
+    static validateConditions(conditions) {
+        if(!conditions || Object.keys(conditions).length === 0) {
+            return ErrorCollection.invalidConditions(conditions);
+        }
+        return true;
+    }
+    static validateConditionsString(conditions) {
+        try {
+            JSON.parse(conditions);
+        } catch (error) {
+            return ErrorCollection.malformedConditions(conditions, error);
+        }
+        return true;
+    }
 }
 
 module.exports = Validator;

@@ -1,10 +1,16 @@
 'use strict';
 const express = require('express');
 const Model = require('./model');
+const pluralize = require('pluralize');
+const ErrorCollection = require('./error-collection');
 class Controller {
-    constructor(model) {
+    constructor(model, config) {
         this.model = new Model(model);
-        this.modelName = this.model.modelName;
+        this.config = config || {};
+        this.routeName = pluralize(this.model.modelName);
+        if(this.config.disabledPluralize === false) {
+            this.routeName = this.model.modelName;
+        }
         this._router = express.router();
         this.methods = ['put', 'post', 'get', 'delete', 'head'];
         this._outgoingFormat = (doc) => {
@@ -28,7 +34,7 @@ class Controller {
         });
     }
     _buildGet() {
-        this._router.get(`/${this.modelName}/:id?`, (req, res, next) => {
+        this._router.get(`/${this.routeName}/:id?`, (req, res, next) => {
             if(req.params.id) {
                 return this.model.findById(req.params.id)
                     .then((response) => {
@@ -39,7 +45,51 @@ class Controller {
             }
             return this.model.find(req.query);
         });
-        this._router.get(`/${this.modelName}/:id?`, (req, res) => {
+        this._router.get(`/${this.routeName}/:id?`, (req, res) => {
+            const response = req.rest.response;
+            if(Array.isArray(response)) {
+                req.res.response = response.map((doc) => {
+                    return this._outgoingFormat(doc);
+                });
+            }
+            req.rest.response = this._outgoingFormat(response);
+            return res.json(req.res.response);
+        });
+    }
+    _buildPost() {
+        this._router.post(`/${this.routeName}`, (req, res, next) => {
+            this.model.create(req.body)
+                .then((doc) => {
+                    req.rest.resopnse = doc;
+                    next();
+                })
+                .catch(next);
+        });
+        this._router.post(`/${this.routeName}`, (req, res) => {
+            const response = this._outgoingFormat(req.rest.response);
+            res.status(201).json(response);
+        });
+    }
+    _buildPut() {
+        this._router.put(`/${this.routeName}/:id?`, (req, res, next) => {
+            if(req.params.id) {
+                return this.model.updateById(req.params.id, req.body)
+                    .then((response) => {
+                        req.rest.response = response;
+                        next();
+                    })
+                    .catch(next);
+            } if(req.query.conditions) {
+                return this.model.updateByConditions(req.query.conditions, req.body)
+                    .then((response) => {
+                        req.rest.response = response;
+                        next();
+                    })
+                    .catch(next);
+            }
+            return ErrorCollection.paramRequired('id or conditions');
+        });
+        this._router.put(`/${this.routeName}/:id?`, (req, res) => {
             const response = req.rest.response;
             if(Array.isArray(response)) {
                 req.res.response = response.map((doc) => {
@@ -56,20 +106,6 @@ class Controller {
             res.status(500 || err.status).json({
                 error: err.message
             });
-        });
-    }
-    _buildPost() {
-        this._router.post(`/${this.modelName}`, (req, res, next) => {
-            this.model.create(req.body)
-                .then((doc) => {
-                    req.rest.resopnse = doc;
-                    next();
-                })
-                .catch(next);
-        });
-        this._router.post(`/${this.modelName}`, (req, res) => {
-            const response = this._outgoingFormat(req.rest.response);
-            res.status(201).json(response);
         });
     }
     build() {

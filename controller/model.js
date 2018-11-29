@@ -33,6 +33,13 @@ class Model {
         const options = this._parseOptions(query);
         return this.model.find(conditions, select, options);
     }
+    updateByConditions(query, set) {
+        Validator.validateConditions(query.conditions);
+        return this.model.findOneAndUpdate(query.conditions, {$set:set});
+    }
+    updateById(id, set) {
+        return this.model.findByIdAndUpdate(id, {$set:set});
+    }
     create(body) {
         let newDoc = new this.model(body);
         return newDoc.save();
