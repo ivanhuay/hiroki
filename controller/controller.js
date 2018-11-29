@@ -33,6 +33,16 @@ class Controller {
             next();
         });
     }
+    _outgoingRoute(req, res) {
+        const response = req.rest.response;
+        if(Array.isArray(response)) {
+            req.res.response = response.map((doc) => {
+                return this._outgoingFormat(doc);
+            });
+        }
+        req.rest.response = this._outgoingFormat(response);
+        return res.status(req.rest.status || 200).json(req.res.response);
+    }
     _buildGet() {
         this._router.get(`/${this.routeName}/:id?`, (req, res, next) => {
             if(req.params.id) {
@@ -44,31 +54,18 @@ class Controller {
                     .catch(next);
             }
             return this.model.find(req.query);
-        });
-        this._router.get(`/${this.routeName}/:id?`, (req, res) => {
-            const response = req.rest.response;
-            if(Array.isArray(response)) {
-                req.res.response = response.map((doc) => {
-                    return this._outgoingFormat(doc);
-                });
-            }
-            req.rest.response = this._outgoingFormat(response);
-            return res.json(req.res.response);
-        });
+        }, this._outgoingRoute);
     }
     _buildPost() {
         this._router.post(`/${this.routeName}`, (req, res, next) => {
             this.model.create(req.body)
                 .then((doc) => {
-                    req.rest.resopnse = doc;
+                    req.rest.response = doc;
+                    req.rest.status = 201;
                     next();
                 })
                 .catch(next);
-        });
-        this._router.post(`/${this.routeName}`, (req, res) => {
-            const response = this._outgoingFormat(req.rest.response);
-            res.status(201).json(response);
-        });
+        }, this._outgoingRoute);
     }
     _buildPut() {
         this._router.put(`/${this.routeName}/:id?`, (req, res, next) => {
@@ -88,17 +85,17 @@ class Controller {
                     .catch(next);
             }
             return ErrorCollection.paramRequired('id or conditions');
-        });
-        this._router.put(`/${this.routeName}/:id?`, (req, res) => {
-            const response = req.rest.response;
-            if(Array.isArray(response)) {
-                req.res.response = response.map((doc) => {
-                    return this._outgoingFormat(doc);
-                });
-            }
-            req.rest.response = this._outgoingFormat(response);
-            return res.json(req.res.response);
-        });
+        }, this._outgoingRoute);
+    }
+    _buildDelete() {
+        this._router.delete(`/${this.routeName}/:id`, (req, res, next) => {
+            return this.model.delete(req.params.id)
+                .then((response) => {
+                    req.rest.response = response;
+                    next();
+                })
+                .catch(next);
+        }, this._outgoingRoute);
     }
     _buildErrorHandler() {
         // eslint-disable-next-line no-unused-vars
@@ -112,6 +109,8 @@ class Controller {
         this._buildRestObject();
         this._buildPost();
         this._buildGet();
+        this._buildPut();
+        this._buildDelete();
         this._buildErrorHandler();
         return this._router();
     }

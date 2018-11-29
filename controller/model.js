@@ -40,6 +40,16 @@ class Model {
     updateById(id, set) {
         return this.model.findByIdAndUpdate(id, {$set:set});
     }
+    delete(id) {
+        return this.findById(id)
+            .then((doc) => {
+                Validator.validateDocumentExist(doc);
+                return this.model.deleteOne({_id:id})
+                    .then(() => {
+                        return doc;
+                    });
+            });
+    }
     create(body) {
         let newDoc = new this.model(body);
         return newDoc.save();

@@ -30,6 +30,12 @@ class Validator {
         }
         return true;
     }
+    static validateDocumentExist(doc, status) {
+        if(!doc) {
+            return ErrorCollection.documentNotFound(status);
+        }
+        return true;
+    }
 }
 
 module.exports = Validator;

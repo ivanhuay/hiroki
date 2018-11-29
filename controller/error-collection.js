@@ -17,6 +17,11 @@ class ErrorCollection {
         error.status = status;
         throw error;
     }
+    static documentNotFound(status) {
+        const error = new Error('Document not found.');
+        error.statys = status;
+        throw error;
+    }
 }
 
 module.exports = ErrorCollection;
