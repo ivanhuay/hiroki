@@ -4,6 +4,7 @@ const Model = require('./model');
 class Controller {
     constructor(model) {
         this.model = new Model(model);
+        this.modelName = this.model.modelName;
         this._router = express.router();
         this.methods = ['put', 'post', 'get', 'delete', 'head'];
         this._outgoingFormat = (doc) => {
@@ -18,26 +19,34 @@ class Controller {
     set outgoing(middleware) {
         this._outgoingFormat = middleware;
     }
+    _buildRestObject() {
+        this._router.use((req, res, next) => {
+            if(!req.rest) {
+                req.rest = {};
+            }
+            next();
+        });
+    }
     _buildGet() {
-        this._router.get(`/${this.model}/:id?`, (req, res, next) => {
+        this._router.get(`/${this.modelName}/:id?`, (req, res, next) => {
             if(req.params.id) {
-                this.model.findById(req.params.id)
+                return this.model.findById(req.params.id)
                     .then((response) => {
-                        req.rest = {};
                         req.rest.response = response;
                         next();
                     })
                     .catch(next);
             }
+            return this.model.find(req.query);
         });
-        this._router.get(`/${this.model}/:id?`, (req, res) => {
+        this._router.get(`/${this.modelName}/:id?`, (req, res) => {
             const response = req.rest.response;
             if(Array.isArray(response)) {
                 req.res.response = response.map((doc) => {
                     return this._outgoingFormat(doc);
                 });
             }
-            req.res.response = this._outgoingFormat(response);
+            req.rest.response = this._outgoingFormat(response);
             return res.json(req.res.response);
         });
     }
@@ -49,7 +58,23 @@ class Controller {
             });
         });
     }
+    _buildPost() {
+        this._router.post(`/${this.modelName}`, (req, res, next) => {
+            this.model.create(req.body)
+                .then((doc) => {
+                    req.rest.resopnse = doc;
+                    next();
+                })
+                .catch(next);
+        });
+        this._router.post(`/${this.modelName}`, (req, res) => {
+            const response = this._outgoingFormat(req.rest.response);
+            res.status(201).json(response);
+        });
+    }
     build() {
+        this._buildRestObject();
+        this._buildPost();
         this._buildGet();
         this._buildErrorHandler();
         return this._router();

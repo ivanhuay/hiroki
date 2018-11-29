@@ -1,18 +1,27 @@
-class Test{
-  set a (val){
-    this.a = val;
-  }
-  get a() {
-    return this.a(arguments)
-  }
+'use strict';
+let instance;
+class Test {
+
+    constructor() {
+        if(!instance) {
+            instance = this;
+        }
+        return instance;
+    }
+    set a(val) {
+        this._a = val;
+    }
+    get a() {
+        return this._a;
+    }
 }
 
 
-example = new Test();
+let example = new Test();
 
-example.a = (num) => {
-  console.log('execution: ', num + 1);
-  return num + 1;
-}
+example.a = 123;
+console.log('example.a: ', example.a);
 
-example.a(123)
+let example2 = new Test();
+
+console.log('example2.a: ', example2.a);
