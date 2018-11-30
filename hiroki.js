@@ -1,9 +1,16 @@
 'use strict';
 const Controller = require('./lib/controller');
 const Validator = require('./lib/validator');
-class Grapi {
+const express = require('express');
+let instance;
+class Hiroki {
     constructor() {
+        if(instance) {
+            return instance;
+        }
         this.controllers = {};
+        instance = this;
+        return instance;
     }
     rest(model) {
         Validator.validateModel(model);
@@ -12,13 +19,16 @@ class Grapi {
         }
         return this.controllers[model];
     }
-    build() {
+
+    build(config) {
+        let path = config && config.path || '/api';
+
         Object.values(this.controllers)
             .forEach((controller) => {
                 controller.build();
             });
+        return express.Router().use(path, Controller.getRouter());
     }
 }
-const grapi = new Grapi();
 
-module.exports = grapi;
+module.exports = Hiroki;

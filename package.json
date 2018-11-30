@@ -1,19 +1,24 @@
 {
-  "name": "grapi",
+  "name": "hiroki",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests/ --bail --exit"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "peerDependencies":{
+    "mongoose": "^5.3.14",
+    "express": "^4.16.4"
+  },
   "devDependencies": {
-    "eslint": "^5.9.0"
+    "eslint": "^5.9.0",
+    "mocha": "^5.2.0",
+    "supertest": "^3.3.0"
   },
   "dependencies": {
-    "express": "^4.16.4",
     "pluralize": "^7.0.0"
   }
 }
