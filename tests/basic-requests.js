@@ -9,7 +9,7 @@ describe('basic request', () => {
             return Users.deleteMany({});
         });
         describe('empty data', () => {
-            it('should return empty response', () => {
+            it('should return empty array', () => {
                 return request(app)
                     .get('/api/users')
                     .set('Accept', 'application/json')
