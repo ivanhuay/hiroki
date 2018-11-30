@@ -1,23 +1,24 @@
 'use strict';
-const Controller = require('./controller');
-const Validator = require('./validator');
-let instance;
+const Controller = require('./lib/controller');
+const Validator = require('./lib/validator');
 class Grapi {
     constructor() {
-        if(!instance) {
-            instance = this;
-        }
         this.controllers = {};
-        return instance;
     }
-    static rest(model) {
+    rest(model) {
         Validator.validateModel(model);
         if(!this.controllers[model]) {
             this.controllers[model] = new Controller(model);
         }
         return this.controllers[model];
     }
+    build() {
+        Object.values(this.controllers)
+            .forEach((controller) => {
+                controller.build();
+            });
+    }
 }
+const grapi = new Grapi();
 
-
-module.exports = Grapi;
+module.exports = grapi;
