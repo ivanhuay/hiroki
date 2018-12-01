@@ -8,7 +8,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "peerDependencies":{
     "mongoose": "^5.3.14",
     "express": "^4.16.4"
