@@ -11,6 +11,12 @@ describe('GET /api/users', () => {
             Books.deleteMany({})
         ]);
     });
+    after(() => {
+        return Promise.all([
+            Users.deleteMany({}),
+            Books.deleteMany({})
+        ]);
+    });
     describe('empty data', () => {
         it('should return empty array', () => {
             return request(app)
@@ -175,7 +181,10 @@ describe('GET /api/users', () => {
             });
         });
         after(() => {
-            return Users.deleteMany({});
+            return Promise.all([
+                Users.deleteMany({}),
+                Books.deleteMany({})
+            ]);
         });
         it('should get user & book by id', () => {
             return request(app)
