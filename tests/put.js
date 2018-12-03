@@ -21,7 +21,7 @@ describe('PUT method', () => {
             }),
             Books.create({
                 _id: '5c01997482c8985ad9a7eb4c',
-                title: 'first book',
+                title: 'second book',
                 tag: ['asd']
             }),
             Users.create({
@@ -94,20 +94,19 @@ describe('PUT method', () => {
                 .then((response) => {
                     expect(response.body.tag).to.have.length(1);
                     expect(response.body.tag[0]).to.equal('comic');
+                    expect(response.body.title).to.equal('second book');
                 });
         });
-        it('should update by conditions', () => {
+        it('should fail with 404', () => {
             return request(app)
                 .put('/api/books?conditions={"tag":"zfc"}')
                 .send({
                     tag:['comic']
                 })
                 .set('Accept', 'application/json')
-                .expect(200)
+                .expect(404)
                 .then((response) => {
-                    console.log('response: ', JSON.stringify(response.body));
-                    expect(response.body.tag).to.have.length(1);
-                    expect(response.body.tag[0]).to.equal('comic');
+                    expect(response.body.error).to.equal('Document not found.');
                 });
         });
     });
