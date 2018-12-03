@@ -96,5 +96,18 @@ describe('PUT method', () => {
                     expect(response.body.tag[0]).to.equal('comic');
                 });
         });
+        it('should update by conditions', () => {
+            return request(app)
+                .put('/api/books?conditions={"tag":"zfc"}')
+                .send({
+                    tag:['comic']
+                })
+                .set('Accept', 'application/json')
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.tag).to.have.length(1);
+                    expect(response.body.tag[0]).to.equal('comic');
+                });
+        });
     });
 });
