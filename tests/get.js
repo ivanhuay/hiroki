@@ -131,6 +131,17 @@ describe('GET /api/users', () => {
                     assert.equal(response.body.length, 2);
                 });
         });
+        it('should return 2 user & count header', () => {
+            return request(app)
+                .get('/api/users?limit=2')
+                .set('Accept', 'application/json')
+                .set('hiroki', 'count')
+                .expect(200)
+                .then((response) => {
+                    assert.equal(response.header['hiroki-total-count'], 3);
+                    assert.equal(response.body.length, 2);
+                });
+        });
         it('should return users sorted by email', () => {
             return request(app)
                 .get('/api/users?sort=email')
