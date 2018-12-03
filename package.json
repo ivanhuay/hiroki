@@ -1,13 +1,13 @@
 {
   "name": "hiroki",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha tests/ --bail --exit"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["rest", "api", "mongoose", "express", "crud"],
+  "author": "ivanhuay@gmail.com",
   "license": "MIT",
   "devDependencies": {
     "eslint": "^5.9.0",
