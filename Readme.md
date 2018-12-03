@@ -2,7 +2,7 @@
 
  build REST APIs faster than ever using the open source tools and standards you and your team already know.
 
-hiroki is an open source tool inspired in [baucis](https://github.com/wprl/baucis).
+hiroki is an open source tool inspired by [baucis](https://github.com/wprl/baucis).
 
 hiroki is fully compatible with mongoose 4 and 5.
 
