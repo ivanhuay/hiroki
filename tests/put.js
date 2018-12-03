@@ -105,6 +105,7 @@ describe('PUT method', () => {
                 .set('Accept', 'application/json')
                 .expect(200)
                 .then((response) => {
+                    console.log('response: ', JSON.stringify(response.body));
                     expect(response.body.tag).to.have.length(1);
                     expect(response.body.tag[0]).to.equal('comic');
                 });
