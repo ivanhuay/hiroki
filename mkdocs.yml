@@ -1,0 +1,10 @@
+site_name: Hiroki
+site_description: v0.0.1
+docs_dir: mkdocs
+site_dir: docs
+theme:
+    name: readthedocs
+    highlightjs: true
+    hljs_languages:
+        - yaml
+        - rust
