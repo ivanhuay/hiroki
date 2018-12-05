@@ -10,6 +10,4 @@ const BooksSchema = new mongoose.Schema({
     tag: [String]
 });
 
-BooksSchema.swaggerName = 'Books';
-
 module.exports = mongoose.model('Books', BooksSchema);

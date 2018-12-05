@@ -6,6 +6,10 @@ function decorator(controller) {
             error: 'unauthorized'
         });
     });
+    controller.request('get', function(req, res, next) {
+        req.query.limit = 2;
+        next();
+    });
 }
 
 module.exports = decorator;

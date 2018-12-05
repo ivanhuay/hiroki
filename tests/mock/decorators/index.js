@@ -1,5 +1,5 @@
 'use strict';
-const Users = require('./users');
+const Birds = require('./birds');
 module.exports = {
-    Users
+    Birds
 };

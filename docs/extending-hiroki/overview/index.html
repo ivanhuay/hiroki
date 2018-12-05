@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Controller Object - Hiroki</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Controller Object";
+    var mkdocs_page_input_path = "extending-hiroki/overview.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/rust.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Hiroki</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">Hiroki</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Extending hiroki</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../decorators/">Extending Hiroki</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">Controller Object</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#controller-object">Controller Object</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#structure">Structure</a></li>
+        
+            <li><a class="toctree-l4" href="#details-usage">Details Usage</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Hiroki</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Extending hiroki &raquo;</li>
+        
+      
+    
+    <li>Controller Object</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="controller-object">Controller Object</h1>
+<p><code>hiroki.rest</code> return a <code>Controller</code> object.</p>
+<p>this object build routes for a particular mongoose model.</p>
+<pre><code class="javascript">const controller = hiroki.rest(model);
+</code></pre>
+
+<h2 id="structure">Structure</h2>
+<h3 id="methods">Methods</h3>
+<ul>
+<li>request: extend functionality using middlewares before hiroki native middlewares.</li>
+<li>build: build specific route. <strong>(hiroki.build run build for each controller)</strong></li>
+</ul>
+<h3 id="statics-methods">Statics methods</h3>
+<ul>
+<li>Controller.getRouter: return the current express router.</li>
+</ul>
+<h3 id="set-properties">Set properties</h3>
+<ul>
+<li>disabledMethods: String with disabled routes. <code>Ej: disabledMethods = "get post"''</code></li>
+<li>outgoing: format middleware before response.</li>
+<li>beforeEnd: after format route.</li>
+</ul>
+<hr />
+<h2 id="details-usage">Details Usage</h2>
+<p>detail of use for some useful functions</p>
+<h3 id="request">Request</h3>
+<p><code>controler.request(methods, middleware)</code> enable to add middleware before hiroki routes.
+methods(String): methods separated by spaces. <em><code>get post put delete</code></em></p>
+<p>Example:</p>
+<pre><code class="javascript">...
+const app = express();
+const UsersSchema = new mongoose.Schema({name});
+mongoose.model('Users', UsersSchema);
+
+const controller = hiroki.rest('Users');
+controller.request('delete post put', (req,res,next) =&gt;{
+  req.status(401).json({error:'unauthorized'});
+})
+app.use('/api', hiroki.build());
+app.listen(8012);
+
+
+</code></pre>
+
+<hr />
+<h3 id="disabled-methods">Disabled methods</h3>
+<p>DisabledMethods alows you to disable some hiroki methods.</p>
+<p>request with this methods return <code>404</code> status.</p>
+<p>Example:</p>
+<pre><code class="javascript">...
+const controller = hiroki.rest('Users');
+controller.disabledMethods = 'delete put';
+app.use('/api', hiroki.build());
+app.listen(8012);
+
+</code></pre>
+
+<hr />
+<h3 id="outgoing">Outgoing</h3>
+<p>Outgoing allows you to add a formatting function before the output. The function receives each document and is executed once for each document.</p>
+<pre><code class="javascript">...
+const controller = hiroki.rest('Users');
+controller.outGoing = function(doc) {
+  doc.outName = doc.name.toUpperCase()
+  return doc
+};
+app.use('/api', hiroki.build());
+app.listen(8012);
+
+</code></pre>
+
+<h3 id="beforeend">BeforeEnd</h3>
+<p><code>beforeEnd</code> allows you to add a middleware that is executed before returning the server response and after formatting all the documents</p>
+<p>within this function you can manipulate the object req.rest</p>
+<p><code>req.rest</code> can contain up to 3 parameters: count, response (formatted documents) and status (http status)</p>
+<h5 id="reqrest-structure">req.rest structure</h5>
+<pre><code class="json">{
+  &quot;count&quot;: &quot;Number&quot;,
+  &quot;response&quot;: &quot;Docs&quot;,
+  &quot;status&quot;: &quot;Number&quot;
+}
+</code></pre>
+
+<h5 id="beforeend-usage">beforeEnd usage</h5>
+<pre><code class="javascript">controller.beforeEnd = function(req,res,next){
+  doSomething();
+  next(); //hiroki make the response
+}
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../decorators/" class="btn btn-neutral" title="Extending Hiroki"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../decorators/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>

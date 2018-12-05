@@ -8,6 +8,7 @@ hiroki is fully compatible with mongoose 4 and 5.
 
 hiroki is written in ES6 standards.
 
+read the [documentation here](https://ivanhuay.github.io/hiroki/).
 ### Getting Started
 To install:
 ```

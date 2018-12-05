@@ -12,6 +12,4 @@ const UserSchema = new mongoose.Schema({
     }]
 });
 
-UserSchema.swaggerName = 'Users';
-
 module.exports = mongoose.model('Users', UserSchema);
