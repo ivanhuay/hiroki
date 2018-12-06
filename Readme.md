@@ -1,4 +1,4 @@
-# Hiroki
+# Hiroki [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 
  build REST APIs faster than ever using the open source tools and standards you and your team already know.
 
@@ -33,3 +33,12 @@ app.listen(8012);
 
 [![Alt icon](https://grava.digital/assets/img/brandFooter.svg)
 ](https://grava.digital)
+
+
+
+[npm-image]: https://badge.fury.io/js/hiroki.svg
+[npm-url]: https://npmjs.org/package/hiroki
+[travis-image]: https://travis-ci.org/ivanhuay/hiroki.svg?branch=master
+[travis-url]: https://travis-ci.org/ivanhuay/hiroki
+[daviddm-image]: https://david-dm.org/ivanhuay/hiroki.svg?theme=shields.io
+[daviddm-url]: https://david-dm.org/ivanhuay/hiroki
