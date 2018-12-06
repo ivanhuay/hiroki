@@ -1,4 +1,4 @@
-# Hiroki [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+# Hiroki
 
  build REST APIs faster than ever using the open source tools and standards you and your team already know.
 
