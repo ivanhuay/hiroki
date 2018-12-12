@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Query string parameters - Hiroki</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Query string parameters";
+    var mkdocs_page_input_path = "rest-api/rest-api.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/rust.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Hiroki</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">Hiroki</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Extending hiroki</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../extending-hiroki/decorators/">Extending Hiroki</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../extending-hiroki/overview/">Controller Object</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Rest api</span>
+    <ul class="subnav">
+                <li class=" current">
+                    
+    <a class="current" href="./">Query string parameters</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#query-string-parameters">Query string parameters</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#conditions">conditions</a></li>
+        
+            <li><a class="toctree-l4" href="#skip">skip</a></li>
+        
+            <li><a class="toctree-l4" href="#limit">limit</a></li>
+        
+            <li><a class="toctree-l4" href="#sort">sort</a></li>
+        
+            <li><a class="toctree-l4" href="#select">select</a></li>
+        
+            <li><a class="toctree-l4" href="#populate">populate</a></li>
+        
+            <li><a class="toctree-l4" href="#count">count</a></li>
+        
+            <li><a class="toctree-l4" href="#distinct">distinct</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Hiroki</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Rest api &raquo;</li>
+        
+      
+    
+    <li>Query string parameters</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="query-string-parameters">Query string parameters</h1>
+<p>Use query options from the client to make dynamic requests.  Query options can be mixed as you see fit.</p>
+<h3 id="conditions">conditions</h3>
+<p>Set the Mongoose query's <code>find</code> or <code>remove</code> arguments.  This can take full advtange of the MongoDB query syntax, using geolocation, regular expressions, or full text search.  Special query operators are fine, and in fact geolocation, regular expression, and full text search capabilities are available to your API clients by default!</p>
+<pre><code>GET /api/people?conditions={ "location": { "$near": [44, -97] } }
+GET /api/people?conditions={ "$text": { "$search": "dog bites man" } }
+GET /api/cats?sort=-name&amp;limit=1&amp;conditions={ "features": "stripes" }
+DELETE /api/people?conditions={ "name": { "$regex": "^Bob W", "$options": "i" } }
+</code></pre>
+<h3 id="skip">skip</h3>
+<p>Skip sending the first <em>n</em> matched documents in the response.  Useful for paging.</p>
+<pre><code>GET /api/horses?skip=3
+</code></pre>
+<h3 id="limit">limit</h3>
+<p>Limit the response document count to <em>n</em> at maximum.</p>
+<pre><code>GET /api/horses?limit=3
+</code></pre>
+<p>If both limit and skip are used on a request, the response <code>Link</code> header will be set with extra relations that give URLs for paging.</p>
+<h3 id="sort">sort</h3>
+<p>Sort response documents by the given criteria. Here's how you'd sort the collection by <code>name</code> in ascending order, then by <code>age</code> in descending order.</p>
+<pre><code>GET /api/cheeses?sort=name -age
+</code></pre>
+<h3 id="select">select</h3>
+<p>Set which fields should be selected for response documents.</p>
+<pre><code>GET /api/phones?select=-_id -year
+</code></pre>
+<p>It is not permitted to use the <code>select</code> query option to select deselected paths.  This is to allow a mechanism for hiding fields from client software.</p>
+<p>You can deselect paths in the Mongoose schema definition using <code>select: false</code> or in the controller by calling e.g. <code>controller.select('-foo')</code>.  Your server middleware will be able to select these fields as usual using <code>query.select</code>, while preventing the client from selecting the field.</p>
+<p>Note that mixing inluding and excluding fields causes an error.</p>
+<h3 id="populate">populate</h3>
+<p>Set which fields should be populated for response documents.  See the Mongoose <a href="http://mongoosejs.com/docs/populate.html">population documentation</a> for more information.  The string or object syntax can be used:</p>
+<pre><code>GET /api/boats?populate=captain
+GET /api/cities?populate={ "path": "captain", "match": { "age": "44" } }
+</code></pre>
+<p>The <code>select</code> option of <code>populate</code> is disallowed.  Only paths deselected at the model level will be deselected in populate queries.</p>
+<h3 id="count">count</h3>
+<p>May be set to true for GET requests to specify that a count should be returned instead of documents</p>
+<pre><code>GET /api/stereos?count=true
+</code></pre>
+<h3 id="distinct">distinct</h3>
+<p>Set to a path name to retrieve an array of distinct values.</p>
+<pre><code>GET /api/restaurants?distinct=category
+</code></pre>
+<p>this documentation is based on <a href="https://github.com/wprl/baucis/wiki/Query-String-Parameters">baucis wiki</a></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../../extending-hiroki/overview/" class="btn btn-neutral" title="Controller Object"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../../extending-hiroki/overview/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>

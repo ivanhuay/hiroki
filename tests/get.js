@@ -49,6 +49,28 @@ describe('GET /api/users', () => {
                     assert.equal(response.body[0].name, 'test user');
                 });
         });
+        it('should get 1 user with only _id parameter', () => {
+            return request(app)
+                .get('/api/users?select=_id')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .then((response) => {
+                    assert.equal(response.body.length, 1);
+                    assert.equal(response.body[0]._id, '5c01997482c8985ad9a7eb5b');
+                    assert.equal(Object.hasOwnProperty(response.body[0], 'name'), false);
+                    assert.equal(Object.hasOwnProperty(response.body[0], 'email'), false);
+                });
+        });
+        it('should get distinct email', () => {
+            return request(app)
+                .get('/api/users?distinct=email')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .then((response) => {
+                    assert.equal(response.body.length, 1);
+                    assert.equal(response.body[0], 'test@lts.com');
+                });
+        });
         it('should get user by id', () => {
             return request(app)
                 .get('/api/users/5c01997482c8985ad9a7eb5b')
