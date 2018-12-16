@@ -14,15 +14,18 @@ class Hiroki {
     }
     rest(model) {
         Validator.validateModel(model);
-        if(!this.controllers[model]) {
-            this.controllers[model] = new Controller(model);
+        let modelName = model;
+        if(model.hasOwnProperty('modelName')) {
+            modelName = model.modelName;
         }
-        return this.controllers[model];
+        if(!this.controllers[modelName]) {
+            this.controllers[modelName] = new Controller(model);
+        }
+        return this.controllers[modelName];
     }
 
     build(config) {
         let path = config && config.path || '/api';
-
         Object.values(this.controllers)
             .forEach((controller) => {
                 controller.build();
