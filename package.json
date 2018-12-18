@@ -9,6 +9,11 @@
   "keywords": ["rest", "api", "mongoose", "express", "crud"],
   "author": "ivanhuay@gmail.com",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ivanhuay/hiroki",
+    "web": "https://github.com/ivanhuay/hiroki"
+  },
   "devDependencies": {
     "eslint": "^5.9.0",
     "expect.js": "^0.3.1",
