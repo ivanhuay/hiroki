@@ -17,9 +17,10 @@ npm install --save hiroki
 
 Create simple rest api:
 ```javascript
-...
+const express = require('express');
+const hiroki = require('hiroki');
 const app = express();
-const UsersSchema = new mongoose.Schema({name});
+const UsersSchema = new mongoose.Schema({name: String});
 mongoose.model('Users', UsersSchema);
 
 hiroki.rest('Users');//enable GET,PUT,POST & DELETE methods
