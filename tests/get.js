@@ -27,6 +27,15 @@ describe('GET /api/users', () => {
                     return assert.equal(response.body.length, 0);
                 });
         });
+        it('should return empty array with singular model file', () => {
+            return request(app)
+                .get('/api/items')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .then((response) => {
+                    return assert.equal(response.body.length, 0);
+                });
+        });
         it('should return empty array with pluralized route', () => {
             return request(app)
                 .get('/api/people')

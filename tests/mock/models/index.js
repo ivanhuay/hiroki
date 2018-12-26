@@ -2,6 +2,7 @@
 const Users = require('./users');
 const Books = require('./books');
 const Birds = require('./birds');
+const Item = require('./item');
 const Docs = require('./docs');
 const Person = require('./person');
 module.exports = {
@@ -9,5 +10,6 @@ module.exports = {
     Books,
     Birds,
     Docs,
+    Item,
     Person
 };
