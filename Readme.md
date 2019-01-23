@@ -25,10 +25,17 @@ mongoose.model('Users', UsersSchema);
 
 hiroki.rest('Users');//enable GET,PUT,POST & DELETE methods
 
-app.use('/api', hiroki.build());
+app.use(hiroki.build());//automatically use the route "/api"
 app.listen(8012);
 ```
+### Build config:
 
+it is possible to change the route that hiroki uses
+```javascript
+const config = {path:'/api/v1'};
+app.use(hiroki.build(config));
+
+```
 
 ### Sponsors:
 
