@@ -45,6 +45,12 @@ describe('GET /api/users', () => {
                     return assert.equal(response.body.length, 0);
                 });
         });
+        it('should return 401 status', () => {
+            return request(app)
+                .get('/api/invisibles')
+                .set('Accept', 'application/json')
+                .expect(401);
+        });
     });
     describe('preloaded data', () => {
         before(() => {

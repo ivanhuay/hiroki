@@ -36,6 +36,17 @@ const config = {path:'/api/v1'};
 app.use(hiroki.build(config));
 
 ```
+### Changelog
+
+* v0.0.8: fix general request function affect all routes.
+This type of decorators affected all the routes.
+```javascript
+...
+controller.request((req,res,next) => {
+  res.status(401).json({});
+})
+```
+now it only affects the route of that collection
 
 ### Sponsors:
 
