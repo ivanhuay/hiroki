@@ -37,7 +37,10 @@ app.use(hiroki.build(config));
 
 ```
 ### Changelog
-
+* v0.0.9: Add support for new conditions format.
+```
+ej: GET /api/users?conditions[active]=true
+```
 * v0.0.8: fix general request function affect all routes.
 This type of decorators affected all the routes.
 ```javascript
