@@ -70,7 +70,7 @@ describe('PUT method', () => {
         });
     });
     describe('PUT /api/books', () => {
-        it('should update book tag', () => {
+        it('should update book tag and run presave', () => {
             return request(app)
                 .put('/api/books/5c01997482c8985ad9a7eb4b')
                 .send({
@@ -81,6 +81,7 @@ describe('PUT method', () => {
                 .then((response) => {
                     expect(response.body.tag).to.have.length(1);
                     expect(response.body.tag[0]).to.equal('comic');
+                    expect(response.body.tagCount).to.equal(1);
                 });
         });
         it('should update by conditions', () => {

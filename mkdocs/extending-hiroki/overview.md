@@ -30,6 +30,7 @@ detail of use for some useful functions
 `controler.request(methods, middleware)` enable to add middleware before hiroki routes.
 methods(String): methods separated by spaces. *`get post put delete`*
 
+if you wish you can ignore the `methods` parameter and the middleware will apply to all methods.
 
 Example:
 ```javascript
@@ -39,6 +40,11 @@ const UsersSchema = new mongoose.Schema({name});
 mongoose.model('Users', UsersSchema);
 
 const controller = hiroki.rest('Users');
+controller.request((req, res, next) => {
+  //do something
+  //...
+  next();
+});
 controller.request('delete post put', (req,res,next) =>{
   req.status(401).json({error:'unauthorized'});
 })

@@ -7,7 +7,14 @@ const BooksSchema = new mongoose.Schema({
         type:String,
         required: true
     },
-    tag: [String]
+    tag: [String],
+    tagCount: Number
 });
 
+BooksSchema.pre('save', function(next) {
+    if(this.isModified('tag')) {
+        this.tagCount = this.tag.length;
+    }
+    next();
+});
 module.exports = mongoose.model('Books', BooksSchema);

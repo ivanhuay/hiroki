@@ -37,6 +37,10 @@ app.use(hiroki.build(config));
 
 ```
 ### Changelog
+* v0.1.0:
+  * PUT request fire pre save hook in Mongoose Schema.
+  * PUT udpate by condition only update one document.
+  * findOneAndUpdate method removed from PUT request.
 * v0.0.9: Add support for new conditions format.
 ```
 ej: GET /api/users?conditions[active]=true
