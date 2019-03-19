@@ -37,6 +37,7 @@ app.use(hiroki.build(config));
 
 ```
 ### Changelog
+* v0.1.1: Bugfix count with conditions error.
 * v0.1.0:
   * PUT request fire pre save hook in Mongoose Schema.
   * PUT udpate by condition only update one document.

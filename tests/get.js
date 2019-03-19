@@ -157,6 +157,15 @@ describe('GET /api/users', () => {
                     assert.equal(response.body, 3);
                 });
         });
+        it('should return count user with conditions', () => {
+            return request(app)
+                .get('/api/users?count=true&conditions[email]=main.lex@lts.com')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .then((response) => {
+                    assert.equal(response.body, 1);
+                });
+        });
         it('should 1 user using conditions', () => {
             return request(app)
                 .get('/api/users?conditions={"email":"main.lex@lts.com"}')
