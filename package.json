@@ -1,12 +1,18 @@
 {
   "name": "hiroki",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha tests/ --bail --exit"
   },
-  "keywords": ["rest", "api", "mongoose", "express", "crud"],
+  "keywords": [
+    "rest",
+    "api",
+    "mongoose",
+    "express",
+    "crud"
+  ],
   "author": "ivanhuay@gmail.com",
   "license": "MIT",
   "repository": {

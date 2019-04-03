@@ -52,5 +52,17 @@ describe('DECORATORS', () => {
                     assert.equal(response.body.length, 2);
                 });
         });
+        it('should get unauthorized trying to update a bird by id', () => {
+            return request(app)
+                .put('/api/birds/5c01997482c8985ad9a7eb5e')
+                .set('Accept', 'application/json')
+                .send({
+                  name:'updated bird'
+                })
+                .expect(401)
+                .then((response) => {
+                    assert.equal(response.body.error, 'unauthorized');
+                });
+        });
     });
 });
