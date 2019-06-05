@@ -37,11 +37,12 @@ app.use(hiroki.build(config));
 
 ```
 ### Changelog
+* v0.1.3 MongooseConnector added, dependencies update no breaking changes. In future releases, new connectors would be added.
 * v0.1.2 Bugfix decorator for put route with :id as parameter
 * v0.1.1: Bugfix count with conditions error.
 * v0.1.0:
   * PUT request fire pre save hook in Mongoose Schema.
-  * PUT udpate by condition only update one document.
+  * PUT update by condition only update one document.
   * findOneAndUpdate method removed from PUT request.
 * v0.0.9: Add support for new conditions format.
 ```
