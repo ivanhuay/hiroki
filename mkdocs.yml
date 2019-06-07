@@ -2,6 +2,8 @@ site_name: Hiroki
 site_description: v0.0.1
 docs_dir: mkdocs
 site_dir: docs
+repo_url: https://github.com/ivanhuay/hiroki
+google_analitycs: ['UA-141670070-1','https://ivanhuay.github.io/hiroki/']
 theme:
     name: readthedocs
     highlightjs: true

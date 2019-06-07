@@ -5,7 +5,7 @@ you can easly extend hiroji using a simple express middleware.
 
 `hiroki.rest` return a `Controller` object.
 
-see details of controller methods [here](../controller).
+see details of controller methods [here](../overview).
 
 ### Example
 ```javascript
