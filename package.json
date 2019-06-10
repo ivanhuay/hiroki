@@ -1,6 +1,6 @@
 {
   "name": "hiroki",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,6 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "mongoose": "^5.3.14 || ^4.13.17",
-    "pluralize": "^7.0.0"
+    "pluralize": "^8.0.0"
   }
 }
