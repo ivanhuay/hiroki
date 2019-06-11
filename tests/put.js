@@ -24,6 +24,11 @@ describe('PUT method', () => {
                 title: 'second book',
                 tag: ['asd']
             }),
+            Books.create({
+                _id: '5c01997482c8985ad9a7eb4d',
+                title: '3 book',
+                tag: ['hiroki', 'rock', 'awesome']
+            }),
             Users.create({
                 _id: '5c01997482c8985ad9a7eb5b',
                 name:'test user',
@@ -84,6 +89,35 @@ describe('PUT method', () => {
                     expect(response.body.tagCount).to.equal(1);
                 });
         });
+        it('should update using $push', () => {
+            return request(app)
+                .put('/api/books/5c01997482c8985ad9a7eb4b')
+                .send({
+                    tag:{$push:'comic'}
+                })
+                .set('Accept', 'application/json')
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.tag).to.have.length(1);
+                    expect(response.body.tag[0]).to.equal('comic');
+                    expect(response.body.tagCount).to.equal(1);
+                });
+        });
+        it('should update using $push with an array', () => {
+            return request(app)
+                .put('/api/books/5c01997482c8985ad9a7eb4b')
+                .send({
+                    tag:{$push:['comic','test']}
+                })
+                .set('Accept', 'application/json')
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.tag).to.have.length(2);
+                    expect(response.body.tag[0]).to.equal('comic');
+                    expect(response.body.tag[1]).to.equal('test');
+                    expect(response.body.tagCount).to.equal(2);
+                });
+        });
         it('should update by conditions', () => {
             return request(app)
                 .put('/api/books?conditions={"tag":"asd"}')
@@ -96,6 +130,33 @@ describe('PUT method', () => {
                     expect(response.body.tag).to.have.length(1);
                     expect(response.body.tag[0]).to.equal('comic');
                     expect(response.body.title).to.equal('second book');
+                });
+        });
+        it('should update by conditions and $pull', () => {
+            return request(app)
+                .put('/api/books?conditions={"tag":"asd"}')
+                .send({
+                    tag:{$pull:['asd']}
+                })
+                .set('Accept', 'application/json')
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.tag).to.have.length(0);
+                    expect(response.body.title).to.equal('second book');
+                });
+        });
+        it('should update by conditions and $pull with multiple data', () => {
+            return request(app)
+                .put('/api/books?conditions={"tag":"hiroki"}')
+                .send({
+                    tag:{$pull:['hiroki', 'awesome']}
+                })
+                .set('Accept', 'application/json')
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.tag).to.have.length(1);
+                    expect(response.body.tag[0]).to.equal('rock');
+                    expect(response.body.title).to.equal('3 book');
                 });
         });
         it('should fail with 404', () => {

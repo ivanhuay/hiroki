@@ -37,6 +37,7 @@ app.use(hiroki.build(config));
 
 ```
 ### Changelog
+* v0.2.2 Params `$push` and `$pull` working for PUT method. For doing this a custom Assign method was added to hiroki, because of that we made a benchmark test to measure this performance impact. Check it [Here](https://github.com/ivanhuay/micron-object-assign).
 * v0.2.0 Share Query path added. [check the docs](https://ivanhuay.github.io/hiroki/rest-api/share-query/).
 * v0.1.3 MongooseConnector added, dependencies update no breaking changes. In future releases, new connectors would be added.
 * v0.1.2 Bugfix decorator for put route with :id as parameter

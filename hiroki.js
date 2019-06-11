@@ -21,7 +21,6 @@ class Hiroki {
         }
         modelName = modelName.toLowerCase();
         if(!this.controllers[modelName]) {
-            console.log('rest Modelname: ', modelName);
             this.controllers[modelName] = new Controller(model);
         }
         return this.controllers[modelName];
