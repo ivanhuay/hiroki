@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Requests - Hiroki</title>
+  <title>Update documents - Hiroki</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -17,8 +17,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Requests";
-    var mkdocs_page_input_path = "rest-api/rest-api-delete.md";
+    var mkdocs_page_name = "Update documents";
+    var mkdocs_page_input_path = "rest-api/update-documents.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -85,23 +85,9 @@
 		
     <span class="caption-text">Rest api</span>
     <ul class="subnav">
-                <li class=" current">
+                <li class="">
                     
-    <a class="current" href="./">Requests</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l3"><a href="#requests">Requests</a></li>
-    
-        <ul>
-        
-            <li><a class="toctree-l4" href="#update-using-put">Update using PUT</a></li>
-        
-            <li><a class="toctree-l4" href="#delete-document">Delete document</a></li>
-        
-        </ul>
-    
-
-    </ul>
+    <a class="" href="../rest-api-delete/">Requests</a>
                 </li>
                 <li class="">
                     
@@ -111,9 +97,25 @@
                     
     <a class="" href="../share-query/">Share query</a>
                 </li>
-                <li class="">
+                <li class=" current">
                     
-    <a class="" href="../update-documents/">Update documents</a>
+    <a class="current" href="./">Update documents</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#update-documents">Update documents</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#basic-put-request">Basic Put Request</a></li>
+        
+            <li><a class="toctree-l4" href="#update-using-conditions">Update Using conditions</a></li>
+        
+            <li><a class="toctree-l4" href="#the-pull-and-push-param">The $pull and $push param</a></li>
+        
+        </ul>
+    
+
+    </ul>
                 </li>
     </ul>
 	    </li>
@@ -144,10 +146,10 @@
         
       
     
-    <li>Requests</li>
+    <li>Update documents</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/ivanhuay/hiroki/edit/master/docs/rest-api/rest-api-delete.md"
+        <a href="https://github.com/ivanhuay/hiroki/edit/master/docs/rest-api/update-documents.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -157,29 +159,50 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="requests">Requests</h1>
-<h2 id="update-using-put">Update using PUT</h2>
-<p>to update documents there are two options using PUT request.</p>
-<ul>
-<li>PUT /api/:collection/:id</li>
-<li>PUT /api/:collection?conditions[example]=true
-and Body object</li>
-</ul>
-<p>it can be updated using the id as a parameter or by sending the conditions object. In both cases, only one document is updated</p>
-<h4 id="example">Example:</h4>
-<pre><code>PUT /api/books?conditions={&quot;title&quot;:&quot;El juguete rabioso&quot;}
-PUT /api/books/5c5303574ffead2c606d773b
-
-#Body:
+                <h1 id="update-documents">Update documents</h1>
+<p>For make an update we use the <code>PUT</code> method</p>
+<h2 id="basic-put-request">Basic Put Request</h2>
+<p>This request will update a particular document</p>
+<pre><code>PUT /api/books/:id
+Body:
 {
-    author: 'Roberto Arlt'
+  title: 'new title',
+  tags: ['new tags']
 }
 </code></pre>
 
-<h2 id="delete-document">Delete document</h2>
-<p>it is possible to delete a document using a request DELETE with the id as a parameter</p>
-<pre><code>DELETE /api/books/5c5303574ffead2c606d773b
+<h2 id="update-using-conditions">Update Using conditions</h2>
+<p>Also you can update documents using a <code>condition</code> filter as a query param.</p>
+<pre><code>PUT /api/books/?conditions={&quot;tag&quot;:&quot;asd&quot;}
+Body:
+{
+  title: 'new title',
+  tags: ['new tags']
+}
 </code></pre>
+
+<p>This will update all documents that satisfy the conditions filter.</p>
+<h2 id="the-pull-and-push-param">The $pull and $push param</h2>
+<p>You can these params for append or remove an element from an array.</p>
+<pre><code>PUT /api/books/?conditions={&quot;tag&quot;:&quot;asd&quot;}
+Body:
+{
+  title: 'new title',
+  tags: {$push:['new tags']}
+}
+</code></pre>
+
+<p>this will add the new tag to the previous list of tags.</p>
+<p>if you want to remove an element from an array you can use the $pull param.</p>
+<pre><code>PUT /api/books/?conditions={&quot;tag&quot;:&quot;asd&quot;}
+Body:
+{
+  title: 'new title',
+  tags: {$pull:['asd']}
+}
+</code></pre>
+
+<p>this will remove the <code>asd</code> tag from the existing list.</p>
               
             </div>
           </div>
@@ -187,10 +210,8 @@ PUT /api/books/5c5303574ffead2c606d773b
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../rest-api/" class="btn btn-neutral float-right" title="Query string parameters">Next <span class="icon icon-circle-arrow-right"></span></a>
       
-      
-        <a href="../../extending-hiroki/overview/" class="btn btn-neutral" title="Controller Object"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../share-query/" class="btn btn-neutral" title="Share query"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -218,10 +239,8 @@ PUT /api/books/5c5303574ffead2c606d773b
           <a href="https://github.com/ivanhuay/hiroki/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../../extending-hiroki/overview/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../share-query/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
-      
-        <span style="margin-left: 15px"><a href="../rest-api/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
