@@ -43,6 +43,15 @@ describe('DECORATORS', () => {
                     assert.equal(response.body.error, 'unauthorized');
                 });
         });
+        it('should get return unauthorized with id', () => {
+            return request(app)
+                .del('/api/birds/5c01997482c8985ad9a7eb5e')
+                .set('Accept', 'application/json')
+                .expect(401)
+                .then((response) => {
+                    assert.equal(response.body.error, 'unauthorized');
+                });
+        });
         it('should get birds with override limit', () => {
             return request(app)
                 .get('/api/birds?limit=10')
