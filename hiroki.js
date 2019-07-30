@@ -36,7 +36,7 @@ class Hiroki {
                     const params = shareParams[modelName];
                     const currentController = this.controllers[modelName];
                     if(!currentController || !currentController.config.shareQueryEnabled) {
-                        return;
+                        return false;
                     }
                     return currentController.queryGet(params)
                         .then((response) => {
