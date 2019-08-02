@@ -5,7 +5,8 @@ const decorators = require('./decorators');
 
 function buildHiroki() {
     Object.keys(models).forEach((modelName) => {
-        const controller = hiroki.rest(models[modelName]);
+        const options = modelName === 'Draws' ? {fastUpdate: 'enabled'} : {};
+        const controller = hiroki.rest(models[modelName], options);
         if (decorators.hasOwnProperty(modelName)) {
             decorators[modelName](controller);
         }

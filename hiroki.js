@@ -13,7 +13,7 @@ class Hiroki {
         instance = this;
         return instance;
     }
-    rest(model) {
+    rest(model, options) {
         Validator.validateModel(model);
         let modelName = model;
         if(model.hasOwnProperty('modelName')) {
@@ -21,7 +21,7 @@ class Hiroki {
         }
         modelName = modelName.toLowerCase();
         if(!this.controllers[modelName]) {
-            this.controllers[modelName] = new Controller(model);
+            this.controllers[modelName] = new Controller(model, options);
         }
         return this.controllers[modelName];
     }

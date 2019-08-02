@@ -4,13 +4,15 @@ const assert = require('assert');
 const app = require('./mock/app');
 const Users = require('./mock/models/users');
 const Books = require('./mock/models/books');
+const Draws = require('./mock/models/draws');
 const expect = require('expect.js');
 describe('PUT method', () => {
     let bookId;
     before(() => {
         return Promise.all([
             Users.deleteMany({}),
-            Books.deleteMany({})
+            Books.deleteMany({}),
+            Draws.deleteMany({})
         ]);
     });
     beforeEach(() => {
@@ -44,13 +46,18 @@ describe('PUT method', () => {
                 _id: '5c01997482c8985ad9a7eb5d',
                 name:'lex',
                 email: 'main.lex@lts.com'
+            }),
+            Draws.create({
+                _id: '5c01297482c8985ad9a7eb5c',
+                name: 'Alvatro'
             })
         ]);
     });
     afterEach(() => {
         return Promise.all([
             Users.deleteMany({}),
-            Books.deleteMany({})
+            Books.deleteMany({}),
+            Draws.deleteMany({})
         ]);
     });
     describe('PUT /api/users', () => {
@@ -107,7 +114,7 @@ describe('PUT method', () => {
             return request(app)
                 .put('/api/books/5c01997482c8985ad9a7eb4b')
                 .send({
-                    tag:{$push:['comic','test']}
+                    tag:{$push:['comic', 'test']}
                 })
                 .set('Accept', 'application/json')
                 .expect(200)
@@ -169,6 +176,20 @@ describe('PUT method', () => {
                 .expect(404)
                 .then((response) => {
                     expect(response.body.error).to.equal('Document not found.');
+                });
+        });
+    });
+    describe('PUT /api/draws', () => {
+        it('fast update should not run pre-save', () => {
+            return request(app)
+                .put('/api/draws/5c01297482c8985ad9a7eb5c')
+                .send({
+                    'name':'some bird'
+                })
+                .set('Accept', 'application/json')
+                .expect(200)
+                .then((response) => {
+                    return expect(response.body.type).to.be(undefined);
                 });
         });
     });
