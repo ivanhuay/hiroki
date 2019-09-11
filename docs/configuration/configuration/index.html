@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Extending Hiroki - Hiroki</title>
+  <title>Custom configuration - Hiroki</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -17,8 +17,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Extending Hiroki";
-    var mkdocs_page_input_path = "extending-hiroki/decorators.md";
+    var mkdocs_page_name = "Custom configuration";
+    var mkdocs_page_input_path = "configuration/configuration.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -70,9 +70,15 @@
 		
     <span class="caption-text">Configuration</span>
     <ul class="subnav">
-                <li class="">
+                <li class=" current">
                     
-    <a class="" href="../../configuration/configuration/">Custom configuration</a>
+    <a class="current" href="./">Custom configuration</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#custom-configuration">Custom configuration</a></li>
+    
+
+    </ul>
                 </li>
     </ul>
 	    </li>
@@ -81,25 +87,13 @@
 		
     <span class="caption-text">Extending hiroki</span>
     <ul class="subnav">
-                <li class=" current">
+                <li class="">
                     
-    <a class="current" href="./">Extending Hiroki</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l3"><a href="#extending-hiroki">Extending Hiroki</a></li>
-    
-        <ul>
-        
-            <li><a class="toctree-l4" href="#using-decorators">Using decorators</a></li>
-        
-        </ul>
-    
-
-    </ul>
+    <a class="" href="../../extending-hiroki/decorators/">Extending Hiroki</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../overview/">Controller Object</a>
+    <a class="" href="../../extending-hiroki/overview/">Controller Object</a>
                 </li>
     </ul>
 	    </li>
@@ -149,14 +143,14 @@
     
       
         
-          <li>Extending hiroki &raquo;</li>
+          <li>Configuration &raquo;</li>
         
       
     
-    <li>Extending Hiroki</li>
+    <li>Custom configuration</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/ivanhuay/hiroki/edit/master/docs/extending-hiroki/decorators.md"
+        <a href="https://github.com/ivanhuay/hiroki/edit/master/docs/configuration/configuration.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -166,25 +160,25 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="extending-hiroki">Extending Hiroki</h1>
-<p>you can easly extend hiroji using a simple express middleware.</p>
-<h2 id="using-decorators">Using decorators</h2>
-<p><code>hiroki.rest</code> return a <code>Controller</code> object.</p>
-<p>see details of controller methods <a href="../overview">here</a>.</p>
-<h3 id="example">Example</h3>
-<pre><code class="javascript">...
-const app = express();
-const UsersSchema = new mongoose.Schema({name});
-mongoose.model('Users', UsersSchema);
+                <h1 id="custom-configuration">Custom configuration</h1>
+<p>using <code>hiroki.rest</code> you can pass as a second parameter a configuration object.</p>
+<pre><code class="jasvascript">
+const options = {
+    shareQueryEnabled: false, //Bool
+    fastUpdate: 'enabled', //Enum - options enabled, disabled, optional
+    disabledPluralize: false //Bool
+};
+hiroki.rest(model, options);
 
-const controller = hiroki.rest('Users');
-controller.request('get', (req,res,next) =&gt;{
-  req.query.limit = 3; //override query params limit
-  next();
-})
-app.use('/api', hiroki.build());
-app.listen(8012);
 </code></pre>
+
+<ul>
+<li>shareQueryEnabled: enable shared queries route. (more info here)[#share-query]</li>
+<li>fastUpdate: with enabled UPDATE methods run faster but pre save method of models won't run. There are some posibles values:</li>
+<li>optional: with optional you have to send a query param <code>?fast=true</code></li>
+<li>enabled: always working.</li>
+<li>disabled: not working.</li>
+</ul>
               
             </div>
           </div>
@@ -192,10 +186,10 @@ app.listen(8012);
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../overview/" class="btn btn-neutral float-right" title="Controller Object">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../extending-hiroki/decorators/" class="btn btn-neutral float-right" title="Extending Hiroki">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../../configuration/configuration/" class="btn btn-neutral" title="Custom configuration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../basic-tutorial/rest-api/" class="btn btn-neutral" title="First REST api with hiroki"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -223,10 +217,10 @@ app.listen(8012);
           <a href="https://github.com/ivanhuay/hiroki/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../../configuration/configuration/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../../basic-tutorial/rest-api/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../overview/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../extending-hiroki/decorators/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
