@@ -4,6 +4,5 @@ node_js:
   - v10
   - v9
   - v8
-  - v7
 services:
   - mongodb

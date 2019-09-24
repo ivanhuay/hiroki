@@ -93,6 +93,26 @@ describe('GET /api/share', () => {
                     assert.equal(response.body.users.length, 0);
                 });
         });
+        it('share format should add a property', () => {
+            return request(app)
+                .get(`/api/share/${JSON.stringify({books:{}, users:{conditions:{_id:'5c01997482c8985ad9a7eb5b'}}})}`)
+                .set('Accept', 'application/json')
+                .expect(200)
+                .then((response) => {
+                    assert.equal(response.body.books.length, 1);
+                    assert.equal(response.body.books[0].book, true);
+                });
+        });
+        it('before end should add a fake collection', () => {
+            return request(app)
+                .get(`/api/share/${JSON.stringify({books:{}, users:{conditions:{_id:'5c01997482c8985ad9a7eb5b'}}})}`)
+                .set('Accept', 'application/json')
+                .expect(200)
+                .then((response) => {
+                    assert.equal(response.body.fakeCollection.length, 1);
+                    assert.equal(response.body.fakeCollection[0], 1);
+                });
+        });
     });
     describe('multiple preloaded data & params', () => {
         before(() => {

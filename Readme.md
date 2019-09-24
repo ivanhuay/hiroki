@@ -37,6 +37,10 @@ app.use(hiroki.build(config));
 
 ```
 ### Changelog
+* v0.2.7:
+  * `shareFormat` & `beforeShareEnd` methods added to format share response.
+  * Node v7 support removed.
+  * docs for shared.
 * v0.2.5 `fastUpdate` option added. This enabled a faster way to update for higher performance.
 * v0.2.3 **Critical bugfix:** decorator error with delete method. Test added for cover that.
 * v0.2.2 Params `$push` and `$pull` working for PUT method. For doing this a custom Assign method was added to hiroki, because of that we made a benchmark test to measure this performance impact. Check it [Here](https://github.com/ivanhuay/micron-object-assign).

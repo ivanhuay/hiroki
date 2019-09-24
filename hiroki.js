@@ -9,7 +9,12 @@ class Hiroki {
             return instance;
         }
         this.controllers = {};
+        this._outgoingShareFormat = false;
+        this._beforeShareEnd = false;
         this._router = express.Router();
+        this._beforeShareEnd = (req, res, next) => {
+            next();
+        };
         instance = this;
         return instance;
     }
@@ -25,10 +30,35 @@ class Hiroki {
         }
         return this.controllers[modelName];
     }
+    set shareFormat(formatSyncFunction) {
+        this._outgoingShareFormat = formatSyncFunction;
+    }
+    set beforeShareEnd(middleware) {
+        this._beforeShareEnd = middleware;
+    }
+    get beforeShareEnd() {
+        return this._beforeShareEnd;
+    }
+    _shareFormat(response) {
+        if(!this._outgoingShareFormat) {
+            return response;
+        }
+        Object.keys(response).forEach((collection) => {
+            if(Array.isArray(response[collection])) {
+                response[collection] = response[collection].map((doc) => {
+                    let docElm = typeof doc === 'object' ? doc.toJSON() : doc;
+                    return this._outgoingShareFormat(docElm, collection);
+                });
+            }else if(typeof response[collection] === 'object') {
+                response[collection] = this._outgoingShareFormat(response[collection].toJSON(), collection);
+            }
+        });
+        return response;
+    }
     _buildShare() {
         const router = express.Router();
         router.get('/share/:shareParams', (req, res, next) => {
-            Validator.validateConditions(req.shareParams);
+            Validator.validateConditions(req.params.shareParams);
             const shareParams = JSON.parse(req.params.shareParams);
             const shareResponse = {};
             const promises = Object.keys(shareParams)
@@ -45,11 +75,15 @@ class Hiroki {
                 });
             Promise.all(promises)
                 .then(() => {
-                    return res.json(shareResponse);
+                    req.shareResponse = this._shareFormat(shareResponse);
+                    return next();
                 })
                 .catch(next);
-        });
+        }, this.beforeShareEnd, this._sendShare);
         return router;
+    }
+    _sendShare(req, res) {
+        res.json(req.shareResponse);
     }
     _buildGlobalError() {
         const router = express.Router();

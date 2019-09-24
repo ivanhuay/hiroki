@@ -10,7 +10,7 @@ function decorator(controller) {
         req.query.limit = 2;
         next();
     });
-    controller.request('put', function(req, res, next) {
+    controller.request('put', function(req, res) {
         res.status(401).json({error: 'unauthorized'});
     });
 }
