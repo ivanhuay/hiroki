@@ -7,23 +7,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
-  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <link rel="shortcut icon" href="../../../img/favicon.ico">
   <title>Extending Hiroki - Hiroki</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
-  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../css/theme_extra.css" type="text/css" />
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
   
   <script>
     // Current page data
     var mkdocs_page_name = "Extending Hiroki";
-    var mkdocs_page_input_path = "extending-hiroki/decorators.md";
+    var mkdocs_page_input_path = "rest-api/extending-hiroki/decorators.md";
     var mkdocs_page_url = null;
   </script>
   
-  <script src="../../js/jquery-2.1.1.min.js" defer></script>
-  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="../../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../../js/modernizr-2.8.3.min.js" defer></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/rust.min.js"></script>
@@ -38,9 +38,9 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
       <div class="wy-side-nav-search">
-        <a href="../.." class="icon icon-home"> Hiroki</a>
+        <a href="../../.." class="icon icon-home"> Hiroki</a>
         <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
   </form>
 </div>
@@ -52,54 +52,20 @@
           
             <li class="toctree-l1">
 		
-    <a class="" href="../..">Hiroki</a>
+    <a class="" href="../../..">Hiroki</a>
 	    </li>
           
             <li class="toctree-l1">
 		
-    <span class="caption-text">Basic tutorial</span>
+    <span class="caption-text">Getting started</span>
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../../basic-tutorial/rest-api/">First REST api with hiroki</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">Configuration</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../configuration/configuration/">Custom configuration</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">Extending hiroki</span>
-    <ul class="subnav">
-                <li class=" current">
-                    
-    <a class="current" href="./">Extending Hiroki</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l3"><a href="#extending-hiroki">Extending Hiroki</a></li>
-    
-        <ul>
-        
-            <li><a class="toctree-l4" href="#using-decorators">Using decorators</a></li>
-        
-        </ul>
-    
-
-    </ul>
+    <a class="" href="../../../getting-started/">First API with hiroki</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../overview/">Controller Object</a>
+    <a class="" href="../../../getting-started/configuration/">Configuration</a>
                 </li>
     </ul>
 	    </li>
@@ -110,30 +76,41 @@
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../../rest-api/rest-api-delete/">Requests</a>
+    <a class="" href="../../">Rest Api methods</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../rest-api/rest-api/">Query string parameters</a>
+    <a class="" href="../../detailed-documentation/">Detailed documentation</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../rest-api/share-query/">Share query</a>
+    <a class="" href="../../get-multiple-collections-in-one/">Get multiple collections in one request using `share` route.</a>
                 </li>
-                <li class="">
+                <li class=" current">
                     
-    <a class="" href="../../rest-api/update-documents/">Update documents</a>
+    <span class="caption-text">Extending hiroki</span>
+    <ul class="subnav">
+                <li class="toctree-l3 current">
+                    
+    <a class="current" href="./">Extending Hiroki</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l4"><a href="#extending-hiroki">Extending Hiroki</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l5" href="#using-decorators">Using decorators</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="toctree-l3">
+                    
+    <a class="" href="../overview/">Controller Object</a>
                 </li>
     </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">Shared queries</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../shared-queries/shared-queries/">Shared Queries</a>
                 </li>
     </ul>
 	    </li>
@@ -148,7 +125,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../..">Hiroki</a>
+        <a href="../../..">Hiroki</a>
       </nav>
 
       
@@ -156,18 +133,22 @@
         <div class="rst-content">
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="../..">Docs</a> &raquo;</li>
+    <li><a href="../../..">Docs</a> &raquo;</li>
     
       
         
           <li>Extending hiroki &raquo;</li>
         
       
+        
+          <li>Rest api &raquo;</li>
+        
+      
     
     <li>Extending Hiroki</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/ivanhuay/hiroki/edit/master/docs/extending-hiroki/decorators.md"
+        <a href="https://github.com/ivanhuay/hiroki/edit/master/docs/rest-api/extending-hiroki/decorators.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -206,7 +187,7 @@ app.listen(8012);
         <a href="../overview/" class="btn btn-neutral float-right" title="Controller Object">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../../configuration/configuration/" class="btn btn-neutral" title="Custom configuration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../get-multiple-collections-in-one/" class="btn btn-neutral" title="Get multiple collections in one request using `share` route."><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -234,16 +215,16 @@ app.listen(8012);
           <a href="https://github.com/ivanhuay/hiroki/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../../configuration/configuration/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../../get-multiple-collections-in-one/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
         <span style="margin-left: 15px"><a href="../overview/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
-    <script>var base_url = '../..';</script>
-    <script src="../../js/theme.js" defer></script>
-      <script src="../../search/main.js" defer></script>
+    <script>var base_url = '../../..';</script>
+    <script src="../../../js/theme.js" defer></script>
+      <script src="../../../search/main.js" defer></script>
 
 </body>
 </html>

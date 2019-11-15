@@ -1,6 +1,5 @@
-# First REST api with hiroki
-In this tutorial we are going to build our first rest api with hiroki. Some things  in this tutorial aren't the best practice but this is for keep the example simple.
-
+# First API with hiroki
+In this tutorial we are going to build our first rest api with hiroki. Some things  in this tutorial aren't the best practice but this is to keep the example simpler as possible.
 
 ## Setup
 

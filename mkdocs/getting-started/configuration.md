@@ -1,4 +1,4 @@
-# Custom configuration
+# Configuration
 
 
 using `hiroki.rest` you can pass as a second parameter a configuration object.

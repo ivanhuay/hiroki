@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Share query - Hiroki</title>
+  <title>Get multiple collections in one request using `share` route. - Hiroki</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -17,8 +17,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Share query";
-    var mkdocs_page_input_path = "rest-api/share-query.md";
+    var mkdocs_page_name = "Get multiple collections in one request using `share` route.";
+    var mkdocs_page_input_path = "rest-api/get-multiple-collections-in-one.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -57,37 +57,15 @@
           
             <li class="toctree-l1">
 		
-    <span class="caption-text">Basic tutorial</span>
+    <span class="caption-text">Getting started</span>
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../../basic-tutorial/rest-api/">First REST api with hiroki</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">Configuration</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../configuration/configuration/">Custom configuration</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">Extending hiroki</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../extending-hiroki/decorators/">Extending Hiroki</a>
+    <a class="" href="../../getting-started/">First API with hiroki</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../extending-hiroki/overview/">Controller Object</a>
+    <a class="" href="../../getting-started/configuration/">Configuration</a>
                 </li>
     </ul>
 	    </li>
@@ -98,22 +76,28 @@
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../rest-api-delete/">Requests</a>
+    <a class="" href="../">Rest Api methods</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../rest-api/">Query string parameters</a>
+    <a class="" href="../detailed-documentation/">Detailed documentation</a>
                 </li>
                 <li class=" current">
                     
-    <a class="current" href="./">Share query</a>
+    <a class="current" href="./">Get multiple collections in one request using `share` route.</a>
     <ul class="subnav">
             
-    <li class="toctree-l3"><a href="#share-query">Share query</a></li>
+    <li class="toctree-l3"><a href="#get-multiple-collections-in-one-request-using-share-route">Get multiple collections in one request using share route.</a></li>
     
         <ul>
         
-            <li><a class="toctree-l4" href="#example-share-query">Example Share query</a></li>
+            <li><a class="toctree-l4" href="#configuration">Configuration:</a></li>
+        
+            <li><a class="toctree-l4" href="#usage-details">Usage Details:</a></li>
+        
+            <li><a class="toctree-l4" href="#format-response">Format response:</a></li>
+        
+            <li><a class="toctree-l4" href="#examples">Examples</a></li>
         
         </ul>
     
@@ -122,18 +106,17 @@
                 </li>
                 <li class="">
                     
-    <a class="" href="../update-documents/">Update documents</a>
+    <span class="caption-text">Extending hiroki</span>
+    <ul class="subnav">
+                <li class="toctree-l3">
+                    
+    <a class="" href="../extending-hiroki/decorators/">Extending Hiroki</a>
+                </li>
+                <li class="toctree-l3">
+                    
+    <a class="" href="../extending-hiroki/overview/">Controller Object</a>
                 </li>
     </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">Shared queries</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../shared-queries/shared-queries/">Shared Queries</a>
                 </li>
     </ul>
 	    </li>
@@ -164,10 +147,10 @@
         
       
     
-    <li>Share query</li>
+    <li>Get multiple collections in one request using `share` route.</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/ivanhuay/hiroki/edit/master/docs/rest-api/share-query.md"
+        <a href="https://github.com/ivanhuay/hiroki/edit/master/docs/rest-api/get-multiple-collections-in-one.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -177,9 +160,13 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="share-query">Share query</h1>
+                <h1 id="get-multiple-collections-in-one-request-using-share-route">Get multiple collections in one request using <code>share</code> route.</h1>
 <p>This feature is available since v0.2.0</p>
 <p>now we have a new path <code>/api/share/:shareCondition</code>.</p>
+<h3 id="configuration">Configuration:</h3>
+<p>you can use multiple queries in only one request using the <code>shareQueryEnabled</code> configuration for the controllers that you want enabled.</p>
+<p>Also check the <a href="../../getting-started/configuration/">configuration page</a>.</p>
+<h3 id="usage-details">Usage Details:</h3>
 <p><code>:shareCondition</code> is a stringify object with this format:</p>
 <pre><code>{
     modelName:{ params }
@@ -199,7 +186,45 @@
 
 <p>now instead of query params is an object.</p>
 <p>you can check details <a href="../rest-api">here</a></p>
-<h3 id="example-share-query">Example Share query</h3>
+<h3 id="format-response">Format response:</h3>
+<p>you can use two methods to controll/format the response.</p>
+<ul>
+<li><code>shareFormat</code>: this should be a <em>sync</em> function to format in the same way as the map function but it receives the collection as a second parameter.</li>
+<li><code>beforeShareEnd</code>: this a express middleware that run before send the response, here you can do any sync process that you want. The formated response is in the <code>req.shareResponse</code> object. Remember to run <code>next()</code> doing that you want.</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<h4 id="api-build">API build:</h4>
+<pre><code class="javascript">'use strict';
+const hiroki = require('../../index');
+const models = require('./models');
+const decorators = require('./decorators');
+
+function buildHiroki() {
+    Object.keys(models).forEach((modelName) =&gt; {
+        const options = modelName === 'Draws' ? {fastUpdate: 'enabled'} : {shareQueryEnabled:true};
+        const controller = hiroki.rest(models[modelName], options);
+        if (decorators.hasOwnProperty(modelName)) {
+            decorators[modelName](controller);
+        }
+    });
+    hiroki.shareFormat = (doc, collection) =&gt; {
+        if(collection === 'books') {
+            doc.book = true;
+        }
+        return doc;
+    };
+    hiroki.beforeShareEnd = (req, res, next) =&gt; {
+        req.shareResponse.fakeCollection = [1];
+        next();
+    };
+    return hiroki.build();
+}
+
+module.exports = buildHiroki;
+
+</code></pre>
+
+<h4 id="example-request">Example Request</h4>
 <p><code>GET '/api/share/{"books":{},"users":{"conditions":{"_id":"5c01997482c8985ad9a7eb5c"}}}'</code></p>
 <h4 id="response">Response</h4>
 <pre><code>{
@@ -225,10 +250,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../update-documents/" class="btn btn-neutral float-right" title="Update documents">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../extending-hiroki/decorators/" class="btn btn-neutral float-right" title="Extending Hiroki">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../rest-api/" class="btn btn-neutral" title="Query string parameters"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../detailed-documentation/" class="btn btn-neutral" title="Detailed documentation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -256,10 +281,10 @@
           <a href="https://github.com/ivanhuay/hiroki/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../rest-api/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../detailed-documentation/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../update-documents/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../extending-hiroki/decorators/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

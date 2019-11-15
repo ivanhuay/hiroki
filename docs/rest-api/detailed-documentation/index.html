@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Query string parameters - Hiroki</title>
+  <title>Detailed documentation - Hiroki</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -17,8 +17,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Query string parameters";
-    var mkdocs_page_input_path = "rest-api/rest-api.md";
+    var mkdocs_page_name = "Detailed documentation";
+    var mkdocs_page_input_path = "rest-api/detailed-documentation.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -57,37 +57,15 @@
           
             <li class="toctree-l1">
 		
-    <span class="caption-text">Basic tutorial</span>
+    <span class="caption-text">Getting started</span>
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../../basic-tutorial/rest-api/">First REST api with hiroki</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">Configuration</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../configuration/configuration/">Custom configuration</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">Extending hiroki</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../extending-hiroki/decorators/">Extending Hiroki</a>
+    <a class="" href="../../getting-started/">First API with hiroki</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../extending-hiroki/overview/">Controller Object</a>
+    <a class="" href="../../getting-started/configuration/">Configuration</a>
                 </li>
     </ul>
 	    </li>
@@ -98,32 +76,42 @@
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../rest-api-delete/">Requests</a>
+    <a class="" href="../">Rest Api methods</a>
                 </li>
                 <li class=" current">
                     
-    <a class="current" href="./">Query string parameters</a>
+    <a class="current" href="./">Detailed documentation</a>
     <ul class="subnav">
             
-    <li class="toctree-l3"><a href="#query-string-parameters">Query string parameters</a></li>
+    <li class="toctree-l3"><a href="#detailed-documentation">Detailed documentation</a></li>
     
         <ul>
         
-            <li><a class="toctree-l4" href="#conditions">conditions</a></li>
+            <li><a class="toctree-l4" href="#query-string-parameters">Query string parameters</a></li>
         
-            <li><a class="toctree-l4" href="#skip">skip</a></li>
+        </ul>
+    
+
+    <li class="toctree-l3"><a href="#requests">Requests</a></li>
+    
+        <ul>
         
-            <li><a class="toctree-l4" href="#limit">limit</a></li>
+            <li><a class="toctree-l4" href="#update-using-put">Update using PUT</a></li>
         
-            <li><a class="toctree-l4" href="#sort">sort</a></li>
+            <li><a class="toctree-l4" href="#delete-document">Delete document</a></li>
         
-            <li><a class="toctree-l4" href="#select">select</a></li>
+        </ul>
+    
+
+    <li class="toctree-l3"><a href="#update-documents">Update documents</a></li>
+    
+        <ul>
         
-            <li><a class="toctree-l4" href="#populate">populate</a></li>
+            <li><a class="toctree-l4" href="#basic-put-request">Basic Put Request</a></li>
         
-            <li><a class="toctree-l4" href="#count">count</a></li>
+            <li><a class="toctree-l4" href="#update-using-conditions">Update Using conditions</a></li>
         
-            <li><a class="toctree-l4" href="#distinct">distinct</a></li>
+            <li><a class="toctree-l4" href="#the-pull-and-push-param">The $pull and $push param</a></li>
         
         </ul>
     
@@ -132,22 +120,21 @@
                 </li>
                 <li class="">
                     
-    <a class="" href="../share-query/">Share query</a>
+    <a class="" href="../get-multiple-collections-in-one/">Get multiple collections in one request using `share` route.</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../update-documents/">Update documents</a>
+    <span class="caption-text">Extending hiroki</span>
+    <ul class="subnav">
+                <li class="toctree-l3">
+                    
+    <a class="" href="../extending-hiroki/decorators/">Extending Hiroki</a>
+                </li>
+                <li class="toctree-l3">
+                    
+    <a class="" href="../extending-hiroki/overview/">Controller Object</a>
                 </li>
     </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">Shared queries</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../../shared-queries/shared-queries/">Shared Queries</a>
                 </li>
     </ul>
 	    </li>
@@ -178,10 +165,10 @@
         
       
     
-    <li>Query string parameters</li>
+    <li>Detailed documentation</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/ivanhuay/hiroki/edit/master/docs/rest-api/rest-api.md"
+        <a href="https://github.com/ivanhuay/hiroki/edit/master/docs/rest-api/detailed-documentation.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -191,7 +178,8 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="query-string-parameters">Query string parameters</h1>
+                <h1 id="detailed-documentation">Detailed documentation</h1>
+<h2 id="query-string-parameters">Query string parameters</h2>
 <p>Use query options from the client to make dynamic requests.  Query options can be mixed as you see fit.</p>
 <h3 id="conditions">conditions</h3>
 <p>Set the Mongoose query's <code>find</code> or <code>remove</code> arguments.  This can take full advtange of the MongoDB query syntax, using geolocation, regular expressions, or full text search.  Special query operators are fine, and in fact geolocation, regular expression, and full text search capabilities are available to your API clients by default!</p>
@@ -215,8 +203,9 @@ DELETE /api/people?conditions={ "name": { "$regex": "^Bob W", "$options": "i" } 
 </code></pre>
 <h3 id="select">select</h3>
 <p>Set which fields should be selected for response documents.</p>
-<pre><code>GET /api/phones?select=-_id -year
+<pre><code>    GET /api/phones?select=-_id -year
 </code></pre>
+
 <p>It is not permitted to use the <code>select</code> query option to select deselected paths.  This is to allow a mechanism for hiding fields from client software.</p>
 <p>You can deselect paths in the Mongoose schema definition using <code>select: false</code> or in the controller by calling e.g. <code>controller.select('-foo')</code>.  Your server middleware will be able to select these fields as usual using <code>query.select</code>, while preventing the client from selecting the field.</p>
 <p>Note that mixing inluding and excluding fields causes an error.</p>
@@ -235,6 +224,74 @@ GET /api/cities?populate={ "path": "captain", "match": { "age": "44" } }
 <pre><code>GET /api/restaurants?distinct=category
 </code></pre>
 <p>this documentation is based on <a href="https://github.com/wprl/baucis/wiki/Query-String-Parameters">baucis wiki</a></p>
+<h1 id="requests">Requests</h1>
+<h2 id="update-using-put">Update using PUT</h2>
+<p>to update documents there are two options using PUT request.</p>
+<ul>
+<li>PUT /api/:collection/:id</li>
+<li>PUT /api/:collection?conditions[example]=true
+and Body object</li>
+</ul>
+<p>it can be updated using the id as a parameter or by sending the conditions object. In both cases, only one document is updated</p>
+<h4 id="example">Example:</h4>
+<pre><code>PUT /api/books?conditions={&quot;title&quot;:&quot;El juguete rabioso&quot;}
+PUT /api/books/5c5303574ffead2c606d773b
+
+#Body:
+{
+    author: 'Roberto Arlt'
+}
+</code></pre>
+
+<h2 id="delete-document">Delete document</h2>
+<p>it is possible to delete a document using a request DELETE with the id as a parameter</p>
+<pre><code>DELETE /api/books/5c5303574ffead2c606d773b
+</code></pre>
+
+<h1 id="update-documents">Update documents</h1>
+<p>For make an update we use the <code>PUT</code> method</p>
+<h2 id="basic-put-request">Basic Put Request</h2>
+<p>This request will update a particular document</p>
+<pre><code>PUT /api/books/:id
+Body:
+{
+  title: 'new title',
+  tags: ['new tags']
+}
+</code></pre>
+
+<h2 id="update-using-conditions">Update Using conditions</h2>
+<p>Also you can update documents using a <code>condition</code> filter as a query param.</p>
+<pre><code>PUT /api/books/?conditions={&quot;tag&quot;:&quot;asd&quot;}
+Body:
+{
+  title: 'new title',
+  tags: ['new tags']
+}
+</code></pre>
+
+<p>This will update all documents that satisfy the conditions filter.</p>
+<h2 id="the-pull-and-push-param">The $pull and $push param</h2>
+<p>You can these params for append or remove an element from an array.</p>
+<pre><code>PUT /api/books/?conditions={&quot;tag&quot;:&quot;asd&quot;}
+Body:
+{
+  title: 'new title',
+  tags: {$push:['new tags']}
+}
+</code></pre>
+
+<p>this will add the new tag to the previous list of tags.</p>
+<p>if you want to remove an element from an array you can use the $pull param.</p>
+<pre><code>PUT /api/books/?conditions={&quot;tag&quot;:&quot;asd&quot;}
+Body:
+{
+  title: 'new title',
+  tags: {$pull:['asd']}
+}
+</code></pre>
+
+<p>this will remove the <code>asd</code> tag from the existing list.</p>
               
             </div>
           </div>
@@ -242,10 +299,10 @@ GET /api/cities?populate={ "path": "captain", "match": { "age": "44" } }
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../share-query/" class="btn btn-neutral float-right" title="Share query">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../get-multiple-collections-in-one/" class="btn btn-neutral float-right" title="Get multiple collections in one request using `share` route.">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../rest-api-delete/" class="btn btn-neutral" title="Requests"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../" class="btn btn-neutral" title="Rest Api methods"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -273,10 +330,10 @@ GET /api/cities?populate={ "path": "captain", "match": { "age": "44" } }
           <a href="https://github.com/ivanhuay/hiroki/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../rest-api-delete/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../share-query/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../get-multiple-collections-in-one/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
