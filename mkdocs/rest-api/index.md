@@ -41,7 +41,7 @@ Response:
 
 #### Conditions
 
-`Consitions` paramer is like mongoose `find` parameter but you always should use the stringified version.
+`Conditions` paramer is like mongoose `find` parameter but you always should use the stringified version.
 
 * Basic Example
 ```
