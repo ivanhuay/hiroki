@@ -63,13 +63,15 @@ Same as mongoose `skip`
 ```
     GET /api/horses?skip=3
 ```
-returns only 3 documents.
+skip the first 3 documents.
 
 #### Limit
 
 Same as mongoose `limit`.
-
+```
     GET /api/horses?limit=3
+```
+get only 3 documents.
 
 #### Sort
 
