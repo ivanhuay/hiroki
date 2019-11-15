@@ -201,7 +201,7 @@
 
 <h3 id="query-filtering">Query filtering:</h3>
 <h4 id="conditions">Conditions</h4>
-<p><code>Consitions</code> paramer is like mongoose <code>find</code> parameter but you always should use the stringified version.</p>
+<p><code>Conditions</code> paramer is like mongoose <code>find</code> parameter but you always should use the stringified version.</p>
 <ul>
 <li>Basic Example</li>
 </ul>
@@ -225,11 +225,13 @@
 <pre><code>    GET /api/horses?skip=3
 </code></pre>
 
-<p>returns only 3 documents.</p>
+<p>skip the first 3 documents.</p>
 <h4 id="limit">Limit</h4>
 <p>Same as mongoose <code>limit</code>.</p>
-<pre><code>GET /api/horses?limit=3
+<pre><code>    GET /api/horses?limit=3
 </code></pre>
+
+<p>get only 3 documents.</p>
 <h4 id="sort">Sort</h4>
 <p>Similar to mongoose <code>sort</code>.</p>
 <p>this example sort by name / decreasing age</p>
