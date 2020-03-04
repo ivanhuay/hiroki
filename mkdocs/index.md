@@ -9,7 +9,7 @@ mkdir hello-hiroki
 cd hello-hiroki
 ```
 
-* Now we have to create a `packege.json` file.
+* Now we have to create a `package.json` file.
 ```
 npm init -y
 ```
