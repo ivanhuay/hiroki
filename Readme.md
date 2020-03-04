@@ -10,7 +10,7 @@ hiroki is written in ES6 standards.
 
 read the [documentation here](https://ivanhuay.github.io/hiroki/).
 ### Getting Started
-Step by step example [HERE](https://ivanhuay.github.io/hiroki/getting-started/).
+Step by step example [HERE](https://ivanhuay.github.io/hiroki/).
 
 
 To install:
