@@ -10,12 +10,17 @@ hiroki is written in ES6 standards.
 
 read the [documentation here](https://ivanhuay.github.io/hiroki/).
 ### Getting Started
+Step by step example [HERE](https://ivanhuay.github.io/hiroki/getting-started/).
+
+
 To install:
 ```
 npm install --save hiroki
 ```
 
 Create simple rest api:
+
+this is a basic example, keep in mind you may need body-parser library.
 ```javascript
 const express = require('express');
 const hiroki = require('hiroki');

@@ -4,8 +4,18 @@ docs_dir: mkdocs
 site_dir: docs
 repo_url: https://github.com/ivanhuay/hiroki
 google_analitycs: ['UA-141670070-1','https://ivanhuay.github.io/hiroki/']
+nav:
+    - 'index.md'
+    - 'rest-api':
+      - 'rest-api/index.md'
+      - 'rest-api/detailed-documentation.md'
+      - 'rest-api/one-request.md'
+    - 'extending-hiroki':
+      - 'extending-hiroki/decorators.md'
+      - 'extending-hiroki/configuration.md'
+      - 'extending-hiroki/overview.md'
 theme:
-    name: readthedocs
+    name: material
     highlightjs: true
     hljs_languages:
         - yaml

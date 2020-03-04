@@ -33,21 +33,21 @@
       
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
-      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
     
     
       
-        <title>Usage, methods & parameters - Hiroki</title>
+        <title>One request multiple query using **share** route. - Hiroki</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/application.adb8469c.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
       
       
     
     
-      <script src="../assets/javascripts/modernizr.86422ebf.js"></script>
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
     
     
       
@@ -56,7 +56,7 @@
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
-    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
     
     
     
@@ -79,7 +79,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#usage-methods-parameters" tabindex="0" class="md-skip">
+      <a href="#one-request-multiple-query-using-share-route" tabindex="0" class="md-skip">
         Skip to content
       </a>
     
@@ -88,7 +88,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href=".." title="Hiroki" aria-label="Hiroki" class="md-header-nav__button md-logo">
+        <a href="../.." title="Hiroki" aria-label="Hiroki" class="md-header-nav__button md-logo">
           
             <i class="md-icon"></i>
           
@@ -105,7 +105,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Usage, methods & parameters
+                One request multiple query using **share** route.
               
             </span>
           
@@ -180,7 +180,7 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href=".." title="Hiroki" class="md-nav__button md-logo">
+    <a href="../.." title="Hiroki" class="md-nav__button md-logo">
       
         <i class="md-icon"></i>
       
@@ -216,7 +216,7 @@
 
 
   <li class="md-nav__item">
-    <a href=".." title="Getting started with hiroki" class="md-nav__link">
+    <a href="../.." title="Getting started with hiroki" class="md-nav__link">
       Getting started with hiroki
     </a>
   </li>
@@ -247,6 +247,30 @@
           
           
 
+
+  <li class="md-nav__item">
+    <a href="../" title="Usage, methods & parameters" class="md-nav__link">
+      Usage, methods & parameters
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../detailed-documentation/" title="Detailed documentation" class="md-nav__link">
+      Detailed documentation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
   
 
 
@@ -258,11 +282,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Usage, methods & parameters
+        One request multiple query using **share** route.
       </label>
     
-    <a href="./" title="Usage, methods & parameters" class="md-nav__link md-nav__link--active">
-      Usage, methods & parameters
+    <a href="./" title="One request multiple query using **share** route." class="md-nav__link md-nav__link--active">
+      One request multiple query using **share** route.
     </a>
     
       
@@ -276,139 +300,57 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#get" class="md-nav__link">
-    GET
+  <a href="#configuration" class="md-nav__link">
+    Configuration:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-details" class="md-nav__link">
+    Usage Details:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#format-response" class="md-nav__link">
+    Format response:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#basic-request" class="md-nav__link">
-    Basic request:
+  <a href="#api-build" class="md-nav__link">
+    API build:
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#query-filtering" class="md-nav__link">
-    Query filtering:
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#conditions" class="md-nav__link">
-    Conditions
+  <a href="#example-request" class="md-nav__link">
+    Example Request
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#skip" class="md-nav__link">
-    Skip
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#limit" class="md-nav__link">
-    Limit
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sort" class="md-nav__link">
-    Sort
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#select" class="md-nav__link">
-    Select
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#populate" class="md-nav__link">
-    Populate
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#count" class="md-nav__link">
-    Count
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#distinct" class="md-nav__link">
-    Distinct
+  <a href="#response" class="md-nav__link">
+    Response
   </a>
   
 </li>
         
       </ul>
     </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#post" class="md-nav__link">
-    POST
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#put" class="md-nav__link">
-    PUT
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#basic" class="md-nav__link">
-    Basic:
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#update-with-conditions" class="md-nav__link">
-    Update with conditions:
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#the-pull-and-push-param" class="md-nav__link">
-    The $pull and $push param:
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#delete" class="md-nav__link">
-    DELETE
-  </a>
   
 </li>
       
@@ -420,30 +362,6 @@
   
 </nav>
     
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="detailed-documentation/" title="Detailed documentation" class="md-nav__link">
-      Detailed documentation
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="one-request/" title="One request multiple query using **share** route." class="md-nav__link">
-      One request multiple query using **share** route.
-    </a>
   </li>
 
         
@@ -477,7 +395,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../extending-hiroki/decorators/" title="Extending Hiroki" class="md-nav__link">
+    <a href="../../extending-hiroki/decorators/" title="Extending Hiroki" class="md-nav__link">
       Extending Hiroki
     </a>
   </li>
@@ -489,7 +407,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../extending-hiroki/configuration/" title="Configuration" class="md-nav__link">
+    <a href="../../extending-hiroki/configuration/" title="Configuration" class="md-nav__link">
       Configuration
     </a>
   </li>
@@ -501,7 +419,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../extending-hiroki/overview/" title="Controller Object" class="md-nav__link">
+    <a href="../../extending-hiroki/overview/" title="Controller Object" class="md-nav__link">
       Controller Object
     </a>
   </li>
@@ -533,139 +451,57 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#get" class="md-nav__link">
-    GET
+  <a href="#configuration" class="md-nav__link">
+    Configuration:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-details" class="md-nav__link">
+    Usage Details:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#format-response" class="md-nav__link">
+    Format response:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#basic-request" class="md-nav__link">
-    Basic request:
+  <a href="#api-build" class="md-nav__link">
+    API build:
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#query-filtering" class="md-nav__link">
-    Query filtering:
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#conditions" class="md-nav__link">
-    Conditions
+  <a href="#example-request" class="md-nav__link">
+    Example Request
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#skip" class="md-nav__link">
-    Skip
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#limit" class="md-nav__link">
-    Limit
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sort" class="md-nav__link">
-    Sort
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#select" class="md-nav__link">
-    Select
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#populate" class="md-nav__link">
-    Populate
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#count" class="md-nav__link">
-    Count
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#distinct" class="md-nav__link">
-    Distinct
+  <a href="#response" class="md-nav__link">
+    Response
   </a>
   
 </li>
         
       </ul>
     </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#post" class="md-nav__link">
-    POST
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#put" class="md-nav__link">
-    PUT
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#basic" class="md-nav__link">
-    Basic:
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#update-with-conditions" class="md-nav__link">
-    Update with conditions:
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#the-pull-and-push-param" class="md-nav__link">
-    The $pull and $push param:
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#delete" class="md-nav__link">
-    DELETE
-  </a>
   
 </li>
       
@@ -685,212 +521,92 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/ivanhuay/hiroki/edit/master/docs/rest-api/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/ivanhuay/hiroki/edit/master/docs/rest-api/one-request.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="usage-methods-parameters">Usage, methods &amp; parameters</h1>
-<h2 id="get">GET</h2>
-<p>get list of resources or a particular resource using filter or ids.</p>
-<h3 id="basic-request">Basic request:</h3>
-<ul>
-<li>Basic</li>
-</ul>
-<pre><code>GET /api/books
-</code></pre>
-
-<p>Response:</p>
-<pre><code class="json">[
-  {
-    &quot;id&quot;:&quot;5d234073a00ebf1921a9225a&quot;,
-    &quot;title&quot;:&quot;Example&quot;,
-    &quot;createdAt&quot; : ISODate(&quot;2019-07-08T13:09:07.346Z&quot;),
-       &quot;updatedAt&quot; : ISODate(&quot;2019-07-08T18:26:01.800Z&quot;),
-  },
-  {
-    &quot;id&quot;:&quot;5d234073a00ebf1921a9225b&quot;,
-    &quot;title&quot;:&quot;Example 2&quot;,
-    &quot;createdAt&quot; : ISODate(&quot;2019-07-08T13:02:07.346Z&quot;),
-     &quot;updatedAt&quot; : ISODate(&quot;2019-07-08T18:28:01.800Z&quot;),
-  },
-  ...
-]
-</code></pre>
-
-<ul>
-<li>By Id</li>
-</ul>
-<pre><code>GET /api/books/5d234073a00ebf1921a9225a
-</code></pre>
-
-<pre><code class="json">{
-  &quot;id&quot;:&quot;5d234073a00ebf1921a9225a&quot;,
-  &quot;title&quot;:&quot;Example&quot;,
-  &quot;createdAt&quot; : ISODate(&quot;2019-07-08T13:09:07.346Z&quot;),
-   &quot;updatedAt&quot; : ISODate(&quot;2019-07-08T18:26:01.800Z&quot;),
+                <h1 id="one-request-multiple-query-using-share-route">One request multiple query using <strong>share</strong> route.</h1>
+<p>This feature is available since v0.2.0</p>
+<p>now we have a new path <code>/api/share/:shareCondition</code>.</p>
+<h3 id="configuration">Configuration:</h3>
+<p>you can use multiple queries in only one request using the <code>shareQueryEnabled</code> configuration for the controllers that you want enabled.</p>
+<p>Also check the <a href="../getting-started/configuration.md">configuration page</a>.</p>
+<h3 id="usage-details">Usage Details:</h3>
+<p><code>:shareCondition</code> is a stringify object with this format:</p>
+<pre><code>{
+    modelName:{ params }
 }
 </code></pre>
 
-<h3 id="query-filtering">Query filtering:</h3>
-<h4 id="conditions">Conditions</h4>
-<p><code>Conditions</code> paramer is like mongoose <code>find</code> parameter but you always should use the stringified version.</p>
-<ul>
-<li>Basic Example</li>
-</ul>
-<pre><code>    GET /api/books?conditions={ &quot;title&quot;: &quot;Example1&quot; }
-</code></pre>
-
-<ul>
-<li>Using mongoose <code>$near</code></li>
-</ul>
-<pre><code>    GET /api/people?conditions={ &quot;location&quot;: { &quot;$near&quot;: [44, -97] } }
-</code></pre>
-
-<ul>
-<li>Using mongoose <code>$search</code></li>
-</ul>
-<pre><code>    GET /api/people?conditions={ &quot;$text&quot;: { &quot;$search&quot;: &quot;dog bites man&quot; } }
-</code></pre>
-
-<h4 id="skip">Skip</h4>
-<p>Same as mongoose <code>skip</code></p>
-<pre><code>    GET /api/horses?skip=3
-</code></pre>
-
-<p>skip the first 3 documents.</p>
-<h4 id="limit">Limit</h4>
-<p>Same as mongoose <code>limit</code>.</p>
-<pre><code>    GET /api/horses?limit=3
-</code></pre>
-
-<p>get only 3 documents.</p>
-<h4 id="sort">Sort</h4>
-<p>Similar to mongoose <code>sort</code>.</p>
-<p>this example sort by name / decreasing age</p>
-<pre><code>    GET /api/cheeses?sort=name -age
-</code></pre>
-
-<h4 id="select">Select</h4>
-<p>Similar to mongoose <code>select</code>. It is a string space separated. Also you can use <code>-[String]</code> to not select some field.</p>
-<ul>
-<li>Basic Example</li>
-</ul>
-<pre><code>    GET /api/phones?select=name
-</code></pre>
-
-<ul>
-<li>Negative select</li>
-</ul>
-<pre><code>    GET /api/phones?select=-_id -year
-</code></pre>
-
-<p>this show all the document except <code>_id</code> &amp; <code>year</code>.</p>
-<h4 id="populate">Populate</h4>
-<p>Same as mongoose populate.</p>
-<ul>
-<li>Basic Example:</li>
-</ul>
-<pre><code>    GET /api/boats?populate=captain
-</code></pre>
-
-<ul>
-<li>Using match</li>
-</ul>
-<pre><code>    GET /api/cities?populate={ &quot;path&quot;: &quot;captain&quot;, &quot;match&quot;: { &quot;age&quot;: &quot;44&quot; } }
-</code></pre>
-
-<p><em>The <code>select</code> option of <code>populated</code> documents is disallowed.</em></p>
-<h4 id="count">Count</h4>
-<p>Same as mongoose <code>count</code>.</p>
-<ul>
-<li>Basic:</li>
-</ul>
-<pre><code>    GET /api/stereos?count=true
-</code></pre>
-
-<ul>
-<li>Using conditions:</li>
-</ul>
-<pre><code>    GET /api/stereos?count=true&amp;conditions={&quot;age&quot;:{&quot;$gt&quot;:2}}
-</code></pre>
-
-<h4 id="distinct">Distinct</h4>
-<p>Same as mongoose <code>distinct</code>:</p>
-<pre><code>    GET /api/restaurants?distinct=category
-</code></pre>
-
-<p><a href="./rest-api">Detailed version of this document.</a></p>
-<h2 id="post">POST</h2>
-<p>this option is to create documents.</p>
-<ul>
-<li>Basic:</li>
-</ul>
-<pre><code>POST /api/birds
-body:
-{
-  &quot;name&quot;: &quot;poli&quot;,
-  &quot;age&quot;:3
+<p>the <code>params</code> object is like the tradicional params.</p>
+<p><code>params</code>:</p>
+<pre><code>{
+  limit: ...
+  select: ...
+  count: ...
+  skip: ...
+  conditions: ...
 }
 </code></pre>
 
-<p>No mistery here. If the document is created you will receive a 200 status with the document.</p>
-<h2 id="put">PUT</h2>
-<p>Updating documents.</p>
-<h3 id="basic">Basic:</h3>
-<p>This request will update a particular document.</p>
-<pre><code>PUT /api/books/:id
-Body:
-{
-  title: 'new title',
-  tags: ['new tags']
-}
-</code></pre>
-
-<h3 id="update-with-conditions">Update with conditions:</h3>
-<p>Also you can update documents using a <code>condition</code> filter as a query param.</p>
-<pre><code>PUT /api/books/?conditions={&quot;tag&quot;:&quot;asd&quot;}
-Body:
-{
-  title: 'new title',
-  tags: ['new tags']
-}
-</code></pre>
-
-<p>This will update all documents that satisfy the conditions filter.</p>
-<h3 id="the-pull-and-push-param">The <code>$pull</code> and <code>$push</code> param:</h3>
-<p>Append or remove an element from an array.</p>
+<p>now instead of query params is an object.</p>
+<p>you can check details <a href="../rest-api">here</a></p>
+<h3 id="format-response">Format response:</h3>
+<p>you can use two methods to controll/format the response.</p>
 <ul>
-<li>$push:</li>
+<li><code>shareFormat</code>: this should be a <em>sync</em> function to format in the same way as the map function but it receives the collection as a second parameter.</li>
+<li><code>beforeShareEnd</code>: this a express middleware that run before send the response, here you can do any sync process that you want. The formated response is in the <code>req.shareResponse</code> object. Remember to run <code>next()</code> doing that you want.</li>
 </ul>
-<pre><code>PUT /api/books/?conditions={&quot;tag&quot;:&quot;asd&quot;}
-Body:
-{
-  title: 'new title',
-  tags: {$push:['new tags']}
+<h2 id="examples">Examples</h2>
+<h4 id="api-build">API build:</h4>
+<pre><code class="javascript">'use strict';
+const hiroki = require('../../index');
+const models = require('./models');
+const decorators = require('./decorators');
+
+function buildHiroki() {
+    Object.keys(models).forEach((modelName) =&gt; {
+        const options = modelName === 'Draws' ? {fastUpdate: 'enabled'} : {shareQueryEnabled:true};
+        const controller = hiroki.rest(models[modelName], options);
+        if (decorators.hasOwnProperty(modelName)) {
+            decorators[modelName](controller);
+        }
+    });
+    hiroki.shareFormat = (doc, collection) =&gt; {
+        if(collection === 'books') {
+            doc.book = true;
+        }
+        return doc;
+    };
+    hiroki.beforeShareEnd = (req, res, next) =&gt; {
+        req.shareResponse.fakeCollection = [1];
+        next();
+    };
+    return hiroki.build();
+}
+
+module.exports = buildHiroki;
+
+</code></pre>
+
+<h4 id="example-request">Example Request</h4>
+<p><code>GET '/api/share/{"books":{},"users":{"conditions":{"_id":"5c01997482c8985ad9a7eb5c"}}}'</code></p>
+<h4 id="response">Response</h4>
+<pre><code>{
+  users:
+   [ { role: [],
+       books: [],
+       _id: '5c01997482c8985ad9a7eb5b',
+       name: 'test user',
+       email: 'test@lts.com',
+       __v: 0 } ],
+  books:
+   [ { tag: [Array],
+       _id: '5cfa87a6615ab0eb6fed5cf6',
+       title: 'first book',
+       tagCount: 1,
+       __v: 0 } ]
 }
 </code></pre>
-
-<p>This will add the new tag to the previous list of tags.</p>
-<ul>
-<li>$pull:
-if you want to remove an element from an array you can use the <code>$pull</code> param.</li>
-</ul>
-<pre><code>PUT /api/books/?conditions={&quot;tag&quot;:&quot;asd&quot;}
-Body:
-{
-  title: 'new title',
-  tags: {$pull:['asd']}
-}
-</code></pre>
-
-<p>This will remove the <code>asd</code> tag from the existing list.</p>
-<h2 id="delete">DELETE</h2>
-<p><strong>DANGER HERE</strong></p>
-<p>It's possible to delete a document using a request DELETE with the id as a parameter.</p>
-<pre><code>DELETE /api/books/5c5303574ffead2c606d773b
-</code></pre>
-
-<p>Response: status 200 &amp; deleted document.</p>
-<p>Personally i recommend use decorators to validate all delete request.</p>
                 
                   
                 
@@ -912,7 +628,7 @@ Body:
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href=".." title="Getting started with hiroki" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../detailed-documentation/" title="Detailed documentation" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -921,19 +637,19 @@ Body:
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Getting started with hiroki
+                Detailed documentation
               </span>
             </div>
           </a>
         
         
-          <a href="detailed-documentation/" title="Detailed documentation" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../../extending-hiroki/decorators/" title="Extending Hiroki" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Detailed documentation
+                Extending Hiroki
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
@@ -961,9 +677,9 @@ Body:
       
     </div>
     
-      <script src="../assets/javascripts/application.c33a9706.js"></script>
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
       
-      <script>app.initialize({version:"1.1",url:{base:".."}})</script>
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
       
     
   </body>

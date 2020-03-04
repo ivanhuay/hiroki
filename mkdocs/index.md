@@ -1,63 +1,167 @@
-# Hiroki
+# Getting started with hiroki
+In this tutorial we are going to build our first rest API using hiroki. Some things in this tutorial aren't the best practice but this is to keep the example simpler as possible.
 
- build REST APIs faster than ever using the open source tools and standards you and your team already know.
+## Setup
 
-hiroki is an open source tool inspired by [baucis](https://github.com/wprl/baucis).
-
-hiroki is fully compatible with mongoose 4 and 5.
-
-hiroki is written in ES6 standards.
-
-read the [documentation here](https://ivanhuay.github.io/hiroki/).
-### Getting Started
-To install:
+* First we must create a project folder.
 ```
-npm install --save hiroki
+mkdir hello-hiroki
+cd hello-hiroki
 ```
 
-Create simple rest api:
+* Now we have to create a `packege.json` file.
+```
+npm init -y
+```
+
+* Install dependencies.
+```
+npm i --save express mongoose body-parser hiroki
+```
+
+## Project folders
+* Create a model folder.
+```
+mkdir models
+```
+in this folder we have to create our models.
+
+## Create the first model
+create a model file `(models/book.js)` in models folder.
+
+* `models/book.js`
+
+```javascript
+const mongoose = require('mongoose');
+
+const Book = new mongoose.Schema({
+  title: String,
+  description: String
+});
+
+module.exports = mongoose.model('Book', Book);
+```
+
+Create a index file for models.
+
+`models/index.js`
+```javascript
+const Book = require('./book');
+
+module.exports = {
+  Book
+}
+```
+## The server file
+Create a file `app.js`.
+
+#### step by step:
+* Import dependencies:
 ```javascript
 const express = require('express');
+const mongoose = require('mongoose');
+const models = require('./models');
+const bodyParser = require('body-parser');
+const hiroki = require('hiroki');
+```
+* Create the express app and use body-parser.
+```javascript
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+```
+* Connect to mongo:
+```javascript
+mongoose.connect('mongodb://localhost:27017/test')
+  .then(()=>{
+    console.log('connection succes!');
+  })
+```
+* Build the rest api:
+```javascript
+Object.keys(models).forEach((model)=>{
+  hiroki.rest(model);
+})
+app.use(hiroki.build());
+```
+* Handle errors:
+```javascript
+app.use(function(req, res, next) {
+    let err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+app.use(function(error, req, res, next) {
+    console.error('handleError: ', error);
+    return res.status(error.status || 500).json({
+        status: error.status,
+        error: error.message,
+        stack: error.stack
+    });
+});
+```
+* The end: add the app listen
+```javascript
+app.listen(3030);
+console.log('server listening on port 3030...');
+```
+
+#### File app.js:
+This is the complete file.
+
+```javascript
+const express = require('express');
+const mongoose = require('mongoose');
+const models = require('./models');
+const bodyParser = require('body-parser');
 const hiroki = require('hiroki');
 const app = express();
-const UsersSchema = new mongoose.Schema({name: String});
-mongoose.model('Users', UsersSchema);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
-hiroki.rest('Users');//enable GET,PUT,POST & DELETE methods
+mongoose.connect('mongodb://localhost:27017/test')
+  .then(()=>{
+    console.log('connection succes!');
+  })
 
-app.use(hiroki.build());//automatically use the route "/api"
-app.listen(8012);
-```
-### Build config:
-
-it is possible to change the route that hiroki uses
-```javascript
-const config = {path:'/api/v1'};
-app.use(hiroki.build(config));
-
-```
-### Changelog
-* v0.2.5 `fastUpdate` option added. This enabled a faster way to update for higher performance.
-* v0.2.3 **Critical bugfix:** decorator error with delete method. Test added for cover that.
-* v0.2.2 Params `$push` and `$pull` working for PUT method. For doing this a custom Assign method was added to hiroki, because of that we made a benchmark test to measure this performance impact. Check it [Here](https://github.com/ivanhuay/micron-object-assign).
-* v0.2.0 Share Query path added. [check the docs](https://ivanhuay.github.io/hiroki/rest-api/share-query/).
-* v0.1.3 MongooseConnector added, dependencies update no breaking changes. In future releases, new connectors would be added.
-* v0.1.2 Bugfix decorator for put route with :id as parameter
-* v0.1.1: Bugfix count with conditions error.
-* v0.1.0:
-  * PUT request fire pre save hook in Mongoose Schema.
-  * PUT update by condition only update one document.
-  * findOneAndUpdate method removed from PUT request.
-* v0.0.9: Add support for new conditions format.
-```
-ej: GET /api/users?conditions[active]=true
-```
-* v0.0.8: fix general request function affect all routes.
-This type of decorators affected all the routes.
-```javascript
-...
-controller.request((req,res,next) => {
-  res.status(401).json({});
+Object.keys(models).forEach((model)=>{
+  hiroki.rest(model);
 })
+app.use(hiroki.build());
+
+
+app.use(function(req, res, next) {
+    let err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+app.use(function(error, req, res, next) {
+    console.error('handleError: ', error);
+    return res.status(error.status || 500).json({
+        status: error.status,
+        error: error.message,
+        stack: error.stack
+    });
+});
+
+
+app.listen(3030);
+console.log('server listening on port 3030...');
 ```
-now it only affects the route of that collection
+
+## Start application
+```
+node app.js
+```
+now you can open `http://localhost:3030/api/books`.
+
+have fun!
+
+### Remember:
+* GET: get documents.
+* POST: create one document.
+* PUT: update one document.
+* DELETE: remove one document.
+
+### Source code:
+[HERE](https://github.com/ivanhuay/hiroki-basic-example)

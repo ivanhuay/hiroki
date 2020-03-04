@@ -1,4 +1,4 @@
-# Rest Api methods
+# Usage, methods & parameters
 
 ## GET
 get list of resources or a particular resource using filter or ids.
@@ -28,6 +28,9 @@ Response:
 ]
 ```
 * By Id
+```
+GET /api/books/5d234073a00ebf1921a9225a
+```
 ```json
 {
   "id":"5d234073a00ebf1921a9225a",
