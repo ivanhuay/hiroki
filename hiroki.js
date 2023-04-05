@@ -11,7 +11,7 @@ class Hiroki {
         this.controllers = {};
         this._outgoingShareFormat = false;
         this._beforeShareEnd = false;
-        this._router = express.Router();
+        this._router = express.Router()
         this._beforeShareEnd = (req, res, next) => {
             next();
         };

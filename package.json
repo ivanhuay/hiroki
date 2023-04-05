@@ -1,6 +1,6 @@
 {
   "name": "hiroki",
-  "version": "0.2.9",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -21,15 +21,16 @@
     "web": "https://github.com/ivanhuay/hiroki"
   },
   "devDependencies": {
+    "chai-as-promised": "^7.1.1",
     "eslint": "^5.16.0",
     "expect.js": "^0.3.1",
-    "mocha": "^5.2.0",
+    "mocha": "^10.2.0",
     "supertest": "^3.3.0"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "mongoose": ">=5.7.5",
+    "mongoose": "^7.0.3",
     "pluralize": "^8.0.0"
   }
 }

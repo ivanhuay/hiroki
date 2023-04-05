@@ -1,11 +1,18 @@
 'use strict';
 const request = require('supertest');
-const assert = require('assert');
 const app = require('./mock/app');
 const Users = require('./mock/models/users');
 const Books = require('./mock/models/books');
 const Draws = require('./mock/models/draws');
-const expect = require('expect.js');
+
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+const expect = chai.expect;
+const assert = chai.assert;
+
+chai.should();
+// according to your preference of assertion style
 describe('PUT method', () => {
     let bookId;
     before(() => {
@@ -76,8 +83,8 @@ describe('PUT method', () => {
                     return Users.find({_id:'5c01997482c8985ad9a7eb5b'});
                 })
                 .then((users) => {
-                    expect(users).to.have.length(1);
-                    expect(users[0].name).to.equal('test user updated');
+                    users.should.have.length(1);
+                    assert.equal(users[0].name, 'test user updated');
                 });
         });
     });
@@ -91,9 +98,9 @@ describe('PUT method', () => {
                 .set('Accept', 'application/json')
                 .expect(200)
                 .then((response) => {
-                    expect(response.body.tag).to.have.length(1);
-                    expect(response.body.tag[0]).to.equal('comic');
-                    expect(response.body.tagCount).to.equal(1);
+                    response.body.tag.should.have.length(1);
+                    assert.equal(response.body.tag[0], 'comic');
+                    assert.equal(response.body.tagCount, 1);
                 });
         });
         it('should update using $push', () => {
@@ -105,9 +112,9 @@ describe('PUT method', () => {
                 .set('Accept', 'application/json')
                 .expect(200)
                 .then((response) => {
-                    expect(response.body.tag).to.have.length(1);
-                    expect(response.body.tag[0]).to.equal('comic');
-                    expect(response.body.tagCount).to.equal(1);
+                    response.body.tag.should.have.length(1);
+                    assert.equal(response.body.tag[0], 'comic');
+                    assert.equal(response.body.tagCount, 1);
                 });
         });
         it('should update using $push with an array', () => {
@@ -119,10 +126,10 @@ describe('PUT method', () => {
                 .set('Accept', 'application/json')
                 .expect(200)
                 .then((response) => {
-                    expect(response.body.tag).to.have.length(2);
-                    expect(response.body.tag[0]).to.equal('comic');
-                    expect(response.body.tag[1]).to.equal('test');
-                    expect(response.body.tagCount).to.equal(2);
+                    response.body.tag.should.have.length(2);
+                    assert.equal(response.body.tag[0], 'comic');
+                    assert.equal(response.body.tag[1], 'test');
+                    assert.equal(response.body.tagCount, 2);
                 });
         });
         it('should update by conditions', () => {
@@ -134,9 +141,9 @@ describe('PUT method', () => {
                 .set('Accept', 'application/json')
                 .expect(200)
                 .then((response) => {
-                    expect(response.body.tag).to.have.length(1);
-                    expect(response.body.tag[0]).to.equal('comic');
-                    expect(response.body.title).to.equal('second book');
+                    response.body.tag.should.have.length(1);
+                    assert.equal(response.body.tag[0], 'comic');
+                    assert.equal(response.body.title, 'second book');
                 });
         });
         it('should update by conditions and $pull', () => {
@@ -148,8 +155,8 @@ describe('PUT method', () => {
                 .set('Accept', 'application/json')
                 .expect(200)
                 .then((response) => {
-                    expect(response.body.tag).to.have.length(0);
-                    expect(response.body.title).to.equal('second book');
+                    response.body.tag.should.have.length(0);
+                    assert.equal(response.body.title, 'second book');
                 });
         });
         it('should update by conditions and $pull with multiple data', () => {
@@ -161,9 +168,10 @@ describe('PUT method', () => {
                 .set('Accept', 'application/json')
                 .expect(200)
                 .then((response) => {
-                    expect(response.body.tag).to.have.length(1);
-                    expect(response.body.tag[0]).to.equal('rock');
-                    expect(response.body.title).to.equal('3 book');
+                    response.body.tag.should.have.length(1);
+                    console.log('response.body.tag[0]: ', response.body.tag[0])
+                    response.body.tag[0].should.be.equal('rock');
+                    response.body.title.should.be.equal('3 book');
                 });
         });
         it('should fail with 404', () => {
@@ -175,7 +183,7 @@ describe('PUT method', () => {
                 .set('Accept', 'application/json')
                 .expect(404)
                 .then((response) => {
-                    expect(response.body.error).to.equal('Document not found.');
+                    assert.equal(response.body.error, 'Document not found.');
                 });
         });
     });
@@ -189,7 +197,7 @@ describe('PUT method', () => {
                 .set('Accept', 'application/json')
                 .expect(200)
                 .then((response) => {
-                    return expect(response.body.type).to.be(undefined);
+                    return assert.isUndefined(response.body.type);
                 });
         });
     });

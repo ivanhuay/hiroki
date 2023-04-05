@@ -1,10 +1,14 @@
 'use strict';
 const request = require('supertest');
-const assert = require('assert');
 const app = require('./mock/app');
 const Users = require('./mock/models/users');
 const Books = require('./mock/models/books');
-const expect = require('expect.js');
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+const expect = chai.expect;
+const assert = chai.assert;
+
 describe('POST /api/users', () => {
     before(() => {
         return Promise.all([
@@ -36,8 +40,8 @@ describe('POST /api/users', () => {
                     return Users.find();
                 })
                 .then((users) => {
-                    expect(users).to.have.length(1);
-                    expect(users[0].name).to.equal('test user');
+                    users.should.have.length(1);
+                    assert.equal(users[0].name, 'test user');
                 });
         });
     });
