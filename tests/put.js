@@ -12,7 +12,7 @@ const expect = chai.expect;
 const assert = chai.assert;
 
 chai.should();
-// according to your preference of assertion style
+
 describe('PUT method', () => {
     let bookId;
     before(() => {
