@@ -8,6 +8,8 @@ class Hiroki {
         if(instance) {
             return instance;
         }
+        this.models = {};
+        //TODO: remove controllers
         this.controllers = {};
         this._outgoingShareFormat = false;
         this._beforeShareEnd = false;
@@ -18,6 +20,24 @@ class Hiroki {
         instance = this;
         return instance;
     }
+    importModel(model, options) {
+        Validator.validateModel(model);
+        let modelName = model;
+        if(model.hasOwnProperty('modelName')) {
+            modelName = model.modelName;
+        }
+        modelName = modelName.toLowerCase();
+        if(!this.controllers[modelName]) {
+            this.controllers[modelName] = new Controller(model, options);
+        }
+        return this.controllers[modelName];
+    }
+    importModels(models, options) {
+        models.forEach((model) => {
+            this.importModel(model, options);
+        });
+    }
+    // TODO: remove rest function
     rest(model, options) {
         Validator.validateModel(model);
         let modelName = model;
@@ -30,15 +50,19 @@ class Hiroki {
         }
         return this.controllers[modelName];
     }
+    // TODO: refactor this to "multiple" route
     set shareFormat(formatSyncFunction) {
         this._outgoingShareFormat = formatSyncFunction;
     }
+    // TODO: unnecesary for v2, should be removed
     set beforeShareEnd(middleware) {
         this._beforeShareEnd = middleware;
     }
+    // TODO: unnecesary for v2, should be removed
     get beforeShareEnd() {
         return this._beforeShareEnd;
     }
+    // TODO: refactor this to "multiple" route
     _shareFormat(response) {
         if(!this._outgoingShareFormat) {
             return response;
@@ -55,6 +79,7 @@ class Hiroki {
         });
         return response;
     }
+    // TODO: refactor this to "multiple" route
     _buildShare() {
         const router = express.Router();
         router.get('/share/:shareParams', (req, res, next) => {
@@ -82,9 +107,11 @@ class Hiroki {
         }, this.beforeShareEnd, this._sendShare);
         return router;
     }
+    // TODO: remove unncesary for v2
     _sendShare(req, res) {
         res.json(req.shareResponse);
     }
+    // TODO: reafactor errors
     _buildGlobalError() {
         const router = express.Router();
         // eslint-disable-next-line no-unused-vars
@@ -101,6 +128,7 @@ class Hiroki {
         });
         return router;
     }
+    // TODO: remove and refactor config.
     build(config) {
         let path = config && config.path || '/api';
         Object.values(this.controllers)
