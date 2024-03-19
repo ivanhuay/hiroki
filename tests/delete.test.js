@@ -102,7 +102,7 @@ describe('DELETE /api/users', () => {
                     assert.equal(response.body.name, 'mario bross');
                 })
                 .then(() => {
-                    return Users.count();
+                    return Users.countDocuments();
                 })
                 .then((usercount) => {
                     assert.equal(usercount, 2);

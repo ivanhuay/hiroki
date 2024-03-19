@@ -1,10 +1,10 @@
 {
   "name": "hiroki",
-  "version": "0.2.9",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/ --bail --exit"
+    "test": "mocha tests/**.test.js --bail --exit"
   },
   "keywords": [
     "rest",
@@ -24,12 +24,12 @@
     "eslint": "^5.16.0",
     "expect.js": "^0.3.1",
     "mocha": "^5.2.0",
+    "mongoose": "^8.2.2",
     "supertest": "^3.3.0"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "mongoose": ">=5.7.5",
     "pluralize": "^8.0.0"
   }
 }
