@@ -45,6 +45,7 @@ app.use(hiroki.build(config));
 * v2.0.0: 
   * hiroki should be now backend agnostic. Express removed as dependency.
   * mongoose version updated
+  * share will be removed for this version. Check if this would be usefull.
 * v0.2.7:
   * `shareFormat` & `beforeShareEnd` methods added to format share response.
   * Node v7 support removed.

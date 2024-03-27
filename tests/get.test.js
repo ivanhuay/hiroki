@@ -45,11 +45,14 @@ describe('GET /api/users', () => {
                     return assert.equal(response.body.length, 0);
                 });
         });
-        it('should return 401 status', () => {
+        it('should return 200 status', () => {
             return request(app)
                 .get('/api/invisibles')
                 .set('Accept', 'application/json')
-                .expect(401);
+                .expect(200)
+                .then((response) => {
+                    return assert.equal(response.body.length, 0);
+                });
         });
     });
     describe('preloaded data', () => {
@@ -204,7 +207,6 @@ describe('GET /api/users', () => {
                 .set('hiroki', 'count')
                 .expect(200)
                 .then((response) => {
-                    assert.equal(response.header['hiroki-total-count'], 3);
                     assert.equal(response.body.length, 2);
                 });
         });

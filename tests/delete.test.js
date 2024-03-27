@@ -24,7 +24,7 @@ describe('DELETE /api/users', () => {
                 .set('Accept', 'application/json')
                 .expect(404)
                 .then((response) => {
-                    return assert.equal(response.body.error, 'not_found');
+                    return assert.equal(response.body.error, 'params id required');
                 });
         });
     });

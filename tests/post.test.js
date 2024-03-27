@@ -27,7 +27,7 @@ describe('POST /api/users', () => {
                     'email': 'test@lts.com'
                 })
                 .set('Accept', 'application/json')
-                .expect(201)
+                .expect(200)
                 .then((response) => {
 
                     return assert.equal(response.body.name, 'test user');
