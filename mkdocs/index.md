@@ -79,10 +79,7 @@ mongoose.connect('mongodb://localhost:27017/test')
 ```
 * Build the rest api:
 ```javascript
-Object.keys(models).forEach((model)=>{
-  hiroki.rest(model);
-})
-app.use(hiroki.build());
+hiroki.importModels(models)
 ```
 * Handle errors:
 ```javascript
@@ -91,13 +88,13 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
-app.use(function(error, req, res, next) {
-    console.error('handleError: ', error);
-    return res.status(error.status || 500).json({
-        status: error.status,
-        error: error.message,
-        stack: error.stack
+app.use('/api/*', async(req, res) => {
+    const path = req.originalUrl;
+    const resp = await hiroki.process(path, {
+        method: req.method,
+        body: req.body
     });
+    res.status(resp.status || 200).json(resp);
 });
 ```
 * The end: add the app listen
@@ -122,26 +119,23 @@ app.use(bodyParser.urlencoded({extended: false}));
 mongoose.connect('mongodb://localhost:27017/test')
   .then(()=>{
     console.log('connection succes!');
-  })
+  });
 
-Object.keys(models).forEach((model)=>{
-  hiroki.rest(model);
-})
-app.use(hiroki.build());
-
+hiroki.importModels(models);
 
 app.use(function(req, res, next) {
     let err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
-app.use(function(error, req, res, next) {
-    console.error('handleError: ', error);
-    return res.status(error.status || 500).json({
-        status: error.status,
-        error: error.message,
-        stack: error.stack
+
+app.use('/api/*', async(req, res) => {
+    const path = req.originalUrl;
+    const resp = await hiroki.process(path, {
+        method: req.method,
+        body: req.body
     });
+    res.status(resp.status || 200).json(resp);
 });
 
 
