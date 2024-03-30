@@ -6,13 +6,13 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="v0.2.9">
+        <meta name="description" content="v2.0.0">
       
       
       
       
       
-        <link rel="next" href="rest-api/">
+        <link rel="next" href="getting-started/">
       
       
       <link rel="icon" href="assets/images/favicon.png">
@@ -46,6 +46,16 @@
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","UA-141670070-1"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","UA-141670070-1",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=UA-141670070-1",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
 
     
     
@@ -62,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#getting-started-with-hiroki" class="md-skip">
+        <a href="#hiroki" class="md-skip">
           Skip to content
         </a>
       
@@ -74,9 +84,7 @@
     
       
 
-  
-
-<header class="md-header md-header--shadow" data-md-component="header">
+<header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="." title="Hiroki" class="md-header__button md-logo" aria-label="Hiroki" data-md-component="logo">
       
@@ -98,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Getting started with hiroki
+              Home
             
           </span>
         </div>
@@ -169,6 +177,96 @@
       
         
           
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="getting-started/" class="md-tabs__link">
+        
+  
+    
+  
+  Getting Starter
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="docs/methods/" class="md-tabs__link">
+          
+  
+  Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="v0.2.9/" class="md-tabs__link">
+          
+  
+  Legacy
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
         
       
       <main class="md-main" data-md-component="main">
@@ -182,8 +280,10 @@
                     
 
 
+  
 
-<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="." title="Hiroki" class="md-nav__button md-logo" aria-label="Hiroki" data-md-component="logo">
       
@@ -228,7 +328,7 @@
           
   
   <span class="md-ellipsis">
-    Getting started with hiroki
+    Home
   </span>
   
 
@@ -239,7 +339,7 @@
         
   
   <span class="md-ellipsis">
-    Getting started with hiroki
+    Home
   </span>
   
 
@@ -261,95 +361,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
+  <a href="#getting-started" class="md-nav__link">
     <span class="md-ellipsis">
-      Setup
+      Getting Started
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#project-folders" class="md-nav__link">
+  <a href="#update-config" class="md-nav__link">
     <span class="md-ellipsis">
-      Project folders
+      Update config:
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#create-the-first-model" class="md-nav__link">
+  <a href="#changelog" class="md-nav__link">
     <span class="md-ellipsis">
-      Create the first model
+      Changelog
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-server-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      The server file
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The server file">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#step-by-step" class="md-nav__link">
-    <span class="md-ellipsis">
-      step by step:
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#file-appjs" class="md-nav__link">
-    <span class="md-ellipsis">
-      File app.js:
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#start-application" class="md-nav__link">
-    <span class="md-ellipsis">
-      Start application
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Start application">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#remember" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remember:
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#source-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      Source code:
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -367,32 +401,55 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Starter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
+    
+      
+      
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
-    rest-api
+    Docs
   </span>
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            rest-api
+            Docs
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -403,11 +460,70 @@
   
   
     <li class="md-nav__item">
-      <a href="rest-api/" class="md-nav__link">
+      <a href="docs/methods/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Usage, methods & parameters
+    Methods
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    REST API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            REST API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/rest-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Request
   </span>
   
 
@@ -424,15 +540,23 @@
   
   
     <li class="md-nav__item">
-      <a href="rest-api/detailed-documentation/" class="md-nav__link">
+      <a href="docs/rest-api/query-parameters/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Detailed documentation
+    Query Parameters List
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -445,11 +569,11 @@
   
   
     <li class="md-nav__item">
-      <a href="rest-api/one-request.md" class="md-nav__link">
+      <a href="changelog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    None
+    changelog
   </span>
   
 
@@ -475,15 +599,224 @@
     
     
     
+      
+      
+    
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Legacy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Legacy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    v0.2.9
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            v0.2.9
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="v0.2.9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started with hiroki
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2" id="__nav_4_1_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    rest-api
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            rest-api
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="v0.2.9/rest-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Usage, methods & parameters
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="v0.2.9/rest-api/detailed-documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Detailed documentation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="v0.2.9/rest-api/one-request/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    One request multiple query using share route.
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_3" id="__nav_4_1_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -494,8 +827,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_3">
             <span class="md-nav__icon md-icon"></span>
             extending-hiroki
           </label>
@@ -508,11 +841,11 @@
   
   
     <li class="md-nav__item">
-      <a href="extending-hiroki/decorators.md" class="md-nav__link">
+      <a href="v0.2.9/extending-hiroki/configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    None
+    Configuration
   </span>
   
 
@@ -529,11 +862,11 @@
   
   
     <li class="md-nav__item">
-      <a href="extending-hiroki/configuration.md" class="md-nav__link">
+      <a href="v0.2.9/extending-hiroki/decorators/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    None
+    Extending Hiroki
   </span>
   
 
@@ -550,15 +883,31 @@
   
   
     <li class="md-nav__item">
-      <a href="extending-hiroki/overview.md" class="md-nav__link">
+      <a href="v0.2.9/extending-hiroki/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    None
+    Controller Object
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -598,95 +947,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
+  <a href="#getting-started" class="md-nav__link">
     <span class="md-ellipsis">
-      Setup
+      Getting Started
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#project-folders" class="md-nav__link">
+  <a href="#update-config" class="md-nav__link">
     <span class="md-ellipsis">
-      Project folders
+      Update config:
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#create-the-first-model" class="md-nav__link">
+  <a href="#changelog" class="md-nav__link">
     <span class="md-ellipsis">
-      Create the first model
+      Changelog
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-server-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      The server file
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The server file">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#step-by-step" class="md-nav__link">
-    <span class="md-ellipsis">
-      step by step:
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#file-appjs" class="md-nav__link">
-    <span class="md-ellipsis">
-      File app.js:
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#start-application" class="md-nav__link">
-    <span class="md-ellipsis">
-      Start application
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Start application">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#remember" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remember:
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#source-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      Source code:
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -708,133 +991,34 @@
   
 
 
-<h1 id="getting-started-with-hiroki">Getting started with hiroki</h1>
-<p>In this guide, we'll construct our initial REST API with Hiroki. Certain aspects of this tutorial may not adhere to best practices, but this is intended to simplify the example as much as possible..</p>
-<h2 id="setup">Setup</h2>
-<ul>
-<li>First we must create a project folder.</li>
-</ul>
-<pre><code>mkdir hello-hiroki
-cd hello-hiroki
+<h1 id="hiroki">Hiroki <a href="https://npmjs.org/package/hiroki"><img alt="NPM version" src="https://badge.fury.io/js/hiroki.svg" /></a> <a href="https://travis-ci.com/ivanhuay/hiroki"><img alt="Build Status" src="https://travis-ci.com/ivanhuay/hiroki.svg?branch=master" /></a></h1>
+<p>build REST APIs faster than ever using the open source tools and standards you and your team already know.</p>
+<h3 id="getting-started">Getting Started</h3>
+<p>Step by step example <a href="/getting-started/">HERE</a>.</p>
+<p>To install:</p>
+<pre class="copy"><code class="language-bash">npm install --save hiroki
 </code></pre>
-<ul>
-<li>Now we have to create a <code>package.json</code> file.</li>
-</ul>
-<pre><code>npm init -y
-</code></pre>
-<ul>
-<li>Install dependencies.</li>
-</ul>
-<pre><code>npm i --save express mongoose body-parser hiroki
-</code></pre>
-<h2 id="project-folders">Project folders</h2>
-<ul>
-<li>Create a model folder.</li>
-</ul>
-<pre><code>mkdir models
-</code></pre>
-<p>in this folder we have to create our models.</p>
-<h2 id="create-the-first-model">Create the first model</h2>
-<p>create a model file <code>(models/book.js)</code> in models folder.</p>
-<ul>
-<li><code>models/book.js</code></li>
-</ul>
-<pre><code class="language-javascript">const mongoose = require('mongoose');
-
-const Book = new mongoose.Schema({
-  title: String,
-  description: String
-});
-
-module.exports = mongoose.model('Book', Book);
-</code></pre>
-<p>Create a index file for models.</p>
-<p><code>models/index.js</code></p>
-<pre><code class="language-javascript">const Book = require('./book');
-
-module.exports = {
-  Book
-}
-</code></pre>
-<h2 id="the-server-file">The server file</h2>
-<p>Create a file <code>app.js</code>.</p>
-<h4 id="step-by-step">step by step:</h4>
-<ul>
-<li>Import dependencies:</li>
-</ul>
-<pre><code class="language-javascript">const express = require('express');
-const mongoose = require('mongoose');
-const models = require('./models');
-const bodyParser = require('body-parser');
+<p>Create simple rest api:</p>
+<p>this is a basic example, keep in mind you may need body-parser library.</p>
+<pre class="copy"><code class="language-javascript">const express = require('express');
 const hiroki = require('hiroki');
-</code></pre>
-<ul>
-<li>Create the express app and use body-parser.</li>
-</ul>
-<pre><code class="language-javascript">const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-</code></pre>
-<ul>
-<li>Connect to mongo:</li>
-</ul>
-<pre><code class="language-javascript">mongoose.connect('mongodb://localhost:27017/test')
-  .then(()=&gt;{
-    console.log('connection succes!');
-  })
-</code></pre>
-<ul>
-<li>Build the rest api:</li>
-</ul>
-<pre><code class="language-javascript">hiroki.importModels(models)
-</code></pre>
-<ul>
-<li>Handle errors:</li>
-</ul>
-<pre><code class="language-javascript">app.use(function(req, res, next) {
-    let err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
-app.use('/api/*', async(req, res) =&gt; {
-    const path = req.originalUrl;
-    const resp = await hiroki.process(path, {
-        method: req.method,
-        body: req.body
-    });
-    res.status(resp.status || 200).json(resp);
-});
-</code></pre>
-<ul>
-<li>The end: add the app listen</li>
-</ul>
-<pre><code class="language-javascript">app.listen(3030);
-console.log('server listening on port 3030...');
-</code></pre>
-<h4 id="file-appjs">File app.js:</h4>
-<p>This is the complete file.</p>
-<pre><code class="language-javascript">const express = require('express');
 const mongoose = require('mongoose');
-const models = require('./models');
-const bodyParser = require('body-parser');
-const hiroki = require('hiroki');
 const app = express();
+
+// Model definition
+const UsersSchema = new mongoose.Schema({name: String});
+mongoose.model('Users', UsersSchema);
+
+// Importing model
+hiroki.importModel(UsersSchema);
+
+// Bodyparser added
+app.use(bodyParser.urlencoded());
+
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
 
-mongoose.connect('mongodb://localhost:27017/test')
-  .then(()=&gt;{
-    console.log('connection succes!');
-  });
 
-hiroki.importModels(models);
-
-app.use(function(req, res, next) {
-    let err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
-
+// Api route to pass data to hiroki
 app.use('/api/*', async(req, res) =&gt; {
     const path = req.originalUrl;
     const resp = await hiroki.process(path, {
@@ -844,24 +1028,23 @@ app.use('/api/*', async(req, res) =&gt; {
     res.status(resp.status || 200).json(resp);
 });
 
-
-app.listen(3030);
-console.log('server listening on port 3030...');
+app.listen(8012);
 </code></pre>
-<h2 id="start-application">Start application</h2>
-<pre><code>node app.js
+<h3 id="update-config">Update config:</h3>
+<p>it is possible to change the route that hiroki uses</p>
+<pre><code class="language-javascript">const config = {basePath:'/api/v1'};
+hiroki.setConfig({
+    basePath: '/api/v1' // Default: /api
+})
 </code></pre>
-<p>now you can open <code>http://localhost:3030/api/books</code>.</p>
-<p>have fun!</p>
-<h3 id="remember">Remember:</h3>
+<h3 id="changelog">Changelog</h3>
 <ul>
-<li>GET: get documents.</li>
-<li>POST: create one document.</li>
-<li>PUT: update one document.</li>
-<li>DELETE: remove one document.</li>
+<li>v2.0.0: </li>
+<li>hiroki should be now backend agnostic. Express removed as dependency.</li>
+<li>mongoose version updated</li>
+<li>share will be removed for this version. Check if this would be usefull.
+<a href="https://ivanhuay.github.io/hiroki/changelog">Full Changelog</a></li>
 </ul>
-<h3 id="source-code">Source code:</h3>
-<p><a href="https://github.com/ivanhuay/hiroki-basic-example">HERE</a></p>
 
 
 
@@ -870,6 +1053,8 @@ console.log('server listening on port 3030...');
 
 
 
+
+  
 
 
 
@@ -908,7 +1093,7 @@ console.log('server listening on port 3030...');
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.instant", "navigation.tabs"], "search": "assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="assets/javascripts/bundle.bd41221c.min.js"></script>

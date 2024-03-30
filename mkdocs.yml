@@ -8,7 +8,7 @@ extra:
     provider: google
     property: UA-141670070-1
 nav:
-    - Home: 'hiroki.md'
+    - Home: 'index.md'
     - Getting Starter: 'getting-started.md'
     - Docs:
       - 'Methods': 'docs/methods.md'
