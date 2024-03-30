@@ -1,40 +1,22 @@
 
-
-
-
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
     
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
       
         <meta name="description" content="v0.2.9">
       
       
       
       
-        <meta name="lang:clipboard.copy" content="Copy to clipboard">
       
-        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+        <link rel="next" href="rest-api/">
       
-        <meta name="lang:search.language" content="en">
       
-        <meta name="lang:search.pipeline.stopwords" content="True">
-      
-        <meta name="lang:search.pipeline.trimmer" content="True">
-      
-        <meta name="lang:search.result.none" content="No matching documents">
-      
-        <meta name="lang:search.result.one" content="1 matching document">
-      
-        <meta name="lang:search.result.other" content="# matching documents">
-      
-        <meta name="lang:search.tokenizer" content="[\s\-]+">
-      
-      <link rel="shortcut icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.15">
     
     
       
@@ -42,166 +24,182 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/application.adb8469c.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.7e359304.min.css">
       
       
-    
-    
-      <script src="assets/javascripts/modernizr.86422ebf.js"></script>
-    
-    
-      
-        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
-        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
-      
-    
-    <link rel="stylesheet" href="assets/fonts/material-icons.css">
-    
+
+
     
     
       
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
     
     
   </head>
   
+  
     <body dir="ltr">
   
-    <svg class="md-svg">
-      <defs>
-        
-        
-          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
-        
-      </defs>
-    </svg>
+    
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
-    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
-    
-      <a href="#getting-started-with-hiroki" tabindex="0" class="md-skip">
-        Skip to content
-      </a>
-    
-    
-      <header class="md-header" data-md-component="header">
-  <nav class="md-header-nav md-grid">
-    <div class="md-flex">
-      <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="." title="Hiroki" aria-label="Hiroki" class="md-header-nav__button md-logo">
-          
-            <i class="md-icon"></i>
-          
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#getting-started-with-hiroki" class="md-skip">
+          Skip to content
         </a>
-      </div>
-      <div class="md-flex__cell md-flex__cell--shrink">
-        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
-      </div>
-      <div class="md-flex__cell md-flex__cell--stretch">
-        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          
-            <span class="md-header-nav__topic">
-              Hiroki
-            </span>
-            <span class="md-header-nav__topic">
-              
-                Getting started with hiroki
-              
-            </span>
-          
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="Hiroki" class="md-header__button md-logo" aria-label="Hiroki" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Hiroki
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Getting started with hiroki
+            
+          </span>
         </div>
       </div>
-      <div class="md-flex__cell md-flex__cell--shrink">
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
         
-          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
-          
-<div class="md-search" data-md-component="search" role="dialog">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
-      <label class="md-icon md-search__icon" for="__search"></label>
-      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
-        &#xE5CD;
-      </button>
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="result">
+        <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
-            Type to start searching
+            Initializing search
           </div>
-          <ol class="md-search-result__list"></ol>
+          <ol class="md-search-result__list" role="presentation"></ol>
         </div>
       </div>
     </div>
   </div>
 </div>
-        
-      </div>
-      
-        <div class="md-flex__cell md-flex__cell--shrink">
-          <div class="md-header-nav__source">
-            
-
-
-  
-
-<a href="https://github.com/ivanhuay/hiroki/" title="Go to repository" class="md-source" data-md-source="github">
-  
-    <div class="md-source__icon">
-      <svg viewBox="0 0 24 24" width="24" height="24">
-        <use xlink:href="#__github" width="24" height="24"></use>
-      </svg>
-    </div>
-  
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ivanhuay/hiroki" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
   <div class="md-source__repository">
     GitHub
   </div>
 </a>
-          </div>
-        </div>
-      
-    </div>
+      </div>
+    
   </nav>
+  
 </header>
     
-    <div class="md-container">
+    <div class="md-container" data-md-component="container">
+      
       
         
+          
+        
       
-      
-      <main class="md-main" role="main">
-        <div class="md-main__inner md-grid" data-md-component="container">
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
           
             
-              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
-                    <nav class="md-nav md-nav--primary" data-md-level="0">
-  <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="." title="Hiroki" class="md-nav__button md-logo">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="Hiroki" class="md-nav__button md-logo" aria-label="Hiroki" data-md-component="logo">
       
-        <i class="md-icon"></i>
-      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
     </a>
     Hiroki
   </label>
   
     <div class="md-nav__source">
-      
-
-
-  
-
-<a href="https://github.com/ivanhuay/hiroki/" title="Go to repository" class="md-source" data-md-source="github">
-  
-    <div class="md-source__icon">
-      <svg viewBox="0 0 24 24" width="24" height="24">
-        <use xlink:href="#__github" width="24" height="24"></use>
-      </svg>
-    </div>
-  
+      <a href="https://github.com/ivanhuay/hiroki" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
   <div class="md-source__repository">
     GitHub
   </div>
@@ -212,75 +210,107 @@
     
       
       
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
       
-
-  
-
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Getting started with hiroki
-      </label>
-    
-    <a href="." title="Getting started with hiroki" class="md-nav__link md-nav__link--active">
-      Getting started with hiroki
-    </a>
-    
       
-<nav class="md-nav md-nav--secondary">
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Getting started with hiroki
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Getting started with hiroki
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
   
   
     
   
   
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#setup" class="md-nav__link">
-    Setup
+    <span class="md-ellipsis">
+      Setup
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#project-folders" class="md-nav__link">
-    Project folders
+    <span class="md-ellipsis">
+      Project folders
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#create-the-first-model" class="md-nav__link">
-    Create the first model
+    <span class="md-ellipsis">
+      Create the first model
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#the-server-file" class="md-nav__link">
-    The server file
+    <span class="md-ellipsis">
+      The server file
+    </span>
   </a>
   
-    <nav class="md-nav">
+    <nav class="md-nav" aria-label="The server file">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#step-by-step" class="md-nav__link">
-    step by step:
+    <span class="md-ellipsis">
+      step by step:
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#file-appjs" class="md-nav__link">
-    File app.js:
+    <span class="md-ellipsis">
+      File app.js:
+    </span>
   </a>
   
 </li>
@@ -292,22 +322,28 @@
       
         <li class="md-nav__item">
   <a href="#start-application" class="md-nav__link">
-    Start application
+    <span class="md-ellipsis">
+      Start application
+    </span>
   </a>
   
-    <nav class="md-nav">
+    <nav class="md-nav" aria-label="Start application">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#remember" class="md-nav__link">
-    Remember:
+    <span class="md-ellipsis">
+      Remember:
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#source-code" class="md-nav__link">
-    Source code:
+    <span class="md-ellipsis">
+      Source code:
+    </span>
   </a>
   
 </li>
@@ -317,135 +353,222 @@
   
 </li>
       
-      
-      
-      
-      
     </ul>
   
 </nav>
-    
-  </li>
+      
+    </li>
+  
 
     
       
       
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
       
-
-
-  <li class="md-nav__item md-nav__item--nested">
-    
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
-    
-    <label class="md-nav__link" for="nav-2">
-      rest-api
-    </label>
-    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
-        rest-api
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
         
         
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="rest-api/" title="Usage, methods & parameters" class="md-nav__link">
-      Usage, methods & parameters
-    </a>
-  </li>
-
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
-          
-          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    rest-api
+  </span>
+  
 
-
-  <li class="md-nav__item">
-    <a href="rest-api/detailed-documentation/" title="Detailed documentation" class="md-nav__link">
-      Detailed documentation
-    </a>
-  </li>
-
+            <span class="md-nav__icon md-icon"></span>
+          </label>
         
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="rest-api/one-request/" title="One request multiple query using **share** route." class="md-nav__link">
-      One request multiple query using **share** route.
-    </a>
-  </li>
-
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            rest-api
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rest-api/" class="md-nav__link">
         
-      </ul>
-    </nav>
-  </li>
+  
+  <span class="md-ellipsis">
+    Usage, methods & parameters
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rest-api/detailed-documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Detailed documentation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rest-api/one-request.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    None
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
 
     
       
       
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
       
-
-
-  <li class="md-nav__item md-nav__item--nested">
-    
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
-    
-    <label class="md-nav__link" for="nav-3">
-      extending-hiroki
-    </label>
-    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-3">
-        extending-hiroki
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
         
         
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="extending-hiroki/decorators/" title="Extending Hiroki" class="md-nav__link">
-      Extending Hiroki
-    </a>
-  </li>
-
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          
-          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    extending-hiroki
+  </span>
+  
 
-
-  <li class="md-nav__item">
-    <a href="extending-hiroki/configuration/" title="Configuration" class="md-nav__link">
-      Configuration
-    </a>
-  </li>
-
+            <span class="md-nav__icon md-icon"></span>
+          </label>
         
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="extending-hiroki/overview/" title="Controller Object" class="md-nav__link">
-      Controller Object
-    </a>
-  </li>
-
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            extending-hiroki
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="extending-hiroki/decorators.md" class="md-nav__link">
         
-      </ul>
-    </nav>
-  </li>
+  
+  <span class="md-ellipsis">
+    None
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="extending-hiroki/configuration.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    None
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="extending-hiroki/overview.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    None
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
 
     
   </ul>
@@ -455,58 +578,76 @@
               </div>
             
             
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
-<nav class="md-nav md-nav--secondary">
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
   
   
     
   
   
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#setup" class="md-nav__link">
-    Setup
+    <span class="md-ellipsis">
+      Setup
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#project-folders" class="md-nav__link">
-    Project folders
+    <span class="md-ellipsis">
+      Project folders
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#create-the-first-model" class="md-nav__link">
-    Create the first model
+    <span class="md-ellipsis">
+      Create the first model
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#the-server-file" class="md-nav__link">
-    The server file
+    <span class="md-ellipsis">
+      The server file
+    </span>
   </a>
   
-    <nav class="md-nav">
+    <nav class="md-nav" aria-label="The server file">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#step-by-step" class="md-nav__link">
-    step by step:
+    <span class="md-ellipsis">
+      step by step:
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#file-appjs" class="md-nav__link">
-    File app.js:
+    <span class="md-ellipsis">
+      File app.js:
+    </span>
   </a>
   
 </li>
@@ -518,22 +659,28 @@
       
         <li class="md-nav__item">
   <a href="#start-application" class="md-nav__link">
-    Start application
+    <span class="md-ellipsis">
+      Start application
+    </span>
   </a>
   
-    <nav class="md-nav">
+    <nav class="md-nav" aria-label="Start application">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#remember" class="md-nav__link">
-    Remember:
+    <span class="md-ellipsis">
+      Remember:
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#source-code" class="md-nav__link">
-    Source code:
+    <span class="md-ellipsis">
+      Source code:
+    </span>
   </a>
   
 </li>
@@ -543,10 +690,6 @@
   
 </li>
       
-      
-      
-      
-      
     </ul>
   
 </nav>
@@ -555,15 +698,18 @@
               </div>
             
           
-          <div class="md-content">
-            <article class="md-content__inner md-typeset">
-              
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
                 
-                  <a href="https://github.com/ivanhuay/hiroki/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
-                
-                
-                <h1 id="getting-started-with-hiroki">Getting started with hiroki</h1>
-<p>In this tutorial we are going to build our first rest API using hiroki. Some things in this tutorial aren't the best practice but this is to keep the example simpler as possible.</p>
+                  
+
+  
+  
+
+
+<h1 id="getting-started-with-hiroki">Getting started with hiroki</h1>
+<p>In this guide, we'll construct our initial REST API with Hiroki. Certain aspects of this tutorial may not adhere to best practices, but this is intended to simplify the example as much as possible..</p>
 <h2 id="setup">Setup</h2>
 <ul>
 <li>First we must create a project folder.</li>
@@ -571,33 +717,29 @@
 <pre><code>mkdir hello-hiroki
 cd hello-hiroki
 </code></pre>
-
 <ul>
 <li>Now we have to create a <code>package.json</code> file.</li>
 </ul>
 <pre><code>npm init -y
 </code></pre>
-
 <ul>
 <li>Install dependencies.</li>
 </ul>
 <pre><code>npm i --save express mongoose body-parser hiroki
 </code></pre>
-
 <h2 id="project-folders">Project folders</h2>
 <ul>
 <li>Create a model folder.</li>
 </ul>
 <pre><code>mkdir models
 </code></pre>
-
 <p>in this folder we have to create our models.</p>
 <h2 id="create-the-first-model">Create the first model</h2>
 <p>create a model file <code>(models/book.js)</code> in models folder.</p>
 <ul>
 <li><code>models/book.js</code></li>
 </ul>
-<pre><code class="javascript">const mongoose = require('mongoose');
+<pre><code class="language-javascript">const mongoose = require('mongoose');
 
 const Book = new mongoose.Schema({
   title: String,
@@ -606,83 +748,72 @@ const Book = new mongoose.Schema({
 
 module.exports = mongoose.model('Book', Book);
 </code></pre>
-
 <p>Create a index file for models.</p>
 <p><code>models/index.js</code></p>
-<pre><code class="javascript">const Book = require('./book');
+<pre><code class="language-javascript">const Book = require('./book');
 
 module.exports = {
   Book
 }
 </code></pre>
-
 <h2 id="the-server-file">The server file</h2>
 <p>Create a file <code>app.js</code>.</p>
 <h4 id="step-by-step">step by step:</h4>
 <ul>
 <li>Import dependencies:</li>
 </ul>
-<pre><code class="javascript">const express = require('express');
+<pre><code class="language-javascript">const express = require('express');
 const mongoose = require('mongoose');
 const models = require('./models');
 const bodyParser = require('body-parser');
 const hiroki = require('hiroki');
 </code></pre>
-
 <ul>
 <li>Create the express app and use body-parser.</li>
 </ul>
-<pre><code class="javascript">const app = express();
+<pre><code class="language-javascript">const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 </code></pre>
-
 <ul>
 <li>Connect to mongo:</li>
 </ul>
-<pre><code class="javascript">mongoose.connect('mongodb://localhost:27017/test')
+<pre><code class="language-javascript">mongoose.connect('mongodb://localhost:27017/test')
   .then(()=&gt;{
     console.log('connection succes!');
   })
 </code></pre>
-
 <ul>
 <li>Build the rest api:</li>
 </ul>
-<pre><code class="javascript">Object.keys(models).forEach((model)=&gt;{
-  hiroki.rest(model);
-})
-app.use(hiroki.build());
+<pre><code class="language-javascript">hiroki.importModels(models)
 </code></pre>
-
 <ul>
 <li>Handle errors:</li>
 </ul>
-<pre><code class="javascript">app.use(function(req, res, next) {
+<pre><code class="language-javascript">app.use(function(req, res, next) {
     let err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
-app.use(function(error, req, res, next) {
-    console.error('handleError: ', error);
-    return res.status(error.status || 500).json({
-        status: error.status,
-        error: error.message,
-        stack: error.stack
+app.use('/api/*', async(req, res) =&gt; {
+    const path = req.originalUrl;
+    const resp = await hiroki.process(path, {
+        method: req.method,
+        body: req.body
     });
+    res.status(resp.status || 200).json(resp);
 });
 </code></pre>
-
 <ul>
 <li>The end: add the app listen</li>
 </ul>
-<pre><code class="javascript">app.listen(3030);
+<pre><code class="language-javascript">app.listen(3030);
 console.log('server listening on port 3030...');
 </code></pre>
-
 <h4 id="file-appjs">File app.js:</h4>
 <p>This is the complete file.</p>
-<pre><code class="javascript">const express = require('express');
+<pre><code class="language-javascript">const express = require('express');
 const mongoose = require('mongoose');
 const models = require('./models');
 const bodyParser = require('body-parser');
@@ -694,37 +825,32 @@ app.use(bodyParser.urlencoded({extended: false}));
 mongoose.connect('mongodb://localhost:27017/test')
   .then(()=&gt;{
     console.log('connection succes!');
-  })
+  });
 
-Object.keys(models).forEach((model)=&gt;{
-  hiroki.rest(model);
-})
-app.use(hiroki.build());
-
+hiroki.importModels(models);
 
 app.use(function(req, res, next) {
     let err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
-app.use(function(error, req, res, next) {
-    console.error('handleError: ', error);
-    return res.status(error.status || 500).json({
-        status: error.status,
-        error: error.message,
-        stack: error.stack
+
+app.use('/api/*', async(req, res) =&gt; {
+    const path = req.originalUrl;
+    const resp = await hiroki.process(path, {
+        method: req.method,
+        body: req.body
     });
+    res.status(resp.status || 200).json(resp);
 });
 
 
 app.listen(3030);
 console.log('server listening on port 3030...');
 </code></pre>
-
 <h2 id="start-application">Start application</h2>
 <pre><code>node app.js
 </code></pre>
-
 <p>now you can open <code>http://localhost:3030/api/books</code>.</p>
 <p>have fun!</p>
 <h3 id="remember">Remember:</h3>
@@ -736,65 +862,56 @@ console.log('server listening on port 3030...');
 </ul>
 <h3 id="source-code">Source code:</h3>
 <p><a href="https://github.com/ivanhuay/hiroki-basic-example">HERE</a></p>
-                
-                  
-                
-                
-              
-              
-                
 
 
-              
-            </article>
-          </div>
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
+        
       </main>
       
-        
-<footer class="md-footer">
-  
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid">
-        
-        
-          <a href="rest-api/" title="Usage, methods & parameters" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                Usage, methods & parameters
-              </span>
-            </div>
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
-            </div>
-          </a>
-        
-      </nav>
-    </div>
+        <footer class="md-footer">
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
-      <div class="md-footer-copyright">
-        
-        powered by
-        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
-        and
-        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-          Material for MkDocs</a>
-      </div>
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
       
     </div>
   </div>
 </footer>
       
     </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
     
-      <script src="assets/javascripts/application.c33a9706.js"></script>
-      
-      <script>app.initialize({version:"1.1",url:{base:"."}})</script>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.bd41221c.min.js"></script>
       
     
   </body>
