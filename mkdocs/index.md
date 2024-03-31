@@ -1,167 +1,67 @@
-# Getting started with hiroki
-In this tutorial we are going to build our first rest API using hiroki. Some things in this tutorial aren't the best practice but this is to keep the example simpler as possible.
+# Hiroki [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
 
-## Setup
+ build REST APIs faster than ever using the open source tools and standards you and your team already know.
 
-* First we must create a project folder.
-```
-mkdir hello-hiroki
-cd hello-hiroki
-```
+### Getting Started
+Step by step example [HERE](/getting-started/).
 
-* Now we have to create a `package.json` file.
-```
-npm init -y
+
+To install:
+``` { .bash .copy }
+npm install --save hiroki
 ```
 
-* Install dependencies.
-```
-npm i --save express mongoose body-parser hiroki
-```
+Create simple rest api:
 
-## Project folders
-* Create a model folder.
-```
-mkdir models
-```
-in this folder we have to create our models.
-
-## Create the first model
-create a model file `(models/book.js)` in models folder.
-
-* `models/book.js`
-
-```javascript
-const mongoose = require('mongoose');
-
-const Book = new mongoose.Schema({
-  title: String,
-  description: String
-});
-
-module.exports = mongoose.model('Book', Book);
-```
-
-Create a index file for models.
-
-`models/index.js`
-```javascript
-const Book = require('./book');
-
-module.exports = {
-  Book
-}
-```
-## The server file
-Create a file `app.js`.
-
-#### step by step:
-* Import dependencies:
-```javascript
+this is a basic example, keep in mind you may need body-parser library.
+``` { .javascript .copy }
 const express = require('express');
-const mongoose = require('mongoose');
-const models = require('./models');
-const bodyParser = require('body-parser');
 const hiroki = require('hiroki');
-```
-* Create the express app and use body-parser.
-```javascript
-const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-```
-* Connect to mongo:
-```javascript
-mongoose.connect('mongodb://localhost:27017/test')
-  .then(()=>{
-    console.log('connection succes!');
-  })
-```
-* Build the rest api:
-```javascript
-Object.keys(models).forEach((model)=>{
-  hiroki.rest(model);
-})
-app.use(hiroki.build());
-```
-* Handle errors:
-```javascript
-app.use(function(req, res, next) {
-    let err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
-app.use(function(error, req, res, next) {
-    console.error('handleError: ', error);
-    return res.status(error.status || 500).json({
-        status: error.status,
-        error: error.message,
-        stack: error.stack
-    });
-});
-```
-* The end: add the app listen
-```javascript
-app.listen(3030);
-console.log('server listening on port 3030...');
-```
-
-#### File app.js:
-This is the complete file.
-
-```javascript
-const express = require('express');
 const mongoose = require('mongoose');
-const models = require('./models');
-const bodyParser = require('body-parser');
-const hiroki = require('hiroki');
 const app = express();
+
+// Model definition
+const UsersSchema = new mongoose.Schema({name: String});
+mongoose.model('Users', UsersSchema);
+
+// Importing model
+hiroki.importModel(UsersSchema);
+
+// Bodyparser added
+app.use(bodyParser.urlencoded());
+
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-
-mongoose.connect('mongodb://localhost:27017/test')
-  .then(()=>{
-    console.log('connection succes!');
-  })
-
-Object.keys(models).forEach((model)=>{
-  hiroki.rest(model);
-})
-app.use(hiroki.build());
 
 
-app.use(function(req, res, next) {
-    let err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
-app.use(function(error, req, res, next) {
-    console.error('handleError: ', error);
-    return res.status(error.status || 500).json({
-        status: error.status,
-        error: error.message,
-        stack: error.stack
+// Api route to pass data to hiroki
+app.use('/api/*', async(req, res) => {
+    const path = req.originalUrl;
+    const resp = await hiroki.process(path, {
+        method: req.method,
+        body: req.body
     });
+    res.status(resp.status || 200).json(resp);
 });
 
-
-app.listen(3030);
-console.log('server listening on port 3030...');
+app.listen(8012);
 ```
+### Update config:
 
-## Start application
+it is possible to change the route that hiroki uses
+```javascript
+const config = {basePath:'/api/v1'};
+hiroki.setConfig({
+    basePath: '/api/v1' // Default: /api
+})
 ```
-node app.js
-```
-now you can open `http://localhost:3030/api/books`.
+### Changelog
+* v2.0.0: 
+  * hiroki should be now backend agnostic. Express removed as dependency.
+  * mongoose version updated
+  * share will be removed for this version. Check if this would be usefull.
+[Full Changelog](https://ivanhuay.github.io/hiroki/changelog)
 
-have fun!
-
-### Remember:
-* GET: get documents.
-* POST: create one document.
-* PUT: update one document.
-* DELETE: remove one document.
-
-### Source code:
-[HERE](https://github.com/ivanhuay/hiroki-basic-example)
+[npm-image]: https://badge.fury.io/js/hiroki.svg
+[npm-url]: https://npmjs.org/package/hiroki
+[travis-image]: https://travis-ci.com/ivanhuay/hiroki.svg?branch=master
+[travis-url]: https://travis-ci.com/ivanhuay/hiroki

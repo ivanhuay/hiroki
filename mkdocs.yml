@@ -1,22 +1,39 @@
 site_name: Hiroki
-site_description: v0.2.9
+site_description: v2.0.0
 docs_dir: mkdocs
 site_dir: docs
 repo_url: https://github.com/ivanhuay/hiroki
-google_analitycs: ['UA-141670070-1','https://ivanhuay.github.io/hiroki/']
+extra:
+  analytics:
+    provider: google
+    property: UA-141670070-1
 nav:
-    - 'index.md'
-    - 'rest-api':
-      - 'rest-api/index.md'
-      - 'rest-api/detailed-documentation.md'
-      - 'rest-api/one-request.md'
-    - 'extending-hiroki':
-      - 'extending-hiroki/decorators.md'
-      - 'extending-hiroki/configuration.md'
-      - 'extending-hiroki/overview.md'
+    - Home: 'index.md'
+    - Getting Starter: 'getting-started.md'
+    - Docs:
+      - 'Methods': 'docs/methods.md'
+      - 'REST API':
+        - Request: 'docs/rest-api/index.md'
+        - 'docs/rest-api/query-parameters.md'
+      - 'changelog': 'changelog.md'
+    - Legacy: 
+      - 'v0.2.9':
+        - 'v0.2.9/index.md'
+        - 'rest-api':
+          - 'v0.2.9/rest-api/index.md'
+          - 'v0.2.9/rest-api/detailed-documentation.md'
+          - 'v0.2.9/rest-api/one-request.md'
+        - 'extending-hiroki':
+          - 'v0.2.9/extending-hiroki/configuration.md'
+          - 'v0.2.9/extending-hiroki/decorators.md'
+          - 'v0.2.9/extending-hiroki/overview.md'
+    
 theme:
     name: material
     highlightjs: true
+    features:
+      - navigation.instant
+      - navigation.tabs
     hljs_languages:
         - yaml
         - rust
