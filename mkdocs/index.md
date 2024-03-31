@@ -65,5 +65,3 @@ hiroki.setConfig({
 [npm-url]: https://npmjs.org/package/hiroki
 [travis-image]: https://travis-ci.com/ivanhuay/hiroki.svg?branch=master
 [travis-url]: https://travis-ci.com/ivanhuay/hiroki
-[daviddm-image]: https://david-dm.org/ivanhuay/hiroki.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/ivanhuay/hiroki
