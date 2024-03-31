@@ -1,11 +1,5 @@
 language: node_js
 node_js:
-  - lts/*
-  - v20
-  - v19
-  - v18
   - v14
 services:
   - mongodb
-before_install:
-  - npm i -g npm@10
