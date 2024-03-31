@@ -1,5 +1,7 @@
 language: node_js
 node_js:
-  - v14
+  - "lts/*"
 services:
   - mongodb
+os:
+  - linux
