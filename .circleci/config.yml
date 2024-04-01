@@ -12,14 +12,16 @@ jobs:
     # Specify the execution environment. Circle CI allows you to run jobs in one of 3 environments - docker, a linux virtual machine or a macOS virtual machine
     docker:
       # Primary container where the job's commands are run
-      - image: circleci/node:8.15.0
+      - image: cimg/base:stable
       # Any additional containers are started in the same network and are able to communicate with the primary container
       - image: mongo:4.1.6-xenial
     # Steps allow you to define a set of executable commands
     steps:
       # Reserved word in Circle CI for checking out your code repository
       - checkout
-
+      - node/install:
+        install-yarn: true
+        node-version: '16.13'
       # If a cache entry with this key exists, add it to the working directory
       - restore_cache:
           key: v1-dependencies-{{ checksum "package.json" }}
