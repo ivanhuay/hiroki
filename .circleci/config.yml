@@ -1,52 +1,55 @@
-# This config was automatically generated from your source code
-# Stacks detected: deps:node:.
-version: 2.1
-orbs:
-  node: circleci/node@5
+# The version of circle ci platform to use
+version: 2.1 
+
+# Collection of jobs to execute
 jobs:
   build:
+    # Define some environment variables. Note: API tokens, server keys, etc should not be defined here
+    environment:
+      NODE_ENV: 'test'
+    # (Optional) Define directory in which to run the steps. Circle CI defaults it to ~/project if omitted
+    working_directory: ~/guidebook
+    # Specify the execution environment. Circle CI allows you to run jobs in one of 3 environments - docker, a linux virtual machine or a macOS virtual machine
     docker:
-      - image: circleci/node:10-browsers
-      - image: circleci/mongo:3.6
-        environment:
-          - MONGODB_USERNAME: $MONGODB_USERNAME
-          - MONGODB_PASSWORD: $MONGODB_PASSWORD
+      # Primary container where the job's commands are run
+      - image: circleci/node:8.15.0
+      # Any additional containers are started in the same network and are able to communicate with the primary container
+      - image: mongo:4.1.6-xenial
+    # Steps allow you to define a set of executable commands
     steps:
-      - setup_remote_docker
-      - run:
-          name: Waiting for Mongo
-          command: dockerize -wait tcp://localhost:27017 -timeout 1m
-      - run:
-          name: Install mongo client
-          command: |
-            sudo apt-get install -y mongodb
+      # Reserved word in Circle CI for checking out your code repository
       - checkout
-      - run:
-          name: Connect to DB
-          command: mongo --username $MONGODB_USERNAME --password $MONGODB_PASSWORD --eval "printjson(db.apikeys.count());" dbname
-  test-node:
-    # Install node dependencies and run tests
-    executor: node/default
-    steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: npm
+
+      # If a cache entry with this key exists, add it to the working directory
+      - restore_cache:
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      # Execute a command. The simple for is `run: npm install --verbose`
+      - run: 
+          # Name attribute provides useful organization information when returning errors, warnings or output
+          name: Install project dependencies
+          # The command to execute.
+          command: npm install --verbose
+
+      # Persist some data to cache which can be used in subsequent builds. 
+      # For guidebook, node_modules is cached. This makes subsequent build runs faster if package.json is unchanged
+      - save_cache:
+          key: v1-dependencies-{{ checksum "package.json"}}
+          paths:
+            - node_modules
       - run:
           name: Run tests
-          command: npm test --passWithNoTests
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
-    docker:
-      - image: cimg/base:stable
-    steps:
-      # Replace this with steps to deploy to users
-      - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+          # When running Jest tests, please use the --runInBand flag: https://circleci.com/docs/2.0/collect-test-data/#jest
+          command: npm test -- --runInBand
+
+# Workflows allow you to define the order of execution of jobs. 
+# For a single job, like in this example, the workflows section can be omitted
+# Learn [more about workflows](https://circleci.com/docs/2.0/concepts/#section=getting-started){:target="_blank"}
 workflows:
-  build-and-test:
+  # The workflow version
+  version: 2.1
+  # A unique name for the workflow
+  run_build:
+    # The jobs to run in this workflow
     jobs:
-      - test-node
-    # - deploy:
-    #     requires:
-    #       - test-node
+      - build

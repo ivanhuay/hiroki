@@ -3,11 +3,11 @@ const express = require('express');
 const models = require('./models');
 const hiroki = require('../../index');
 const bodyParser = require('body-parser');
-const {MONGODB_USERNAME, MONGODB_PASSWORD} = process.env;
+
 const mongoose = require('mongoose');
 const app = express();
 mongoose.Promise = global.Promise;
-mongoose.connect(`mongodb://${MONGODB_USERNAME}@${MONGODB_PASSWORD}localhost:27017/test`, {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true});
 
 Object.keys(models).forEach((modelName) => {
     let options = modelName === 'Draws' ? {fastUpdate: 'enabled'} : {};
