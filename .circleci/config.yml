@@ -4,6 +4,26 @@ version: 2.1
 orbs:
   node: circleci/node@5
 jobs:
+  build:
+    docker:
+      - image: circleci/node:10-browsers
+      - image: circleci/mongo:3.6
+        environment:
+          - MONGODB_USERNAME: $MONGODB_USERNAME
+          - MONGODB_PASSWORD: $MONGODB_PASSWORD
+    steps:
+      - setup_remote_docker
+      - run:
+          name: Waiting for Mongo
+          command: dockerize -wait tcp://localhost:27017 -timeout 1m
+      - run:
+          name: Install mongo client
+          command: |
+            sudo apt-get install -y mongodb
+      - checkout
+      - run:
+          name: Connect to DB
+          command: mongo --username $MONGODB_USERNAME --password $MONGODB_PASSWORD --eval "printjson(db.apikeys.count());" dbname
   test-node:
     # Install node dependencies and run tests
     executor: node/default
