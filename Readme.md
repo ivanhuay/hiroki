@@ -1,4 +1,4 @@
-# Hiroki [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
+# Hiroki [![NPM version][npm-image]][npm-url] [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/73Gnub9RenZ7Vn7XN2Cq7A/7FichnXE69CYoQzoP7ppAd/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/73Gnub9RenZ7Vn7XN2Cq7A/7FichnXE69CYoQzoP7ppAd/tree/master)
 
  build REST APIs faster than ever using the open source tools and standards you and your team already know.
 
@@ -63,5 +63,3 @@ hiroki.setConfig({
 
 [npm-image]: https://badge.fury.io/js/hiroki.svg
 [npm-url]: https://npmjs.org/package/hiroki
-[travis-image]: https://travis-ci.com/ivanhuay/hiroki.svg?branch=master
-[travis-url]: https://travis-ci.com/ivanhuay/hiroki
