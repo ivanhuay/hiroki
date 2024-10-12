@@ -31,10 +31,10 @@ const app = express();
 
 // Model definition
 const UsersSchema = new mongoose.Schema({name: String});
-mongoose.model('Users', UsersSchema);
+const UserModel = mongoose.model('Users', UsersSchema);
 
 // Importing model
-hiroki.importModel(UsersSchema);
+hiroki.importModel(UserModel);
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
