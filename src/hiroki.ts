@@ -1,5 +1,5 @@
 import Controller, { ControllerConfig, ProcessParams } from './controller';
-import ErrorCollection, { CustomError } from './error-collection';
+import { RouteNotFoundError, isHttpError } from './errors';
 import Validator from './validator';
 
 // Hiroki configuration interface
@@ -17,6 +17,8 @@ export interface ProcessRequest extends ProcessParams {}
 export interface ProcessResponse {
   error?: string;
   status?: number;
+  code?: string;
+  details?: unknown;
   [key: string]: any;
 }
 
@@ -84,18 +86,26 @@ class Hiroki {
     const currentController = Object.values(this.controllers).find((controller) =>
       controller.check(path)
     );
+    
     if (!currentController) {
-      ErrorCollection.notFound(path);
+      throw new RouteNotFoundError(path);
     }
     
     try {
-      return await currentController!.process(path, params);
+      return await currentController.process(path, params);
     } catch (error) {
       console.error('Hiroki Error: ', error);
-      const err = error as CustomError;
+      
+      // Handle HttpError instances with proper serialization
+      if (isHttpError(error)) {
+        return error.toJSON();
+      }
+      
+      // Handle unknown errors
       return {
-        error: err.message,
-        status: err.status || 500
+        error: error instanceof Error ? error.message : 'Unknown error',
+        status: 500,
+        code: 'INTERNAL_ERROR'
       };
     }
   }
