@@ -1,52 +1,96 @@
 import ErrorCollection from './error-collection';
-import mongoose, { Model } from 'mongoose';
+import mongoose, { Model, FilterQuery } from 'mongoose';
 
-const validModelTypes = ['function', 'object'];
+/**
+ * Valid model types - can be either:
+ * - A string representing the model name (used to retrieve from mongoose registry)
+ * - A Mongoose Model instance
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ValidModel = string | Model<any>;
 
-// Type for Mongoose model or model name
-export type ValidModel = string | { modelName: string };
+/**
+ * MongoDB query conditions - supports all MongoDB query operators
+ * Can be:
+ * - A string containing JSON-formatted conditions
+ * - An object with MongoDB operators ($eq, $ne, $gt, $gte, $lt, $lte, $in, $nin, $not, $size, etc.)
+ * - undefined/null for no conditions
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ValidConditions = string | FilterQuery<any> | undefined | null;
 
-// Parameters interface for validation methods
+/**
+ * Parameters interface for validation methods
+ */
 export interface ValidationParams {
   query?: {
     id?: string;
-    conditions?: any;
+    conditions?: ValidConditions;
   };
-  body?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  body?: Record<string, any>;
   method?: string;
   id?: string;
 }
 
 class Validator {
   
+  /**
+   * Type guard to check if a value is a Mongoose Model
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static isMongooseModel(value: unknown): value is Model<any> {
     return typeof value === 'function' &&
       value.prototype instanceof mongoose.Model;
   } 
-  // Validate if the provided model is valid (string or Mongoose model)
-  static validateModel(model: unknown): boolean {
+  
+  /**
+   * Validates if the provided model is valid (string or Mongoose model)
+   * @param model - The model to validate
+   * @returns true if valid, throws error otherwise
+   */
+  static validateModel(model: unknown): model is ValidModel {
     if (!model) {
       ErrorCollection.invalidModel(model);
     }
-    const modelType = typeof model;
-    if (modelType === 'string') {
+    
+    // Accept string (model name to be retrieved from mongoose registry)
+    if (typeof model === 'string') {
       return true;
     }
+    
+    // Accept Mongoose Model instance
     if (this.isMongooseModel(model)) {
       return true;
     }
+    
     ErrorCollection.invalidModel(model);
   }
 
-  static validateConditions(conditions: any): any {
+  /**
+   * Validates and parses conditions
+   * @param conditions - Conditions to validate (can be string, object, or undefined)
+   * @returns Parsed conditions object or original if already valid
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  static validateConditions(conditions: ValidConditions): FilterQuery<any> | undefined {
+    // If no conditions or already an object, return as is
     if (!conditions || typeof conditions === 'object') {
-      return true;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return conditions as FilterQuery<any> | undefined;
     }
-    try {
-      return JSON.parse(conditions);
-    } catch (error) {
-      ErrorCollection.invalidConditions((error as Error).message);
+    
+    // If string, try to parse as JSON
+    if (typeof conditions === 'string') {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return JSON.parse(conditions) as FilterQuery<any>;
+      } catch (error) {
+        ErrorCollection.invalidConditions((error as Error).message);
+      }
     }
+    
+    ErrorCollection.invalidConditions('Invalid conditions format');
   }
 
   static validatePutParams(params: ValidationParams): boolean {
@@ -73,7 +117,7 @@ class Validator {
     return true;
   }
 
-  static validateDocumentExist(doc: any, status?: number): boolean {
+  static validateDocumentExist(doc: unknown, status?: number): boolean {
     if (!doc) {
       ErrorCollection.documentNotFound(status);
     }
@@ -98,13 +142,13 @@ class Validator {
     return true;
   }
 
-  static validateCallback(callback: any, callbackName: string): void {
+  static validateCallback(callback: unknown, callbackName: string): void {
     if (typeof callback !== 'function') {
       ErrorCollection.invalidMiddleware(callbackName);
     }
   }
 
-  static validateEnum(value: any, expected: any[]): void {
+  static validateEnum<T>(value: T, expected: T[]): void {
     if (!expected.includes(value)) {
       ErrorCollection.invalidEnum(value, expected);
     }
