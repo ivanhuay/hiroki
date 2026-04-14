@@ -1,10 +1,11 @@
 import Controller, { ControllerConfig, ProcessParams } from './controller';
 import { RouteNotFoundError, isHttpError } from './errors';
 import Validator from './validator';
-import { logger } from './logger';
+import { Logger, LogLevel } from './logger';
 // Hiroki configuration interface
 export interface HirokiConfig {
   basePath?: string;
+  logLevel?: LogLevel;
 }
 
 // Import model options
@@ -29,6 +30,7 @@ class Hiroki {
   public config: HirokiConfig;
   public models: Record<string, any>;
   public controllers: Record<string, Controller>;
+  private logger: Logger;
 
   constructor() {
     if (instance) {
@@ -36,12 +38,14 @@ class Hiroki {
     }
     
     this.defaultConfig = {
-      basePath: '/api'
+      basePath: '/api',
+      logLevel: 'error'
     };
     
     this.config = { ...this.defaultConfig };
     this.models = {};
     this.controllers = {};
+    this.logger = Logger.createInstance({ logLevel: this.config.logLevel || 'error' });
     instance = this;
   }
 
@@ -94,7 +98,7 @@ class Hiroki {
     try {
       return await currentController.process(path, params);
     } catch (error) {
-      logger.error(`Hiroki Error: ${error}`);
+      this.logger.error(`Hiroki Error: ${error}`);
       
       // Handle HttpError instances with proper serialization
       if (isHttpError(error)) {

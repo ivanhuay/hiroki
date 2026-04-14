@@ -3,7 +3,7 @@ import pluralize from 'pluralize';
 import Validator from './validator';
 import { DisabledMethodError, UnexpectedError } from './errors';
 import type { QueryParams } from './model';
-
+import { logger } from './logger';
 // HTTP Methods enum
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -47,6 +47,7 @@ class Controller {
   public routeName: string;
   public path: string;
   private _disabledMethods: string[];
+  private logger = logger;
 
   constructor(model: any, config: ControllerConfig = {}) {
     this.model = new MongooseConnector(model);
@@ -56,7 +57,6 @@ class Controller {
       basePath: '',
       ...config
     };
-    
     Validator.validateEnum(this.config.fastUpdate, ['enabled', 'disabled', 'optional']);
     
     this.routeName = pluralize(this.model.modelName).toLocaleLowerCase();
@@ -159,6 +159,7 @@ class Controller {
   process(path: string, params: ProcessParams): Promise<any> {
     const query = this._getQueryParams(path);
     const { method, body } = params;
+    this.logger.debug(`Processing request: ${method} ${path} with body: ${JSON.stringify(body)} and query: ${JSON.stringify(query.query)}`);
     if (this._disabledMethods.includes(method)) {
       throw new DisabledMethodError(method);
     }
