@@ -3,7 +3,7 @@ import pluralize from 'pluralize';
 import Validator from './validator';
 import { DisabledMethodError, UnexpectedError } from './errors';
 import type { QueryParams } from './model';
-import { logger } from './logger';
+import { HirokiLogger, ConsoleLogger, LogLevel } from './logger';
 // HTTP Methods enum
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -13,6 +13,8 @@ export interface ControllerConfig {
   disabledPluralize?: boolean;
   basePath?: string;
   disabledMethod?: string[];
+  logger?: HirokiLogger;
+  logLevel?: LogLevel;
 }
 
 // Process request parameters
@@ -41,13 +43,17 @@ export interface ParsedQuery {
   query: ExtendedQueryParams;
 }
 
+type ResolvedControllerConfig =
+  Required<Omit<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel'>> &
+  Pick<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel'>;
+
 class Controller {
   protected model: MongooseConnector;
-  protected config: Required<Omit<ControllerConfig, 'disabledMethod'>> & Pick<ControllerConfig, 'disabledMethod'>;
+  protected config: ResolvedControllerConfig;
   public routeName: string;
   public path: string;
   private _disabledMethods: string[];
-  private logger = logger;
+  private logger: HirokiLogger;
 
   constructor(model: any, config: ControllerConfig = {}) {
     this.model = new MongooseConnector(model);
@@ -57,6 +63,7 @@ class Controller {
       basePath: '',
       ...config
     };
+    this.logger = this.config.logger ?? new ConsoleLogger({ logLevel: this.config.logLevel || 'error' });
     Validator.validateEnum(this.config.fastUpdate, ['enabled', 'disabled', 'optional']);
     
     this.routeName = pluralize(this.model.modelName).toLocaleLowerCase();

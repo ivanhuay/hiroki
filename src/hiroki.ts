@@ -1,10 +1,11 @@
 import Controller, { ControllerConfig, ProcessParams } from './controller';
 import { RouteNotFoundError, isHttpError } from './errors';
 import Validator from './validator';
-import { Logger, LogLevel } from './logger';
+import { ConsoleLogger, HirokiLogger, LogLevel } from './logger';
 // Hiroki configuration interface
 export interface HirokiConfig {
   basePath?: string;
+  logger?: HirokiLogger;
   logLevel?: LogLevel;
 }
 
@@ -30,7 +31,7 @@ class Hiroki {
   public config: HirokiConfig;
   public models: Record<string, any>;
   public controllers: Record<string, Controller>;
-  private logger: Logger;
+  private logger: HirokiLogger;
 
   constructor() {
     if (instance) {
@@ -39,13 +40,14 @@ class Hiroki {
     
     this.defaultConfig = {
       basePath: '/api',
-      logLevel: 'error'
+      logLevel: 'error',
+      logger: new ConsoleLogger({ logLevel: 'error' })
     };
     
     this.config = { ...this.defaultConfig };
     this.models = {};
     this.controllers = {};
-    this.logger = Logger.createInstance({ logLevel: this.config.logLevel || 'error' });
+    this.logger = this.config.logger || new ConsoleLogger({ logLevel: this.config.logLevel || 'error' });
     instance = this;
   }
 
@@ -58,7 +60,8 @@ class Hiroki {
     if (!this.controllers[modelName]) {
       this.controllers[modelName] = new Controller(model, {
         ...this.defaultConfig,
-        ...options
+        ...options,
+        logger: this.logger
       });
     }
     
@@ -82,6 +85,11 @@ class Hiroki {
       ...this.defaultConfig,
       ...newConf
     };
+    this.logger =
+      this.config.logger ??
+      new ConsoleLogger({
+        logLevel: this.config.logLevel ?? 'error'
+      });
   }
 
   async process(_path: string, params: ProcessRequest): Promise<any | ProcessResponse> {
