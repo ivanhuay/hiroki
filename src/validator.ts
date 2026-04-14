@@ -1,5 +1,15 @@
-import ErrorCollection from './error-collection';
 import mongoose, { Model, FilterQuery } from 'mongoose';
+import {
+  InvalidModelError,
+  InvalidConditionsError,
+  ParamRequiredError,
+  DocumentNotFoundError,
+  BodyRequiredError,
+  InvalidMethodError,
+  InvalidMiddlewareError,
+  InvalidEnumError,
+  DisabledMethodError
+} from './errors';
 
 /**
  * Valid model types - can be either:
@@ -51,11 +61,13 @@ class Validator {
    */
   static validateModel(model: unknown): model is ValidModel {
     if (!model) {
-      ErrorCollection.invalidModel(model);
+      throw new InvalidModelError(model);
     }
     
+    const modelType = typeof model;
+    
     // Accept string (model name to be retrieved from mongoose registry)
-    if (typeof model === 'string') {
+    if (modelType === 'string') {
       return true;
     }
     
@@ -64,7 +76,7 @@ class Validator {
       return true;
     }
     
-    ErrorCollection.invalidModel(model);
+    throw new InvalidModelError(model);
   }
 
   /**
@@ -86,24 +98,24 @@ class Validator {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return JSON.parse(conditions) as FilterQuery<any>;
       } catch (error) {
-        ErrorCollection.invalidConditions((error as Error).message);
+        throw new InvalidConditionsError(conditions, error as Error);
       }
     }
     
-    ErrorCollection.invalidConditions('Invalid conditions format');
+    throw new InvalidConditionsError('Invalid conditions format');
   }
 
   static validatePutParams(params: ValidationParams): boolean {
     const { query } = params;
     if (!query?.hasOwnProperty('id') && !query?.hasOwnProperty('conditions')) {
-      ErrorCollection.paramRequired('id or conditions');
+      throw new ParamRequiredError('id or conditions');
     }
     return true;
   }
 
   static validateIdRequired(params: ValidationParams): boolean {
     if (!params.id) {
-      ErrorCollection.paramRequired('id', 404);
+      throw new ParamRequiredError('id', 404);
     }
     return true;
   }
@@ -112,51 +124,51 @@ class Validator {
     try {
       JSON.parse(conditions);
     } catch (error) {
-      ErrorCollection.malformedConditions(conditions, error as Error);
+      throw new InvalidConditionsError(conditions, error as Error);
     }
     return true;
   }
 
   static validateDocumentExist(doc: unknown, status?: number): boolean {
     if (!doc) {
-      ErrorCollection.documentNotFound(status);
+      throw new DocumentNotFoundError(status);
     }
     return true;
   }
 
   static validaMethods(methods: string, validMethods: string[]): void {
     if (!methods) {
-      ErrorCollection.invalidMethod(methods, validMethods.join(', '));
+      throw new InvalidMethodError(methods, validMethods.join(', '));
     }
     const invalidMethod = methods.split(' ').find((method) => validMethods.indexOf(method) === -1);
     if (invalidMethod) {
-      ErrorCollection.invalidMethod(invalidMethod, validMethods.join(', '));
+      throw new InvalidMethodError(invalidMethod, validMethods.join(', '));
     }
   }
 
   static validateBody(params: ValidationParams): boolean {
     const { body, method } = params;
     if (method && ['POST', 'PUT'].includes(method) && !body) {
-      ErrorCollection.bodyRequired(method);
+      throw new BodyRequiredError(method);
     }
     return true;
   }
 
   static validateCallback(callback: unknown, callbackName: string): void {
     if (typeof callback !== 'function') {
-      ErrorCollection.invalidMiddleware(callbackName);
+      throw new InvalidMiddlewareError(callbackName);
     }
   }
 
   static validateEnum<T>(value: T, expected: T[]): void {
     if (!expected.includes(value)) {
-      ErrorCollection.invalidEnum(value, expected);
+      throw new InvalidEnumError(value, expected);
     }
   }
 
   static validateDisabledMethod(method: string, disabledMethods: string[]): void {
     if (disabledMethods.indexOf(method) !== -1) {
-      ErrorCollection.disabledMethod(method);
+      throw new DisabledMethodError(method);
     }
   }
 }

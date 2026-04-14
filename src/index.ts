@@ -31,13 +31,31 @@ export type {
 } from './model.js';
 
 export type {
-  CustomError
-} from './error-collection.js';
-
-export type {
   ValidModel,
   ValidationParams
 } from './validator.js';
+
+// Export error classes for error handling
+export {
+  HttpError,
+  BadRequestError,
+  NotFoundError,
+  MethodNotAllowedError,
+  InternalServerError,
+  InvalidModelError,
+  InvalidConditionsError,
+  ParamRequiredError,
+  DocumentNotFoundError,
+  BodyRequiredError,
+  InvalidMethodError,
+  InvalidMiddlewareError,
+  InvalidEnumError,
+  DisabledMethodError,
+  RouteNotFoundError,
+  UnexpectedError,
+  isHttpError,
+  hasStatus
+} from './errors';
 
 // Export Hiroki class for advanced users who want to create their own instances
 export { Hiroki };

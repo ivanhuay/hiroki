@@ -1,7 +1,7 @@
 import MongooseConnector from './mongoose-connector';
 import pluralize from 'pluralize';
 import Validator from './validator';
-import ErrorCollection from './error-collection';
+import { DisabledMethodError, UnexpectedError } from './errors';
 import type { QueryParams } from './model';
 
 // HTTP Methods enum
@@ -160,7 +160,7 @@ class Controller {
     const query = this._getQueryParams(path);
     const { method, body } = params;
     if (this._disabledMethods.includes(method)) {
-      ErrorCollection.disabledMethod(method);
+      throw new DisabledMethodError(method);
     }
     
     Validator.validateBody({ body, method });
@@ -178,7 +178,7 @@ class Controller {
       return this.delete({ id: query.query.id });
     }
     
-    ErrorCollection.unexpectedError();
+    throw new UnexpectedError();
   }
 }
 
