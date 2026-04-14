@@ -1,7 +1,7 @@
 import Controller, { ControllerConfig, ProcessParams } from './controller';
 import { RouteNotFoundError, isHttpError } from './errors';
 import Validator from './validator';
-
+import { logger } from './logger';
 // Hiroki configuration interface
 export interface HirokiConfig {
   basePath?: string;
@@ -94,7 +94,7 @@ class Hiroki {
     try {
       return await currentController.process(path, params);
     } catch (error) {
-      console.error('Hiroki Error: ', error);
+      logger.error(`Hiroki Error: ${error}`);
       
       // Handle HttpError instances with proper serialization
       if (isHttpError(error)) {
