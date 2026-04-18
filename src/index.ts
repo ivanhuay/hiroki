@@ -36,6 +36,8 @@ export type {
 } from './validator.js';
 
 // Export error classes for error handling
+export type { HttpErrorResponse } from './errors';
+
 export {
   HttpError,
   BadRequestError,

@@ -22,13 +22,13 @@ describe('Validator', () => {
 
   describe('validateModel', () => {
     it('should accept string model names', () => {
-      expect(Validator.validateModel('Users')).toBe(true);
-      expect(Validator.validateModel('Books')).toBe(true);
+      expect(() => Validator.validateModel('Users')).not.toThrow();
+      expect(() => Validator.validateModel('Books')).not.toThrow();
     });
 
     it('should accept Mongoose model instances', () => {
-      expect(Validator.validateModel(Users)).toBe(true);
-      expect(Validator.validateModel(Books)).toBe(true);
+      expect(() => Validator.validateModel(Users)).not.toThrow();
+      expect(() => Validator.validateModel(Books)).not.toThrow();
     });
 
     it('should throw error for null or undefined', () => {
@@ -85,14 +85,14 @@ describe('Validator', () => {
       const params = {
         query: { id: '5c01997482c8985ad9a7eb5b' }
       };
-      expect(Validator.validatePutParams(params)).toBe(true);
+      expect(() => Validator.validatePutParams(params)).not.toThrow();
     });
 
     it('should accept params with conditions', () => {
       const params = {
         query: { conditions: { email: 'test@example.com' } }
       };
-      expect(Validator.validatePutParams(params)).toBe(true);
+      expect(() => Validator.validatePutParams(params)).not.toThrow();
     });
 
     it('should accept params with both id and conditions', () => {
@@ -102,7 +102,7 @@ describe('Validator', () => {
           conditions: { email: 'test@example.com' }
         }
       };
-      expect(Validator.validatePutParams(params)).toBe(true);
+      expect(() => Validator.validatePutParams(params)).not.toThrow();
     });
 
     it('should throw error when neither id nor conditions provided', () => {
@@ -119,7 +119,7 @@ describe('Validator', () => {
   describe('validateIdRequired', () => {
     it('should accept params with id', () => {
       const params = { id: '5c01997482c8985ad9a7eb5b' };
-      expect(Validator.validateIdRequired(params)).toBe(true);
+      expect(() => Validator.validateIdRequired(params)).not.toThrow();
     });
 
     it('should throw error when id is missing', () => {
@@ -142,16 +142,16 @@ describe('Validator', () => {
   describe('validateConditionsString', () => {
     it('should accept valid JSON string', () => {
       const validJson = '{"email":"test@example.com"}';
-      expect(Validator.validateConditionsString(validJson)).toBe(true);
+      expect(() => Validator.validateConditionsString(validJson)).not.toThrow();
     });
 
     it('should accept empty object JSON', () => {
-      expect(Validator.validateConditionsString('{}')).toBe(true);
+      expect(() => Validator.validateConditionsString('{}')).not.toThrow();
     });
 
     it('should accept complex JSON with operators', () => {
       const complexJson = '{"age":{"$gte":18},"books":{"$not":{"$size":0}}}';
-      expect(Validator.validateConditionsString(complexJson)).toBe(true);
+      expect(() => Validator.validateConditionsString(complexJson)).not.toThrow();
     });
 
     it('should throw error for malformed JSON', () => {
@@ -168,14 +168,14 @@ describe('Validator', () => {
   describe('validateDocumentExist', () => {
     it('should accept existing document', () => {
       const doc = { _id: '123', name: 'test' };
-      expect(Validator.validateDocumentExist(doc)).toBe(true);
+      expect(() => Validator.validateDocumentExist(doc)).not.toThrow();
     });
 
     it('should accept truthy values', () => {
-      expect(Validator.validateDocumentExist('string')).toBe(true);
-      expect(Validator.validateDocumentExist(1)).toBe(true);
-      expect(Validator.validateDocumentExist([])).toBe(true);
-      expect(Validator.validateDocumentExist({})).toBe(true);
+      expect(() => Validator.validateDocumentExist('string')).not.toThrow();
+      expect(() => Validator.validateDocumentExist(1)).not.toThrow();
+      expect(() => Validator.validateDocumentExist([])).not.toThrow();
+      expect(() => Validator.validateDocumentExist({})).not.toThrow();
     });
 
     it('should throw error for null or undefined', () => {
@@ -236,7 +236,7 @@ describe('Validator', () => {
         method: 'POST',
         body: { name: 'test' }
       };
-      expect(Validator.validateBody(params)).toBe(true);
+      expect(() => Validator.validateBody(params)).not.toThrow();
     });
 
     it('should accept PUT with body', () => {
@@ -244,17 +244,17 @@ describe('Validator', () => {
         method: 'PUT',
         body: { name: 'updated' }
       };
-      expect(Validator.validateBody(params)).toBe(true);
+      expect(() => Validator.validateBody(params)).not.toThrow();
     });
 
     it('should accept GET without body', () => {
       const params = { method: 'GET' };
-      expect(Validator.validateBody(params)).toBe(true);
+      expect(() => Validator.validateBody(params)).not.toThrow();
     });
 
     it('should accept DELETE without body', () => {
       const params = { method: 'DELETE' };
-      expect(Validator.validateBody(params)).toBe(true);
+      expect(() => Validator.validateBody(params)).not.toThrow();
     });
 
     it('should throw error for POST without body', () => {
@@ -272,7 +272,7 @@ describe('Validator', () => {
         method: 'POST',
         body: {}
       };
-      expect(Validator.validateBody(params)).toBe(true);
+      expect(() => Validator.validateBody(params)).not.toThrow();
     });
   });
 
@@ -396,12 +396,12 @@ describe('Validator', () => {
         method: 'PUT'
       };
 
-      expect(Validator.validatePutParams(validParams)).toBe(true);
-      expect(Validator.validateBody(validParams)).toBe(true);
+      expect(() => Validator.validatePutParams(validParams)).not.toThrow();
+      expect(() => Validator.validateBody(validParams)).not.toThrow();
     });
 
     it('should validate model and conditions together', () => {
-      expect(Validator.validateModel(Users)).toBe(true);
+      expect(() => Validator.validateModel(Users)).not.toThrow();
       
       const conditions = '{"email":"test@example.com"}';
       const parsed = Validator.validateConditions(conditions);

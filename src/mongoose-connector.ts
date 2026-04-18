@@ -37,7 +37,7 @@ class MongooseConnector<T extends MongooseDocument = MongooseDocument> extends M
 
     return query.then((doc) => {
       Validator.validateDocumentExist(doc, 404);
-      return doc as T;
+      return doc;
     });
   }
 
@@ -75,28 +75,25 @@ class MongooseConnector<T extends MongooseDocument = MongooseDocument> extends M
     set: UpdateSet,
     config: UpdateConfig = {}
   ): Promise<unknown> {
-    Validator.validateConditions(conditions);
+    const parsedConditions = this._parseConditions(conditions);
 
     if (config.fast) {
       const { $pull, $push, ...$set } = set;
       return this.model.updateOne(
-        this._parseConditions(conditions),
+        parsedConditions,
         { ...($pull && { $pull }), ...($push && { $push }), ...($set && { $set }) } as UpdateQuery<T>
       );
     }
 
     return this.model
-      .findOne(this._parseConditions(conditions))
+      .findOne(parsedConditions)
       .then((doc) => {
         Validator.validateDocumentExist(doc, 404);
         return doc;
       })
       .then((doc) => {
-        if (doc) {
-          this.assign(doc as Record<string, unknown>, set);
-          return doc.save();
-        }
-        return doc;
+        this.assign(doc as Record<string, unknown>, set);
+        return doc.save();
       });
   }
 
@@ -116,20 +113,14 @@ class MongooseConnector<T extends MongooseDocument = MongooseDocument> extends M
         return doc;
       })
       .then((doc) => {
-        if (doc) {
-          this.assign(doc as Record<string, unknown>, set);
-          return doc.save();
-        }
-        return doc;
+        this.assign(doc as Record<string, unknown>, set);
+        return doc.save();
       });
   }
 
   delete(id: string): Promise<T> {
     return this.findById(id).then((doc) => {
-      Validator.validateDocumentExist(doc);
-      return this.model.deleteOne({ _id: id } as FilterQuery<T>).then(() => {
-        return doc;
-      });
+      return this.model.deleteOne({ _id: id } as FilterQuery<T>).then(() => doc);
     });
   }
 

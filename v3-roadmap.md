@@ -52,7 +52,7 @@ Estabilizar el core y preparar arquitectura para extensibilidad
   * [x] routing (`check`)
   * [x] query parsing
   * [x] disabled methods
-* [ ] Mejorar manejo de errores tipados
+* [x] Mejorar manejo de errores tipados
 
 ---
 

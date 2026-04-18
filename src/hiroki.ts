@@ -1,5 +1,5 @@
 import Controller, { ControllerConfig, ProcessParams } from './controller';
-import { RouteNotFoundError, isHttpError } from './errors';
+import { RouteNotFoundError, isHttpError, HttpErrorResponse } from './errors';
 import Validator from './validator';
 import type { ValidModel } from './validator';
 import { ConsoleLogger, HirokiLogger, LogLevel } from './logger';
@@ -111,7 +111,7 @@ class Hiroki {
         error: error instanceof Error ? error.message : 'Unknown error',
         status: 500,
         code: 'INTERNAL_ERROR'
-      };
+      } satisfies HttpErrorResponse;
     }
   }
 }

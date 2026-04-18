@@ -87,13 +87,8 @@ class Model<T extends Document = Document> {
       return {};
     }
 
-    Validator.validateConditions(conditions);
-
-    if (typeof conditions === 'object') {
-      return conditions as FilterQuery<T>;
-    }
-
-    return JSON.parse(conditions) as FilterQuery<T>;
+    const parsed = Validator.validateConditions(conditions);
+    return (parsed ?? {}) as FilterQuery<T>;
   }
 }
 

@@ -1,7 +1,11 @@
-/**
- * Base HTTP Error class with status code support
- * All custom errors should extend this class
- */
+export interface HttpErrorResponse {
+  error: string;
+  status: number;
+  code: string;
+  details?: unknown;
+  [key: string]: unknown;
+}
+
 export class HttpError extends Error {
   public status: number;
   public readonly code: string;
@@ -20,10 +24,7 @@ export class HttpError extends Error {
     }
   }
 
-  /**
-   * Converts error to JSON for API responses
-   */
-  toJSON() {
+  toJSON(): HttpErrorResponse {
     return {
       error: this.message,
       status: this.status,

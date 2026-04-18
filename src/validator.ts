@@ -11,129 +11,84 @@ import {
   DisabledMethodError
 } from './errors';
 
-/**
- * Valid model types - can be either:
- * - A string representing the model name (used to retrieve from mongoose registry)
- * - A Mongoose Model instance
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ValidModel = string | Model<any>;
+export type ValidModel = string | Model<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-/**
- * MongoDB query conditions - supports all MongoDB query operators
- * Can be:
- * - A string containing JSON-formatted conditions
- * - An object with MongoDB operators ($eq, $ne, $gt, $gte, $lt, $lte, $in, $nin, $not, $size, etc.)
- * - undefined/null for no conditions
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ValidConditions = string | FilterQuery<any> | undefined | null;
+export type ValidConditions = string | FilterQuery<any> | undefined | null; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-/**
- * Parameters interface for validation methods
- */
 export interface ValidationParams {
   query?: {
     id?: string;
     conditions?: ValidConditions;
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  body?: Record<string, any>;
+  body?: Record<string, unknown>;
   method?: string;
   id?: string;
 }
 
 class Validator {
-  
-  /**
-   * Type guard to check if a value is a Mongoose Model
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static isMongooseModel(value: unknown): value is Model<any> {
+
+  static isMongooseModel(value: unknown): value is Model<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
     return typeof value === 'function' &&
       value.prototype instanceof mongoose.Model;
-  } 
-  
-  /**
-   * Validates if the provided model is valid (string or Mongoose model)
-   * @param model - The model to validate
-   * @returns true if valid, throws error otherwise
-   */
-  static validateModel(model: unknown): model is ValidModel {
+  }
+
+  static validateModel(model: unknown): asserts model is ValidModel {
     if (!model) {
       throw new InvalidModelError(model);
     }
-    
-    const modelType = typeof model;
-    
-    // Accept string (model name to be retrieved from mongoose registry)
-    if (modelType === 'string') {
-      return true;
+
+    if (typeof model === 'string') {
+      return;
     }
-    
-    // Accept Mongoose Model instance
+
     if (this.isMongooseModel(model)) {
-      return true;
+      return;
     }
-    
+
     throw new InvalidModelError(model);
   }
 
-  /**
-   * Validates and parses conditions
-   * @param conditions - Conditions to validate (can be string, object, or undefined)
-   * @returns Parsed conditions object or original if already valid
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static validateConditions(conditions: ValidConditions): FilterQuery<any> | undefined {
-    // If no conditions or already an object, return as is
+  static validateConditions(conditions: ValidConditions): FilterQuery<any> | undefined { // eslint-disable-line @typescript-eslint/no-explicit-any
     if (!conditions || typeof conditions === 'object') {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return conditions as FilterQuery<any> | undefined;
+      return conditions as FilterQuery<any> | undefined; // eslint-disable-line @typescript-eslint/no-explicit-any
     }
-    
-    // If string, try to parse as JSON
+
     if (typeof conditions === 'string') {
       try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return JSON.parse(conditions) as FilterQuery<any>;
+        return JSON.parse(conditions) as FilterQuery<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
       } catch (error) {
         throw new InvalidConditionsError(conditions, error as Error);
       }
     }
-    
+
     throw new InvalidConditionsError('Invalid conditions format');
   }
 
-  static validatePutParams(params: ValidationParams): boolean {
+  static validatePutParams(params: ValidationParams): void {
     const { query } = params;
     if (!query?.hasOwnProperty('id') && !query?.hasOwnProperty('conditions')) {
       throw new ParamRequiredError('id or conditions');
     }
-    return true;
   }
 
-  static validateIdRequired(params: ValidationParams): boolean {
+  static validateIdRequired(params: ValidationParams): void {
     if (!params.id) {
       throw new ParamRequiredError('id', 404);
     }
-    return true;
   }
 
-  static validateConditionsString(conditions: string): boolean {
+  static validateConditionsString(conditions: string): void {
     try {
       JSON.parse(conditions);
     } catch (error) {
       throw new InvalidConditionsError(conditions, error as Error);
     }
-    return true;
   }
 
-  static validateDocumentExist(doc: unknown, status?: number): boolean {
+  static validateDocumentExist<T>(doc: T | null | undefined, status?: number): asserts doc is NonNullable<T> {
     if (!doc) {
       throw new DocumentNotFoundError(status);
     }
-    return true;
   }
 
   static validaMethods(methods: string, validMethods: string[]): void {
@@ -146,12 +101,11 @@ class Validator {
     }
   }
 
-  static validateBody(params: ValidationParams): boolean {
+  static validateBody(params: ValidationParams): void {
     const { body, method } = params;
     if (method && ['POST', 'PUT'].includes(method) && !body) {
       throw new BodyRequiredError(method);
     }
-    return true;
   }
 
   static validateCallback(callback: unknown, callbackName: string): void {
