@@ -1,5 +1,5 @@
 import mongoose, { Document, Model as MongooseModel, Query, FilterQuery, UpdateQuery } from 'mongoose';
-import Validator from './validator';
+import { validateModel, validateDocumentExist } from './validator';
 import type { ValidModel, ValidConditions } from './validator';
 import Model, { UpdateSet, QueryParams } from './model';
 
@@ -16,7 +16,7 @@ class MongooseConnector<T extends MongooseDocument = MongooseDocument> extends M
 
   constructor(model: ValidModel) {
     super(model);
-    Validator.validateModel(model);
+    validateModel(model);
 
     if (typeof model === 'string') {
       this.model = mongoose.model<T>(model);
@@ -36,7 +36,7 @@ class MongooseConnector<T extends MongooseDocument = MongooseDocument> extends M
     }
 
     return query.then((doc) => {
-      Validator.validateDocumentExist(doc, 404);
+      validateDocumentExist(doc, 404);
       return doc;
     });
   }
@@ -88,7 +88,7 @@ class MongooseConnector<T extends MongooseDocument = MongooseDocument> extends M
     return this.model
       .findOne(parsedConditions)
       .then((doc) => {
-        Validator.validateDocumentExist(doc, 404);
+        validateDocumentExist(doc, 404);
         return doc;
       })
       .then((doc) => {
@@ -109,7 +109,7 @@ class MongooseConnector<T extends MongooseDocument = MongooseDocument> extends M
     return this.model
       .findOne({ _id: id } as FilterQuery<T>)
       .then((doc) => {
-        Validator.validateDocumentExist(doc, 404);
+        validateDocumentExist(doc, 404);
         return doc;
       })
       .then((doc) => {

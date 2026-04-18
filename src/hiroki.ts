@@ -1,6 +1,6 @@
 import Controller, { ControllerConfig, ProcessParams } from './controller';
 import { RouteNotFoundError, isHttpError, HttpErrorResponse } from './errors';
-import Validator from './validator';
+import { validateModel } from './validator';
 import type { ValidModel } from './validator';
 import { ConsoleLogger, HirokiLogger, LogLevel } from './logger';
 
@@ -48,7 +48,7 @@ class Hiroki {
   }
 
   importModel(model: ValidModel, options?: ImportModelOptions): Controller {
-    Validator.validateModel(model);
+    validateModel(model);
     const m = model as { modelName?: string; name?: string };
     const modelName = m.modelName ?? m.name ?? String(model);
 

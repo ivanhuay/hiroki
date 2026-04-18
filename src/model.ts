@@ -1,4 +1,4 @@
-import Validator from './validator';
+import { validateModel, validateConditions } from './validator';
 import type { FilterQuery, Document, PopulateOptions as MongoosePopulateOptions } from 'mongoose';
 import type { ValidModel, ValidConditions } from './validator';
 
@@ -29,7 +29,7 @@ export type PopulateOptions = MongoosePopulateOptions | MongoosePopulateOptions[
 
 class Model<T extends Document = Document> {
   constructor(model: ValidModel) {
-    Validator.validateModel(model);
+    validateModel(model);
   }
 
   assign(obj: Record<string, unknown>, set: UpdateSet): void {
@@ -87,7 +87,7 @@ class Model<T extends Document = Document> {
       return {};
     }
 
-    const parsed = Validator.validateConditions(conditions);
+    const parsed = validateConditions(conditions);
     return (parsed ?? {}) as FilterQuery<T>;
   }
 }

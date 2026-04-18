@@ -1,6 +1,6 @@
 import MongooseConnector from './mongoose-connector';
 import pluralize from 'pluralize';
-import Validator from './validator';
+import { validateEnum, validateDisabledMethod, validatePutParams, validateIdRequired, validateBody } from './validator';
 import type { ValidModel } from './validator';
 import { DisabledMethodError, UnexpectedError } from './errors';
 import type { QueryParams } from './model';
@@ -60,7 +60,7 @@ class Controller {
       ...config
     };
     this.logger = this.config.logger ?? new ConsoleLogger({ logLevel: this.config.logLevel || 'error' });
-    Validator.validateEnum(this.config.fastUpdate, ['enabled', 'disabled', 'optional']);
+    validateEnum(this.config.fastUpdate, ['enabled', 'disabled', 'optional']);
 
     this.routeName = pluralize(this.model.modelName).toLocaleLowerCase();
 
@@ -83,7 +83,7 @@ class Controller {
   }
 
   get(params: ExtendedQueryParams): Promise<unknown> {
-    Validator.validateDisabledMethod('get', this._disabledMethods);
+    validateDisabledMethod('get', this._disabledMethods);
     if (params.id) {
       return this.model.findById(params.id, params);
     }
@@ -92,13 +92,13 @@ class Controller {
   }
 
   post(params: RequestParams): Promise<unknown> {
-    Validator.validateDisabledMethod('post', this._disabledMethods);
+    validateDisabledMethod('post', this._disabledMethods);
     return this.model.create(params.body!);
   }
 
   put(params: RequestParams): Promise<unknown> {
-    Validator.validateDisabledMethod('put', this._disabledMethods);
-    Validator.validatePutParams(params);
+    validateDisabledMethod('put', this._disabledMethods);
+    validatePutParams(params);
 
     const fast =
       this.config.fastUpdate === 'enabled' ||
@@ -112,8 +112,8 @@ class Controller {
   }
 
   delete(params: RequestParams): Promise<unknown> {
-    Validator.validateDisabledMethod('delete', this._disabledMethods);
-    Validator.validateIdRequired(params);
+    validateDisabledMethod('delete', this._disabledMethods);
+    validateIdRequired(params);
     return this.model.delete(params.id!);
   }
 
@@ -165,7 +165,7 @@ class Controller {
       throw new DisabledMethodError(method);
     }
 
-    Validator.validateBody({ body, method });
+    validateBody({ body, method });
 
     if (method === 'GET') {
       return this.get(query.query);

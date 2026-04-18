@@ -273,6 +273,8 @@ Aumentar confianza en cambios
 # 🧹 Deuda técnica
 
 * [x] Remover `any`
+* [x] Refactor `Validator` class → standalone named exports (remove static-only class antipattern)
+* [x] Eliminar código muerto: `validateConditionsString`, `validaMethods`
 * [ ] Simplificar tipos complejos (`Omit + Pick`)
 * [ ] Separar tipos en archivos
 * [ ] Mejorar naming interno
