@@ -47,11 +47,11 @@ Estabilizar el core y preparar arquitectura para extensibilidad
   * [x] Controller
   * [x] MongooseConnector
   * [x] Requests / Responses
-* [ ] Tests básicos:
+* [x] Tests básicos:
 
-  * [ ] routing (`check`)
-  * [ ] query parsing
-  * [ ] disabled methods
+  * [x] routing (`check`)
+  * [x] query parsing
+  * [x] disabled methods
 * [ ] Mejorar manejo de errores tipados
 
 ---
