@@ -15,7 +15,6 @@ import {
   UnexpectedError,
   isHttpError,
   hasStatus,
-  ErrorFactory
 } from '../src/errors';
 
 describe('Custom Error Classes', () => {
@@ -281,52 +280,6 @@ describe('Custom Error Classes', () => {
         const error = new Error('test');
         expect(hasStatus(error)).toBe(false);
       });
-    });
-  });
-
-  describe('ErrorFactory (Legacy compatibility)', () => {
-    it('should throw InvalidModelError', () => {
-      expect(() => ErrorFactory.invalidModel(null)).toThrow(InvalidModelError);
-    });
-
-    it('should throw InvalidConditionsError', () => {
-      expect(() => ErrorFactory.invalidConditions('{}')).toThrow(InvalidConditionsError);
-    });
-
-    it('should throw ParamRequiredError', () => {
-      expect(() => ErrorFactory.paramRequired('id')).toThrow(ParamRequiredError);
-    });
-
-    it('should throw DocumentNotFoundError', () => {
-      expect(() => ErrorFactory.documentNotFound()).toThrow(DocumentNotFoundError);
-    });
-
-    it('should throw BodyRequiredError', () => {
-      expect(() => ErrorFactory.bodyRequired('POST')).toThrow(BodyRequiredError);
-    });
-
-    it('should throw InvalidMethodError', () => {
-      expect(() => ErrorFactory.invalidMethod('PATCH', 'GET, POST')).toThrow(InvalidMethodError);
-    });
-
-    it('should throw InvalidMiddlewareError', () => {
-      expect(() => ErrorFactory.invalidMiddleware('test')).toThrow(InvalidMiddlewareError);
-    });
-
-    it('should throw InvalidEnumError', () => {
-      expect(() => ErrorFactory.invalidEnum('x', ['a', 'b'])).toThrow(InvalidEnumError);
-    });
-
-    it('should throw DisabledMethodError', () => {
-      expect(() => ErrorFactory.disabledMethod('DELETE')).toThrow(DisabledMethodError);
-    });
-
-    it('should throw RouteNotFoundError', () => {
-      expect(() => ErrorFactory.notFound('/test')).toThrow(RouteNotFoundError);
-    });
-
-    it('should throw UnexpectedError', () => {
-      expect(() => ErrorFactory.unexpectedError()).toThrow(UnexpectedError);
     });
   });
 

@@ -1,25 +1,23 @@
 import Validator from './validator';
-import type { QueryOptions as MongooseQueryOptions } from 'mongoose';
+import type { FilterQuery, Document, PopulateOptions as MongoosePopulateOptions } from 'mongoose';
+import type { ValidModel, ValidConditions } from './validator';
 
-// MongoDB update operators
 export interface UpdateOperators {
-  $pull?: any[];
-  $push?: any | any[];
+  $pull?: unknown[];
+  $push?: unknown | unknown[];
 }
 
-export type UpdateSet = Record<string, any | UpdateOperators>;
+export type UpdateSet = Record<string, unknown>;
 
-// Query parameters interface
 export interface QueryParams {
   skip?: string | number;
   limit?: string | number;
   sort?: string;
   select?: string;
   populate?: string;
-  conditions?: any;
+  conditions?: ValidConditions;
 }
 
-// Parsed options for Mongoose queries
 export interface ParsedOptions {
   sort?: string;
   skip?: number;
@@ -27,26 +25,26 @@ export interface ParsedOptions {
   select?: string;
 }
 
-// Populate options (can be string, object, or array)
-export type PopulateOptions = string | object | object[] | false;
+export type PopulateOptions = MongoosePopulateOptions | MongoosePopulateOptions[] | false;
 
-class Model {
-  constructor(model: any) {
+class Model<T extends Document = Document> {
+  constructor(model: ValidModel) {
     Validator.validateModel(model);
   }
 
-  // Assigns values to object with support for MongoDB operators $pull and $push
-  assign(obj: any, set: UpdateSet): void {
+  assign(obj: Record<string, unknown>, set: UpdateSet): void {
     Object.keys(set).forEach((key) => {
-      if (set[key] && typeof set[key] === 'object' && set[key].hasOwnProperty('$pull')) {
-        obj[key] = obj[key].filter((subitem: any) => 
-          (set[key] as UpdateOperators).$pull?.indexOf(subitem) === -1
+      const value = set[key];
+      if (value && typeof value === 'object' && '$pull' in value) {
+        const operator = value as UpdateOperators;
+        obj[key] = (obj[key] as unknown[]).filter(
+          (subitem) => operator.$pull?.indexOf(subitem) === -1
         );
-      } else if (set[key] && typeof set[key] === 'object' && set[key].hasOwnProperty('$push')) {
-        const pushValue = (set[key] as UpdateOperators).$push;
-        obj[key] = obj[key].concat(pushValue);
+      } else if (value && typeof value === 'object' && '$push' in value) {
+        const operator = value as UpdateOperators;
+        obj[key] = (obj[key] as unknown[]).concat(operator.$push);
       } else {
-        obj[key] = set[key];
+        obj[key] = value;
       }
     });
   }
@@ -55,7 +53,7 @@ class Model {
     const options: ParsedOptions = {
       sort: '_id'
     };
-    
+
     if (query.skip) {
       options.skip = parseInt(String(query.skip));
     }
@@ -68,36 +66,34 @@ class Model {
     if (query.select) {
       options.select = query.select;
     }
-    
+
     return options;
   }
 
   protected _parsePopulate(query?: QueryParams): PopulateOptions {
-    let populate: PopulateOptions = false;
-    
-    if (query?.populate) {
-      try {
-        populate = JSON.parse(query.populate);
-      } catch (e) {
-        populate = query.populate;
-      }
+    if (!query?.populate) {
+      return false;
     }
-    
-    return populate;
+
+    try {
+      return JSON.parse(query.populate) as MongoosePopulateOptions | MongoosePopulateOptions[];
+    } catch (e) {
+      return { path: query.populate };
+    }
   }
 
-  protected _parseConditions(conditions?: any): any {
+  protected _parseConditions(conditions?: ValidConditions): FilterQuery<T> {
     if (!conditions) {
       return {};
     }
-    
+
     Validator.validateConditions(conditions);
-    
+
     if (typeof conditions === 'object') {
-      return conditions;
+      return conditions as FilterQuery<T>;
     }
-    
-    return JSON.parse(conditions);
+
+    return JSON.parse(conditions) as FilterQuery<T>;
   }
 }
 

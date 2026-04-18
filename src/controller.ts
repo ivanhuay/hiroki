@@ -1,13 +1,13 @@
 import MongooseConnector from './mongoose-connector';
 import pluralize from 'pluralize';
 import Validator from './validator';
+import type { ValidModel } from './validator';
 import { DisabledMethodError, UnexpectedError } from './errors';
 import type { QueryParams } from './model';
 import { HirokiLogger, ConsoleLogger, LogLevel } from './logger';
-// HTTP Methods enum
+
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-// Controller configuration
 export interface ControllerConfig {
   fastUpdate?: 'enabled' | 'disabled' | 'optional';
   disabledPluralize?: boolean;
@@ -17,20 +17,17 @@ export interface ControllerConfig {
   logLevel?: LogLevel;
 }
 
-// Process request parameters
 export interface ProcessParams {
   method: HttpMethod;
-  body?: any;
+  body?: Record<string, unknown>;
 }
 
-// Internal request parameters
 export interface RequestParams {
   id?: string;
-  body?: any;
+  body?: Record<string, unknown>;
   query?: ExtendedQueryParams;
 }
 
-// Extended query parameters with id and conditions
 export interface ExtendedQueryParams extends QueryParams {
   id?: string;
   count?: boolean;
@@ -38,7 +35,6 @@ export interface ExtendedQueryParams extends QueryParams {
   fast?: boolean;
 }
 
-// Parsed query object
 export interface ParsedQuery {
   query: ExtendedQueryParams;
 }
@@ -55,7 +51,7 @@ class Controller {
   private _disabledMethods: string[];
   private logger: HirokiLogger;
 
-  constructor(model: any, config: ControllerConfig = {}) {
+  constructor(model: ValidModel, config: ControllerConfig = {}) {
     this.model = new MongooseConnector(model);
     this.config = {
       fastUpdate: 'disabled',
@@ -65,18 +61,18 @@ class Controller {
     };
     this.logger = this.config.logger ?? new ConsoleLogger({ logLevel: this.config.logLevel || 'error' });
     Validator.validateEnum(this.config.fastUpdate, ['enabled', 'disabled', 'optional']);
-    
+
     this.routeName = pluralize(this.model.modelName).toLocaleLowerCase();
-    
+
     if (this.config.disabledPluralize === false) {
       this.routeName = this.model.modelName;
     }
-    
+
     this.path = `${this.config.basePath}/${this.routeName}`;
     this._disabledMethods = this.config.disabledMethod || [];
   }
 
-  protected queryGet(query: ExtendedQueryParams): Promise<any> {
+  protected queryGet(query: ExtendedQueryParams): Promise<unknown> {
     if (query.count) {
       return this.model.count(query);
     }
@@ -86,37 +82,36 @@ class Controller {
     return this.model.find(query);
   }
 
-  get(params: ExtendedQueryParams): Promise<any> {
+  get(params: ExtendedQueryParams): Promise<unknown> {
     Validator.validateDisabledMethod('get', this._disabledMethods);
     if (params.id) {
       return this.model.findById(params.id, params);
     }
-    
+
     return this.queryGet(params);
   }
 
-  post(params: RequestParams): Promise<any> {
+  post(params: RequestParams): Promise<unknown> {
     Validator.validateDisabledMethod('post', this._disabledMethods);
-    const body = params.body;
-    return this.model.create(body);
+    return this.model.create(params.body!);
   }
 
-  put(params: RequestParams): Promise<any> {
+  put(params: RequestParams): Promise<unknown> {
     Validator.validateDisabledMethod('put', this._disabledMethods);
     Validator.validatePutParams(params);
-    
-    const fast = 
+
+    const fast =
       this.config.fastUpdate === 'enabled' ||
       (this.config.fastUpdate === 'optional' && params.query?.fast);
-    
+
     if (params.query?.id) {
-      return this.model.updateById(params.query.id, params.body, { fast });
+      return this.model.updateById(params.query.id, params.body!, { fast });
     }
-    
-    return this.model.updateByConditions(params.query?.conditions, params.body, { fast });
+
+    return this.model.updateByConditions(params.query?.conditions, params.body!, { fast });
   }
 
-  delete(params: RequestParams): Promise<any> {
+  delete(params: RequestParams): Promise<unknown> {
     Validator.validateDisabledMethod('delete', this._disabledMethods);
     Validator.validateIdRequired(params);
     return this.model.delete(params.id!);
@@ -129,50 +124,49 @@ class Controller {
   protected _getQueryParams(path: string): ParsedQuery {
     const url = new URL(`http://localhost${path}`);
     const searchParams = url.searchParams;
-    const queryParams: any = {};
-    
+    const queryParams: Record<string, unknown> = {};
+
     for (const [key, value] of searchParams.entries()) {
       queryParams[key] = value;
       if (queryParams[key] === 'true' || queryParams[key] === 'false') {
         queryParams[key] = queryParams[key] === 'true';
       }
     }
-    
+
     const pathRegex = new RegExp(`^${this.path}/([\\w\\d]+)`);
     const matchId = path.match(pathRegex);
-    
+
     if (matchId) {
-      const id = matchId[1];
-      queryParams.id = id;
+      queryParams.id = matchId[1];
     }
-    
+
     if (path.match(/conditions\[(\w+)\]/ig)) {
-      const conditions: Record<string, any> = {};
-      
-      for (let [key, value] of Object.entries(queryParams)) {
+      const conditions: Record<string, unknown> = {};
+
+      for (const [key, value] of Object.entries(queryParams)) {
         const match = String(key).match(/^conditions\[(\w+)\]$/);
         if (match) {
-          const field = match[1];
-          conditions[field] = value;
+          conditions[match[1]] = value;
         }
       }
-      
+
       queryParams.conditions = conditions;
     }
-    
-    return { query: queryParams };
+
+    return { query: queryParams as ExtendedQueryParams };
   }
 
-  process(path: string, params: ProcessParams): Promise<any> {
+  process(path: string, params: ProcessParams): Promise<unknown> {
     const query = this._getQueryParams(path);
     const { method, body } = params;
     this.logger.debug(`Processing request: ${method} ${path} with body: ${JSON.stringify(body)} and query: ${JSON.stringify(query.query)}`);
+
     if (this._disabledMethods.includes(method)) {
       throw new DisabledMethodError(method);
     }
-    
+
     Validator.validateBody({ body, method });
-    
+
     if (method === 'GET') {
       return this.get(query.query);
     }
@@ -185,7 +179,7 @@ class Controller {
     if (method === 'DELETE') {
       return this.delete({ id: query.query.id });
     }
-    
+
     throw new UnexpectedError();
   }
 }
