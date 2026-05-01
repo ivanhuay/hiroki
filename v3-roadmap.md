@@ -56,7 +56,7 @@ Estabilizar el core y preparar arquitectura para extensibilidad
 
 ---
 
-## 🥈 Fase 2 — Adapter system
+## 🥈 Fase 2 — Adapter system ✅
 
 ### Objetivo
 
@@ -64,24 +64,31 @@ Separar el core del motor de base de datos
 
 ### Tasks
 
-* [ ] Definir interfaz base:
+* [x] Definir interfaz base (`src/adapter.ts`):
 
 ```ts
 interface HirokiAdapter {
-  canHandle(resource: unknown): boolean
-  find(query: unknown): Promise<any>
-  create(data: unknown): Promise<any>
-  update(query: unknown, data: unknown): Promise<any>
-  delete(query: unknown): Promise<any>
+  readonly modelName: string;
+  canHandle(resource: unknown): boolean;
+  findById(id: string, query?: QueryParams): Promise<unknown>;
+  find(query: QueryParams): Promise<unknown>;
+  count(query?: QueryParams): Promise<number>;
+  distinct(field: string): Promise<unknown[]>;
+  create(data: Record<string, unknown>): Promise<unknown>;
+  updateById(id: string, data: UpdateSet, config?: UpdateConfig): Promise<unknown>;
+  updateByConditions(conditions: ValidConditions | undefined, data: UpdateSet, config?: UpdateConfig): Promise<unknown>;
+  delete(id: string): Promise<unknown>;
 }
 ```
 
-* [ ] Extraer Mongoose a adapter:
+* [x] Extraer Mongoose a adapter (`src/mongoose-adapter.ts`):
 
-  * [ ] `@hiroki/adapter-mongoose`
-* [ ] Implementar `canHandle()`
-* [ ] Adapter registry interno
-* [ ] Refactor Controller → usar adapter
+  * [x] `MongooseAdapter implements HirokiAdapter`
+* [x] Implementar `canHandle()`
+* [x] Adapter registry interno (`AdapterRegistry` + `adapterRegistry` singleton)
+* [x] Refactor Controller → usar `HirokiAdapter` (default: `MongooseAdapter`)
+* [x] Eliminar `mongoose-connector.ts` (lógica absorbida por `MongooseAdapter`)
+* [x] Simplificar `model.ts` → solo tipos/interfaces, sin clase ni deps de Mongoose
 
 ---
 

@@ -1,12 +1,9 @@
 import Hiroki from './hiroki';
 
-// Create singleton instance
 const hiroki = new Hiroki();
 
-// Export singleton as default
 export default hiroki;
 
-// Export types for TypeScript users
 export type {
   HirokiConfig,
   ImportModelOptions,
@@ -26,16 +23,28 @@ export type {
   QueryParams,
   UpdateSet,
   UpdateOperators,
-  ParsedOptions,
-  PopulateOptions
+  ParsedOptions
 } from './model.js';
+
+export type {
+  HirokiAdapter,
+  UpdateConfig
+} from './adapter.js';
+
+export { adapterRegistry, AdapterRegistry } from './adapter';
+
+export type {
+  MongooseDocument,
+  PopulateOptions
+} from './mongoose-adapter.js';
+
+export { MongooseAdapter } from './mongoose-adapter';
 
 export type {
   ValidModel,
   ValidationParams
 } from './validator.js';
 
-// Export error classes for error handling
 export type { HttpErrorResponse } from './errors';
 
 export {
@@ -59,5 +68,4 @@ export {
   hasStatus
 } from './errors';
 
-// Export Hiroki class for advanced users who want to create their own instances
 export { Hiroki };

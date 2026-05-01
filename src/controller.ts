@@ -1,4 +1,5 @@
-import MongooseConnector from './mongoose-connector';
+import { MongooseAdapter } from './mongoose-adapter';
+import type { HirokiAdapter } from './adapter';
 import pluralize from 'pluralize';
 import { validateEnum, validateDisabledMethod, validatePutParams, validateIdRequired, validateBody } from './validator';
 import type { ValidModel } from './validator';
@@ -44,7 +45,7 @@ type ResolvedControllerConfig =
   Pick<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel'>;
 
 class Controller {
-  protected model: MongooseConnector;
+  protected model: HirokiAdapter;
   protected config: ResolvedControllerConfig;
   public routeName: string;
   public path: string;
@@ -52,7 +53,7 @@ class Controller {
   private logger: HirokiLogger;
 
   constructor(model: ValidModel, config: ControllerConfig = {}) {
-    this.model = new MongooseConnector(model);
+    this.model = new MongooseAdapter(model);
     this.config = {
       fastUpdate: 'disabled',
       disabledPluralize: true,
