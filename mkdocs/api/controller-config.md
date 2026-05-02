@@ -30,7 +30,13 @@ Controls whether updates skip the find-then-save round-trip.
 
 ## disabledPluralize
 
-When `false`, pluralizes the model name for the route (e.g. `User` → `/users`). Default: `true` (no pluralization).
+When `true`, disables pluralization so the route uses the model name as-is (e.g. `User` → `/user`).
+Default: `false` — routes are pluralized automatically (e.g. `User` → `/users`).
+
+```ts
+hiroki.importModel(User);                          // → /users  (default)
+hiroki.importModel(User, { disabledPluralize: true });  // → /user
+```
 
 ## basePath
 

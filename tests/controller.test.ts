@@ -1,6 +1,7 @@
 import Controller from '../src/controller';
 import hiroki from '../src';
 import { DisabledMethodError } from '../src/errors';
+import { MemoryAdapter } from '../src/memory-adapter';
 import Users from './mock/models/users';
 import Books from './mock/models/books';
 
@@ -51,13 +52,23 @@ describe('Controller', () => {
       expect(c.check('/api/books')).toBe(false);
     });
 
-    it('uses non-pluralized route when disabledPluralize is false', () => {
-      const c = new TestableController(Users, {
+    it('pluralizes route by default', () => {
+      const c = new TestableController('User', {
         basePath: '/api',
-        disabledPluralize: false
+        adapter: new MemoryAdapter('User'),
       });
-      expect(c.check('/api/Users')).toBe(true);
-      expect(c.check('/api/users')).toBe(false);
+      expect(c.check('/api/users')).toBe(true);
+      expect(c.check('/api/user')).toBe(false);
+    });
+
+    it('skips pluralization when disabledPluralize is true', () => {
+      const c = new TestableController('User', {
+        basePath: '/api',
+        adapter: new MemoryAdapter('User'),
+        disabledPluralize: true,
+      });
+      expect(c.routeName).toBe('user');
+      expect(c.path).toBe('/api/user');
     });
 
     it('exposes correct path and routeName', () => {

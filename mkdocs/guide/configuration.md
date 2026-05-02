@@ -17,7 +17,7 @@ All options in `ControllerConfig` can be passed to `importModel`:
 ```ts
 hiroki.importModel(User, {
   disabledMethod: ['DELETE'],            // block HTTP methods
-  disabledPluralize: true,              // use model name as-is (default: true)
+  disabledPluralize: true,              // disable pluralization (default: false)
   fastUpdate: 'optional',               // 'disabled' | 'enabled' | 'optional'
   allowedFields: ['name', 'email'],     // field whitelist for create/update
   queryLimits: { maxFilters: 10 },      // tighten query safety limits

@@ -21,7 +21,7 @@ export interface ControllerConfig {
    * - `'optional'`: use `updateOne` only when `?fast=true` is in the query string.
    */
   fastUpdate?: 'enabled' | 'disabled' | 'optional';
-  /** When `false`, pluralizes the model name for the route (e.g. `User` → `/users`). Default: `true`. */
+  /** When `true`, disables pluralization (e.g. `User` → `/user`). Default: `false` (route is pluralized). */
   disabledPluralize?: boolean;
   /** URL prefix prepended to the resource route. Default: `''`. */
   basePath?: string;
@@ -80,7 +80,7 @@ class Controller {
   constructor(model: ValidModel, config: ControllerConfig = {}) {
     this.config = {
       fastUpdate: 'disabled',
-      disabledPluralize: true,
+      disabledPluralize: false,
       basePath: '',
       ...config
     };
@@ -92,11 +92,8 @@ class Controller {
     this.model.setLogger?.(this.logger);
     validateEnum(this.config.fastUpdate, ['enabled', 'disabled', 'optional']);
 
-    this.routeName = pluralize(this.model.modelName).toLocaleLowerCase();
-
-    if (this.config.disabledPluralize === false) {
-      this.routeName = this.model.modelName;
-    }
+    const baseName = this.model.modelName.toLocaleLowerCase();
+    this.routeName = this.config.disabledPluralize ? baseName : pluralize(baseName);
 
     this.path = `${this.config.basePath}/${this.routeName}`;
     this.disabledMethods = this.config.disabledMethod || [];
