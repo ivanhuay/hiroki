@@ -276,7 +276,23 @@ Hacer Hiroki fácil de adoptar para humanos y herramientas AI
 
 ---
 
-## 📦 Fase 8 — Monorepo & sub-packages
+## ⚙️ Fase 8 — CI/CD: Migrar CircleCI → GitHub Actions ✅
+
+### Objetivo
+
+Reemplazar CircleCI con GitHub Actions para ejecutar tests en cada PR y push
+
+### Tasks
+
+* [x] Crear `.github/workflows/ci.yml` — ejecutar test suite completa (`npm test`)
+* [x] Disparar en `push` y `pull_request` a `master` y `feature/**`
+* [x] Matrix de Node.js versions (LTS actual + siguiente)
+* [x] Eliminar `.circleci/config.yml` y directorio `.circleci/`
+* [x] Verificar badge de status en README (si aplica)
+
+---
+
+## 📦 Fase 9 — Monorepo & sub-packages
 
 ### Objetivo
 
@@ -306,7 +322,8 @@ Expandir el ecosistema de adapters sin contaminar el core
 ✅ Core estable — Fases 1–5 completas
 ✅ Deuda técnica — Fase 6 completa
 ✅ Documentación — Fase 7 completa (VitePress, 13 páginas)
-🔧 Pendiente — Monorepo & sub-packages (Fase 8)
+✅ CI/CD migración — Fase 8 completa (GitHub Actions)
+🔧 Pendiente — Monorepo & sub-packages (Fase 9)
 
 ---
 
@@ -335,5 +352,5 @@ Busca ser:
 # 📌 Estado del proyecto
 
 ✅ v3 core estable — adapter system, query AST, hooks, middleware, seguridad, build dual CJS/ESM
-🔧 Fases 6–8 pendientes — deuda técnica, docs, monorepo
+🔧 Fases 6–9 pendientes — deuda técnica, docs, CI/CD, monorepo
 ⚠️ API pública puede cambiar hasta release oficial de v3

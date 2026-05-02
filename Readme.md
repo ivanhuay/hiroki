@@ -1,6 +1,6 @@
 # Hiroki
 
-[![NPM version][npm-image]][npm-url] [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/73Gnub9RenZ7Vn7XN2Cq7A/7FichnXE69CYoQzoP7ppAd/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/73Gnub9RenZ7Vn7XN2Cq7A/7FichnXE69CYoQzoP7ppAd/tree/master)
+[![NPM version][npm-image]][npm-url] [![CI](https://github.com/ivanhuay/hiroki/actions/workflows/ci.yml/badge.svg)](https://github.com/ivanhuay/hiroki/actions/workflows/ci.yml)
 
 Hiroki helps you build REST APIs faster than ever using open source tools and standards that you and your team already know.
 
