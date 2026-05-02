@@ -242,7 +242,7 @@ Expandir ecosistema
 
 ---
 
-## 🔧 Fase 6 — Deuda técnica & DX interna
+## 🔧 Fase 6 — Deuda técnica & DX interna ✅
 
 ### Objetivo
 
@@ -250,10 +250,10 @@ Limpiar el core para facilitar contribuciones y mantenimiento
 
 ### Tasks
 
-* [ ] Simplificar `ResolvedControllerConfig` (reemplazar `Required<Omit<...>> & Pick<...>` por tipo explícito)
-* [ ] Separar tipos públicos en `src/types.ts` (extraer interfaces de `controller.ts`, `hooks.ts`, etc.)
-* [ ] Mejorar naming interno (ej: `_disabledMethods` → `disabledMethods`, `_filterBody` → `filterBody`)
-* [ ] Eliminar lógica duplicada (revisar `validateConditions` duplicado entre `mongoose-adapter` y `validator`)
+* [x] Simplificar `ResolvedControllerConfig` — reemplazado `Required<Omit<...>> & Pick<...>` por tipo explícito legible
+* [x] Separar tipos públicos en `src/types.ts` — `HttpMethod`, `ProcessParams`, `RequestParams`, `ExtendedQueryParams`, `ParsedQuery` extraídos de `controller.ts`
+* [x] Mejorar naming interno — `_disabledMethods` → `disabledMethods`, `_filterBody` → `filterBody`, `_getQueryParams` → `getQueryParams`
+* [x] Eliminar `FilterQuery<any>` de `validator.ts` — `ValidConditions` ahora usa `Record<string, unknown>`, sin dep de mongoose
 
 ---
 

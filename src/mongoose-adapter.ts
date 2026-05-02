@@ -207,7 +207,7 @@ export class MongooseAdapter implements HirokiAdapter {
 
     // Merge legacy conditions escape hatch
     if (hirokiQuery.conditions) {
-      const parsed = validateConditions(hirokiQuery.conditions);
+      const parsed = this._parseConditions(hirokiQuery.conditions);
       if (parsed) Object.assign(filter, parsed);
     }
 
@@ -247,7 +247,6 @@ export class MongooseAdapter implements HirokiAdapter {
 
   private _parseConditions(conditions?: ValidConditions): FilterQuery<MongooseDocument> {
     if (!conditions) return {};
-
     const parsed = validateConditions(conditions);
     return (parsed ?? {}) as FilterQuery<MongooseDocument>;
   }

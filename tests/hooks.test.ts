@@ -4,7 +4,7 @@ import Users from './mock/models/users';
 
 class TestableController extends Controller {
   public parseQueryParams(path: string) {
-    return this._getQueryParams(path);
+    return this.getQueryParams(path);
   }
 }
 

@@ -1,16 +1,17 @@
-import { MongooseAdapter } from './mongoose-adapter';
-import type { HirokiAdapter } from './adapter';
-import { adapterRegistry } from './adapter';
+import { MongooseAdapter } from './mongoose-adapter.js';
+import type { HirokiAdapter } from './adapter.js';
+import { adapterRegistry } from './adapter.js';
 import pluralize from 'pluralize';
-import { validateEnum, validateDisabledMethod, validatePutParams, validateIdRequired, validateBody } from './validator';
-import type { ValidModel } from './validator';
-import { DisabledMethodError, UnexpectedError } from './errors';
-import { parseHirokiQuery } from './query';
-import type { HirokiQuery, QueryLimits } from './query';
-import { HirokiLogger, ConsoleLogger, LogLevel } from './logger';
-import type { ControllerHooks, HirokiMiddleware, MiddlewareContext } from './hooks';
+import { validateEnum, validateDisabledMethod, validatePutParams, validateIdRequired, validateBody } from './validator.js';
+import type { ValidModel } from './validator.js';
+import { DisabledMethodError, UnexpectedError } from './errors.js';
+import { parseHirokiQuery } from './query.js';
+import type { QueryLimits } from './query.js';
+import { HirokiLogger, ConsoleLogger, LogLevel } from './logger.js';
+import type { ControllerHooks, HirokiMiddleware, MiddlewareContext } from './hooks.js';
+import type { HttpMethod, ProcessParams, RequestParams, ExtendedQueryParams, ParsedQuery } from './types.js';
 
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+export type { HttpMethod, ProcessParams, RequestParams, ExtendedQueryParams, ParsedQuery };
 
 export interface ControllerConfig {
   /**
@@ -54,38 +55,26 @@ export interface ControllerConfig {
   queryLimits?: QueryLimits;
 }
 
-export interface ProcessParams {
-  method: HttpMethod;
-  body?: Record<string, unknown>;
-}
-
-export interface RequestParams {
-  id?: string;
-  body?: Record<string, unknown>;
-  query?: ExtendedQueryParams;
-}
-
-export interface ExtendedQueryParams extends HirokiQuery {
-  id?: string;
-  count?: boolean;
-  distinct?: string;
-  fast?: boolean;
-}
-
-export interface ParsedQuery {
-  query: ExtendedQueryParams;
-}
-
-type ResolvedControllerConfig =
-  Required<Omit<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware' | 'adapter' | 'allowedFields' | 'queryLimits'>> &
-  Pick<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware' | 'adapter' | 'allowedFields' | 'queryLimits'>;
+type ResolvedControllerConfig = {
+  fastUpdate: 'enabled' | 'disabled' | 'optional';
+  disabledPluralize: boolean;
+  basePath: string;
+  disabledMethod?: string[];
+  logger?: HirokiLogger;
+  logLevel?: LogLevel;
+  hooks?: ControllerHooks;
+  middleware?: HirokiMiddleware[];
+  adapter?: HirokiAdapter;
+  allowedFields?: string[];
+  queryLimits?: QueryLimits;
+};
 
 class Controller {
   protected model: HirokiAdapter;
   protected config: ResolvedControllerConfig;
   public routeName: string;
   public path: string;
-  private _disabledMethods: string[];
+  private disabledMethods: string[];
   private logger: HirokiLogger;
 
   constructor(model: ValidModel, config: ControllerConfig = {}) {
@@ -110,10 +99,10 @@ class Controller {
     }
 
     this.path = `${this.config.basePath}/${this.routeName}`;
-    this._disabledMethods = this.config.disabledMethod || [];
+    this.disabledMethods = this.config.disabledMethod || [];
   }
 
-  private _filterBody(body: Record<string, unknown>): Record<string, unknown> {
+  private filterBody(body: Record<string, unknown>): Record<string, unknown> {
     const allowed = this.config.allowedFields;
     if (!allowed) return body;
     return Object.fromEntries(Object.entries(body).filter(([k]) => allowed.includes(k)));
@@ -130,7 +119,7 @@ class Controller {
   }
 
   get(params: ExtendedQueryParams): Promise<unknown> {
-    validateDisabledMethod('get', this._disabledMethods);
+    validateDisabledMethod('get', this.disabledMethods);
     if (params.id) {
       this.logger.debug(`[${this.model.modelName}] GET id=${params.id}`);
       return this.model.findById(params.id, params);
@@ -141,12 +130,12 @@ class Controller {
   }
 
   async post(params: RequestParams): Promise<unknown> {
-    validateDisabledMethod('post', this._disabledMethods);
+    validateDisabledMethod('post', this.disabledMethods);
     const hooks = this.config.hooks;
     const ctx = { modelName: this.model.modelName };
 
-    let body = this._filterBody(params.body!);
-    this.logger.debug(`[${this.model.modelName}] POST keys=${Object.keys(body).join(',')}`)
+    let body = this.filterBody(params.body!);
+    this.logger.debug(`[${this.model.modelName}] POST keys=${Object.keys(body).join(',')}`);
     if (hooks?.beforeCreate) body = await hooks.beforeCreate(body, ctx);
 
     const doc = await this.model.create(body);
@@ -158,7 +147,7 @@ class Controller {
   }
 
   async put(params: RequestParams): Promise<unknown> {
-    validateDisabledMethod('put', this._disabledMethods);
+    validateDisabledMethod('put', this.disabledMethods);
     validatePutParams(params);
     const hooks = this.config.hooks;
     const ctx = { modelName: this.model.modelName };
@@ -168,7 +157,7 @@ class Controller {
       this.config.fastUpdate === 'enabled' ||
       (this.config.fastUpdate === 'optional' && params.query?.fast);
 
-    let body = this._filterBody(params.body!);
+    let body = this.filterBody(params.body!);
     if (hooks?.beforeUpdate) body = await hooks.beforeUpdate(body, ctx);
 
     let doc: unknown;
@@ -185,7 +174,7 @@ class Controller {
   }
 
   async delete(params: RequestParams): Promise<unknown> {
-    validateDisabledMethod('delete', this._disabledMethods);
+    validateDisabledMethod('delete', this.disabledMethods);
     validateIdRequired(params);
     const hooks = this.config.hooks;
     const ctx = { modelName: this.model.modelName };
@@ -205,7 +194,7 @@ class Controller {
     return path.includes(this.path);
   }
 
-  protected _getQueryParams(path: string): ParsedQuery {
+  protected getQueryParams(path: string): ParsedQuery {
     const url = new URL(`http://localhost${path}`);
     const searchParams = url.searchParams;
 
@@ -229,11 +218,11 @@ class Controller {
   }
 
   process(path: string, params: ProcessParams): Promise<unknown> {
-    const parsedQuery = this._getQueryParams(path);
+    const parsedQuery = this.getQueryParams(path);
     const { method, body } = params;
     this.logger.debug(`Processing request: ${method} ${path} with body: ${JSON.stringify(body)} and query: ${JSON.stringify(parsedQuery.query)}`);
 
-    if (this._disabledMethods.includes(method)) {
+    if (this.disabledMethods.includes(method)) {
       throw new DisabledMethodError(method);
     }
 

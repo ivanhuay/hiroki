@@ -13,11 +13,13 @@ export type {
 
 export type {
   HttpMethod,
-  ControllerConfig,
   ProcessParams,
   RequestParams,
-  ExtendedQueryParams
-} from './controller';
+  ExtendedQueryParams,
+  ParsedQuery,
+} from './types';
+
+export type { ControllerConfig } from './controller';
 
 export type {
   UpdateSet,

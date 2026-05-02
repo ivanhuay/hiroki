@@ -7,7 +7,7 @@ import Books from './mock/models/books';
 // Exposes protected _getQueryParams for unit testing
 class TestableController extends Controller {
   public parseQueryParams(path: string) {
-    return this._getQueryParams(path);
+    return this.getQueryParams(path);
   }
 }
 

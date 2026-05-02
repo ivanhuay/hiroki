@@ -1,4 +1,4 @@
-import { Model, FilterQuery } from 'mongoose';
+import { Model } from 'mongoose';
 import {
   InvalidModelError,
   InvalidConditionsError,
@@ -13,7 +13,7 @@ import {
 
 export type ValidModel = string | Model<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-export type ValidConditions = string | FilterQuery<any> | undefined | null; // eslint-disable-line @typescript-eslint/no-explicit-any
+export type ValidConditions = string | Record<string, unknown> | undefined | null;
 
 export interface ValidationParams {
   query?: {
@@ -51,14 +51,14 @@ export function validateModel(model: unknown): asserts model is ValidModel {
   throw new InvalidModelError(model);
 }
 
-export function validateConditions(conditions: ValidConditions): FilterQuery<any> | undefined { // eslint-disable-line @typescript-eslint/no-explicit-any
+export function validateConditions(conditions: ValidConditions): Record<string, unknown> | undefined {
   if (!conditions || typeof conditions === 'object') {
-    return conditions as FilterQuery<any> | undefined; // eslint-disable-line @typescript-eslint/no-explicit-any
+    return conditions as Record<string, unknown> | undefined;
   }
 
   if (typeof conditions === 'string') {
     try {
-      return JSON.parse(conditions) as FilterQuery<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+      return JSON.parse(conditions) as Record<string, unknown>;
     } catch (error) {
       throw new InvalidConditionsError(conditions, error as Error);
     }
