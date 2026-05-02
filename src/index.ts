@@ -36,6 +36,19 @@ export type {
   UpdateConfig
 } from './adapter';
 
+export type {
+  ControllerHooks,
+  HirokiMiddleware,
+  MiddlewareContext,
+  HookContext,
+  BeforeCreateHook,
+  AfterCreateHook,
+  BeforeUpdateHook,
+  AfterUpdateHook,
+  BeforeDeleteHook,
+  AfterDeleteHook,
+} from './hooks';
+
 export { adapterRegistry, AdapterRegistry } from './adapter';
 
 export type {

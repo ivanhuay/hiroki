@@ -7,6 +7,7 @@ import { DisabledMethodError, UnexpectedError } from './errors';
 import { parseHirokiQuery } from './query';
 import type { HirokiQuery } from './query';
 import { HirokiLogger, ConsoleLogger, LogLevel } from './logger';
+import type { ControllerHooks, HirokiMiddleware, MiddlewareContext } from './hooks';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -17,6 +18,8 @@ export interface ControllerConfig {
   disabledMethod?: string[];
   logger?: HirokiLogger;
   logLevel?: LogLevel;
+  hooks?: ControllerHooks;
+  middleware?: HirokiMiddleware[];
 }
 
 export interface ProcessParams {
@@ -42,8 +45,8 @@ export interface ParsedQuery {
 }
 
 type ResolvedControllerConfig =
-  Required<Omit<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel'>> &
-  Pick<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel'>;
+  Required<Omit<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware'>> &
+  Pick<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware'>;
 
 class Controller {
   protected model: HirokiAdapter;
@@ -93,30 +96,59 @@ class Controller {
     return this.queryGet(params);
   }
 
-  post(params: RequestParams): Promise<unknown> {
+  async post(params: RequestParams): Promise<unknown> {
     validateDisabledMethod('post', this._disabledMethods);
-    return this.model.create(params.body!);
+    const hooks = this.config.hooks;
+    const ctx = { modelName: this.model.modelName };
+
+    let body = params.body!;
+    if (hooks?.beforeCreate) body = await hooks.beforeCreate(body, ctx);
+
+    const doc = await this.model.create(body);
+
+    if (hooks?.afterCreate) await hooks.afterCreate(doc, ctx);
+
+    return doc;
   }
 
-  put(params: RequestParams): Promise<unknown> {
+  async put(params: RequestParams): Promise<unknown> {
     validateDisabledMethod('put', this._disabledMethods);
     validatePutParams(params);
+    const hooks = this.config.hooks;
+    const ctx = { modelName: this.model.modelName };
 
     const fast =
       this.config.fastUpdate === 'enabled' ||
       (this.config.fastUpdate === 'optional' && params.query?.fast);
 
+    let body = params.body!;
+    if (hooks?.beforeUpdate) body = await hooks.beforeUpdate(body, ctx);
+
+    let doc: unknown;
     if (params.query?.id) {
-      return this.model.updateById(params.query.id, params.body!, { fast });
+      doc = await this.model.updateById(params.query.id, body, { fast });
+    } else {
+      doc = await this.model.updateByConditions(params.query?.conditions, body, { fast });
     }
 
-    return this.model.updateByConditions(params.query?.conditions, params.body!, { fast });
+    if (hooks?.afterUpdate) await hooks.afterUpdate(doc, ctx);
+
+    return doc;
   }
 
-  delete(params: RequestParams): Promise<unknown> {
+  async delete(params: RequestParams): Promise<unknown> {
     validateDisabledMethod('delete', this._disabledMethods);
     validateIdRequired(params);
-    return this.model.delete(params.id!);
+    const hooks = this.config.hooks;
+    const ctx = { modelName: this.model.modelName };
+
+    if (hooks?.beforeDelete) await hooks.beforeDelete(params.id!, ctx);
+
+    const doc = await this.model.delete(params.id!);
+
+    if (hooks?.afterDelete) await hooks.afterDelete(doc, ctx);
+
+    return doc;
   }
 
   check(path: string): boolean {
@@ -147,9 +179,9 @@ class Controller {
   }
 
   process(path: string, params: ProcessParams): Promise<unknown> {
-    const query = this._getQueryParams(path);
+    const parsedQuery = this._getQueryParams(path);
     const { method, body } = params;
-    this.logger.debug(`Processing request: ${method} ${path} with body: ${JSON.stringify(body)} and query: ${JSON.stringify(query.query)}`);
+    this.logger.debug(`Processing request: ${method} ${path} with body: ${JSON.stringify(body)} and query: ${JSON.stringify(parsedQuery.query)}`);
 
     if (this._disabledMethods.includes(method)) {
       throw new DisabledMethodError(method);
@@ -157,20 +189,25 @@ class Controller {
 
     validateBody({ body, method });
 
-    if (method === 'GET') {
-      return this.get(query.query);
-    }
-    if (method === 'POST') {
-      return this.post({ body });
-    }
-    if (method === 'PUT') {
-      return this.put({ body, ...query });
-    }
-    if (method === 'DELETE') {
-      return this.delete({ id: query.query.id });
-    }
+    const middleware = this.config.middleware ?? [];
+    const ctx: MiddlewareContext = { path, method, body, query: parsedQuery.query };
 
-    throw new UnexpectedError();
+    const dispatch = (): Promise<unknown> => {
+      if (method === 'GET') return this.get(parsedQuery.query);
+      if (method === 'POST') return this.post({ body });
+      if (method === 'PUT') return this.put({ body, ...parsedQuery });
+      if (method === 'DELETE') return this.delete({ id: parsedQuery.query.id });
+      throw new UnexpectedError();
+    };
+
+    if (!middleware.length) return dispatch();
+
+    const chain = middleware.reduceRight<() => Promise<unknown>>(
+      (next, mw) => () => mw(ctx, next),
+      dispatch
+    );
+
+    return chain();
   }
 }
 

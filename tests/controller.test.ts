@@ -240,12 +240,12 @@ describe('Controller', () => {
     });
 
     describe('via direct method calls — lowercase method names in config', () => {
-      it('throws DisabledMethodError for lowercase disabled delete', () => {
+      it('throws DisabledMethodError for lowercase disabled delete', async () => {
         const c = new TestableController(Users, {
           basePath: '/api',
           disabledMethod: ['delete']
         });
-        expect(() => c.delete({ id: '123' })).toThrow(DisabledMethodError);
+        await expect(c.delete({ id: '123' })).rejects.toThrow(DisabledMethodError);
       });
 
       it('throws DisabledMethodError for lowercase disabled get', () => {
@@ -256,22 +256,22 @@ describe('Controller', () => {
         expect(() => c.get({ id: '123' })).toThrow(DisabledMethodError);
       });
 
-      it('throws DisabledMethodError for lowercase disabled post', () => {
+      it('throws DisabledMethodError for lowercase disabled post', async () => {
         const c = new TestableController(Users, {
           basePath: '/api',
           disabledMethod: ['post']
         });
-        expect(() => c.post({ body: { name: 'test' } })).toThrow(DisabledMethodError);
+        await expect(c.post({ body: { name: 'test' } })).rejects.toThrow(DisabledMethodError);
       });
 
-      it('throws DisabledMethodError for lowercase disabled put', () => {
+      it('throws DisabledMethodError for lowercase disabled put', async () => {
         const c = new TestableController(Users, {
           basePath: '/api',
           disabledMethod: ['put']
         });
-        expect(() => c.put({ query: { id: '123' }, body: { name: 'test' } })).toThrow(
-          DisabledMethodError
-        );
+        await expect(
+          c.put({ query: { id: '123' }, body: { name: 'test' } })
+        ).rejects.toThrow(DisabledMethodError);
       });
     });
   });

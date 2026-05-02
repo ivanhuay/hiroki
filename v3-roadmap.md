@@ -135,7 +135,7 @@ interface HirokiQuery {
 
 ---
 
-## ⭐ Fase 4 — Hooks & extensibilidad
+## ⭐ Fase 4 — Hooks & extensibilidad ✅
 
 ### Objetivo
 
@@ -143,18 +143,29 @@ Permitir custom lógica sin modificar core
 
 ### Tasks
 
-* [ ] Lifecycle hooks:
+* [x] Lifecycle hooks (`src/hooks.ts`):
 
-  * [ ] beforeCreate
-  * [ ] afterCreate
-  * [ ] beforeUpdate
-  * [ ] afterDelete
-* [ ] Middleware por recurso
-* [ ] Soporte para:
+  * [x] `beforeCreate(body, ctx)` → mutated body
+  * [x] `afterCreate(doc, ctx)`
+  * [x] `beforeUpdate(body, ctx)` → mutated body
+  * [x] `afterUpdate(doc, ctx)`
+  * [x] `beforeDelete(id, ctx)`
+  * [x] `afterDelete(doc, ctx)`
 
-  * auth
-  * multitenancy
-  * auditoría
+* [x] Middleware por recurso — `HirokiMiddleware[]` en `ControllerConfig`
+
+  * Framework-agnostic: `(ctx, next) => Promise<unknown>`
+  * Soporta chain de N middlewares (reduceRight)
+  * Puede cortocircuitar: throw para denegar, return sin next para mock
+
+* [x] Soporte para casos de uso:
+
+  * auth — middleware lanza error antes del dispatch
+  * auditoría — afterCreate/afterUpdate/afterDelete hooks
+  * transformaciones — beforeCreate/beforeUpdate mutan el body
+
+* [x] `HookContext` con `modelName` en todos los hooks
+* [x] Hook + middleware types exportados del paquete
 
 ---
 
