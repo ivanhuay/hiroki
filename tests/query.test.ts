@@ -187,6 +187,49 @@ describe('parseHirokiQuery', () => {
     });
   });
 
+  describe('security: query limits', () => {
+    it('throws when where filter count exceeds maxFilters', () => {
+      const p = new URLSearchParams();
+      for (let i = 0; i < 5; i++) p.append(`where[field${i}]`, String(i));
+      expect(() => parseHirokiQuery(p, { maxFilters: 3 })).toThrow('Too many where filters');
+    });
+
+    it('does not throw at exactly maxFilters count', () => {
+      const p = new URLSearchParams();
+      for (let i = 0; i < 3; i++) p.append(`where[field${i}]`, String(i));
+      expect(() => parseHirokiQuery(p, { maxFilters: 3 })).not.toThrow();
+    });
+
+    it('throws when $in array exceeds maxInValues', () => {
+      const vals = Array.from({ length: 5 }, (_, i) => String(i)).join(',');
+      expect(() => parseHirokiQuery(params(`where[x][$in]=${vals}`), { maxInValues: 3 })).toThrow('Too many values in in filter');
+    });
+
+    it('throws when $nin array exceeds maxInValues', () => {
+      const vals = Array.from({ length: 5 }, (_, i) => String(i)).join(',');
+      expect(() => parseHirokiQuery(params(`where[x][$nin]=${vals}`), { maxInValues: 3 })).toThrow('Too many values in nin filter');
+    });
+
+    it('throws when regex exceeds maxRegexLength', () => {
+      const long = 'a'.repeat(50);
+      expect(() => parseHirokiQuery(params(`where[name][$regex]=${long}`), { maxRegexLength: 10 })).toThrow('Regex too long');
+    });
+
+    it('does not throw for regex within maxRegexLength', () => {
+      expect(() => parseHirokiQuery(params('where[name][$regex]=^alice'), { maxRegexLength: 10 })).not.toThrow();
+    });
+
+    it('uses default limits (no options) without throwing on normal queries', () => {
+      expect(() => parseHirokiQuery(params('where[name]=alice&where[age][$gt]=18'))).not.toThrow();
+    });
+
+    it('default maxFilters is 20', () => {
+      const p = new URLSearchParams();
+      for (let i = 0; i < 21; i++) p.append(`where[field${i}]`, String(i));
+      expect(() => parseHirokiQuery(p)).toThrow('Too many where filters');
+    });
+  });
+
   describe('security: dangerous field names', () => {
     it('drops __proto__ in where filter', () => {
       const q = parseHirokiQuery(params('where[__proto__]=bad'));

@@ -5,6 +5,17 @@ import type { ValidConditions } from './validator';
 import type { HirokiQuery, HirokiFilter, HirokiSort } from './query';
 import type { HirokiLogger } from './logger';
 
+/**
+ * Zero-dependency in-memory adapter. Useful for testing, prototyping, and
+ * environments without a real database.
+ *
+ * @example
+ * hiroki.importModel('Products', { adapter: new MemoryAdapter('Products') });
+ *
+ * // In tests — reset state between cases:
+ * const adapter = new MemoryAdapter('Users');
+ * afterEach(() => adapter.clear());
+ */
 export class MemoryAdapter implements HirokiAdapter {
   readonly modelName: string;
   private store: Map<string, Record<string, unknown>> = new Map();
@@ -106,7 +117,7 @@ export class MemoryAdapter implements HirokiAdapter {
     return doc;
   }
 
-  // Reset store — useful in tests between cases
+  /** Reset all stored documents and reset the auto-increment ID counter. */
   clear(): void {
     this.store.clear();
     this.nextId = 1;

@@ -29,6 +29,7 @@ export type {
   HirokiFilter,
   HirokiSort,
   FilterOperator,
+  QueryLimits,
 } from './query';
 
 export type {

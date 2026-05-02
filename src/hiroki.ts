@@ -5,15 +5,25 @@ import type { ValidModel } from './validator';
 import { ConsoleLogger, HirokiLogger, LogLevel } from './logger';
 
 export interface HirokiConfig {
+  /** URL prefix for all routes. Default: `'/api'`. */
   basePath?: string;
+  /** Custom logger instance. Overrides `logLevel` when set. */
   logger?: HirokiLogger;
+  /** Minimum log level. Default: `'error'`. */
   logLevel?: LogLevel;
 }
 
+/** Options passed to `importModel` — same as `ControllerConfig`. */
 export interface ImportModelOptions extends ControllerConfig {}
 
+/** Shape of the `params` argument to `hiroki.process()`. */
 export interface ProcessRequest extends ProcessParams {}
 
+/**
+ * Shape returned by `hiroki.process()`.
+ * On success: the adapter result (document or array).
+ * On error: `{ error, status, code, details? }`.
+ */
 export interface ProcessResponse {
   error?: string;
   status?: number;
@@ -47,6 +57,14 @@ class Hiroki {
     instance = this;
   }
 
+  /**
+   * Register a model and expose it as a REST resource.
+   *
+   * @example
+   * hiroki.importModel(UserModel);
+   * hiroki.importModel(UserModel, { disabledMethod: ['DELETE'] });
+   * hiroki.importModel('MyModel', { adapter: new MemoryAdapter('MyModel') });
+   */
   importModel(model: ValidModel, options?: ImportModelOptions): Controller {
     if (!options?.adapter) validateModel(model);
     const adapterName = options?.adapter?.modelName;
@@ -64,6 +82,13 @@ class Hiroki {
     return this.controllers[modelName];
   }
 
+  /**
+   * Register multiple models at once.
+   *
+   * @example
+   * hiroki.importModels([UserModel, PostModel]);
+   * hiroki.importModels({ UserModel, PostModel });
+   */
   importModels(models: ValidModel[] | Record<string, ValidModel>, options?: ImportModelOptions): void {
     if (Array.isArray(models)) {
       models.forEach((model) => {
@@ -76,6 +101,7 @@ class Hiroki {
     }
   }
 
+  /** Update global config. Affects new controllers; existing ones keep their config. */
   setConfig(newConf: HirokiConfig): void {
     this.config = {
       ...this.defaultConfig,
@@ -88,6 +114,19 @@ class Hiroki {
       });
   }
 
+  /**
+   * Dispatch an incoming request to the matching controller.
+   * Returns a serializable response object — never throws.
+   *
+   * @example
+   * app.use('/api/*', async (req, res) => {
+   *   const result = await hiroki.process(req.originalUrl, {
+   *     method: req.method,
+   *     body: req.body,
+   *   });
+   *   res.status(result.status ?? 200).json(result);
+   * });
+   */
   async process(_path: string, params: ProcessRequest): Promise<ProcessResponse> {
     const path = _path.replace(/\/\//ig, '/');
 
@@ -95,11 +134,11 @@ class Hiroki {
       controller.check(path)
     );
 
-    if (!currentController) {
-      throw new RouteNotFoundError(path);
-    }
-
     try {
+      if (!currentController) {
+        throw new RouteNotFoundError(path);
+      }
+
       return await currentController.process(path, params) as ProcessResponse;
     } catch (error) {
       this.logger.error(`Hiroki Error: ${error}`);

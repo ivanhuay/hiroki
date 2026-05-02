@@ -233,7 +233,7 @@ Evitar exposiciones peligrosas
 
 * [x] Field whitelisting (`allowedFields` in `ControllerConfig` — filters `create`/`update` body before hooks)
 * [x] Query sanitization (blocks `__proto__`, `constructor`, `prototype` in `where` and `conditions` params)
-* [ ] Limit depth / recursion
+* [x] Limit depth / recursion (`QueryLimits` in `ControllerConfig`: `maxFilters`, `maxInValues`, `maxRegexLength` — throws 400 on violation)
 * [ ] Rate limiting hooks
 * [ ] Auth integration examples
 
@@ -270,17 +270,17 @@ Hacer que Hiroki sea fácil de usar por herramientas AI (ChatGPT, Copilot, etc.)
 hiroki.register(User)
 ```
 
-* [ ] Evitar ambigüedades en API
-* [ ] Tipos bien definidos en TypeScript
-* [ ] Comentarios JSDoc:
+* [x] Evitar ambigüedades en API
+* [x] Tipos bien definidos en TypeScript
+* [x] Comentarios JSDoc en API pública:
+  * `hiroki.importModel` / `importModels` / `process` / `setConfig`
+  * `ControllerConfig` — todos los campos documentados
+  * `HirokiAdapter` — interfaz completa con JSDoc
+  * `parseHirokiQuery` — params soportados documentados
+  * `QueryLimits` — cada campo explicado
+  * `MemoryAdapter` — clase + `clear()`
 
-```ts
-/**
- * Registers a model and exposes REST endpoints automatically
- */
-```
-
-* [ ] Casos de uso explícitos:
+* [x] Casos de uso explícitos:
 
   * CRUD básico
   * filtros
@@ -311,14 +311,15 @@ Aumentar confianza en cambios
   * [x] Controller
   * [x] Validator
   * [x] Query parsing (`tests/query.test.ts` — 40 cases)
-* [ ] Integration tests:
+* [x] Integration tests:
 
-  * end-to-end CRUD
-* [ ] Edge cases:
+  * end-to-end CRUD (get/post/put/delete test suites)
+* [x] Edge cases:
 
-  * invalid query
-  * disabled methods
-  * malformed paths
+  * [x] invalid query (malformed conditions JSON → 400)
+  * [x] disabled methods
+  * [x] malformed paths (double-slash normalization, route not found → 404)
+  * [x] missing required params (id, body, conditions)
 
 ---
 
@@ -350,6 +351,7 @@ Garantizar que el paquete publicado funcione correctamente como ESM y CJS
 * [x] Fix ESM: bare imports causaban `ERR_PACKAGE_PATH_NOT_EXPORTED` al usar el paquete como dependencia
 * [x] Fix `instanceof mongoose.Model` → duck typing (`modelName`, `find`, `schema`) — resuelve fallos cross-realm (npm link, múltiples copias de mongoose)
 * [x] Fix `InvalidModelError` — mensaje mostraba función completa; ahora muestra `model.modelName`
+* [x] Fix `RouteNotFoundError` thrown outside try-catch in `hiroki.process()` — now returns JSON 404 instead of crashing
 * [ ] Simplificar tipos complejos (`Omit + Pick`)
 * [ ] Separar tipos en archivos
 * [ ] Mejorar naming interno

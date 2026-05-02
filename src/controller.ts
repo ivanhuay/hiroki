@@ -6,23 +6,52 @@ import { validateEnum, validateDisabledMethod, validatePutParams, validateIdRequ
 import type { ValidModel } from './validator';
 import { DisabledMethodError, UnexpectedError } from './errors';
 import { parseHirokiQuery } from './query';
-import type { HirokiQuery } from './query';
+import type { HirokiQuery, QueryLimits } from './query';
 import { HirokiLogger, ConsoleLogger, LogLevel } from './logger';
 import type { ControllerHooks, HirokiMiddleware, MiddlewareContext } from './hooks';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export interface ControllerConfig {
+  /**
+   * Controls whether updates skip the find-then-save round-trip.
+   * - `'disabled'` (default): always fetch document before saving (runs Mongoose pre-save hooks).
+   * - `'enabled'`: always use `updateOne` (faster, no pre-save hooks).
+   * - `'optional'`: use `updateOne` only when `?fast=true` is in the query string.
+   */
   fastUpdate?: 'enabled' | 'disabled' | 'optional';
+  /** When `false`, pluralizes the model name for the route (e.g. `User` → `/users`). Default: `true`. */
   disabledPluralize?: boolean;
+  /** URL prefix prepended to the resource route. Default: `''`. */
   basePath?: string;
+  /** HTTP methods to block. Accepts uppercase (`'DELETE'`) or lowercase (`'delete'`). */
   disabledMethod?: string[];
+  /** Custom logger. Overrides `logLevel`. */
   logger?: HirokiLogger;
+  /** Minimum log level when using the default `ConsoleLogger`. Default: `'error'`. */
   logLevel?: LogLevel;
+  /** Lifecycle hooks called before/after each mutating operation. */
   hooks?: ControllerHooks;
+  /** Per-resource middleware chain. Each function receives `(ctx, next)` — framework-agnostic. */
   middleware?: HirokiMiddleware[];
+  /** Inject a custom adapter. When set, skips Mongoose validation and the adapter registry. */
   adapter?: HirokiAdapter;
+  /**
+   * Whitelist of body field names allowed in `create` and `update` operations.
+   * Fields not in the list are stripped before hooks run.
+   * When omitted, all fields are passed through.
+   *
+   * @example
+   * { allowedFields: ['name', 'email'] } // strips 'role', 'isAdmin', etc.
+   */
   allowedFields?: string[];
+  /**
+   * Override default query safety limits.
+   * Requests that exceed a limit are rejected with HTTP 400.
+   *
+   * Defaults: `{ maxFilters: 20, maxInValues: 100, maxRegexLength: 200 }`
+   */
+  queryLimits?: QueryLimits;
 }
 
 export interface ProcessParams {
@@ -48,8 +77,8 @@ export interface ParsedQuery {
 }
 
 type ResolvedControllerConfig =
-  Required<Omit<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware' | 'adapter' | 'allowedFields'>> &
-  Pick<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware' | 'adapter' | 'allowedFields'>;
+  Required<Omit<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware' | 'adapter' | 'allowedFields' | 'queryLimits'>> &
+  Pick<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware' | 'adapter' | 'allowedFields' | 'queryLimits'>;
 
 class Controller {
   protected model: HirokiAdapter;
@@ -180,7 +209,7 @@ class Controller {
     const url = new URL(`http://localhost${path}`);
     const searchParams = url.searchParams;
 
-    const hirokiQuery = parseHirokiQuery(searchParams);
+    const hirokiQuery = parseHirokiQuery(searchParams, this.config.queryLimits);
     const extended: ExtendedQueryParams = { ...hirokiQuery };
 
     const count = searchParams.get('count');

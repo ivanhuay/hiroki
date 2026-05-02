@@ -1,4 +1,5 @@
 import type { ValidConditions } from './validator';
+import { BadRequestError } from './errors.js';
 
 export type FilterOperator = 'eq' | 'ne' | 'gt' | 'gte' | 'lt' | 'lte' | 'in' | 'nin' | 'regex';
 
@@ -22,6 +23,22 @@ export interface HirokiQuery {
   populate?: string;
   conditions?: ValidConditions; // legacy escape hatch for raw DB filters
 }
+
+/** Safety caps applied during query parsing. Requests that exceed a limit throw HTTP 400. */
+export interface QueryLimits {
+  /** Maximum number of `where[]` filter entries per request. Default: `20`. */
+  maxFilters?: number;
+  /** Maximum number of values in a single `$in` or `$nin` array. Default: `100`. */
+  maxInValues?: number;
+  /** Maximum character length of a `$regex` value. Prevents ReDoS. Default: `200`. */
+  maxRegexLength?: number;
+}
+
+const DEFAULT_LIMITS: Required<QueryLimits> = {
+  maxFilters: 20,
+  maxInValues: 100,
+  maxRegexLength: 200,
+};
 
 const DANGEROUS_FIELDS = new Set(['__proto__', 'constructor', 'prototype']);
 
@@ -50,7 +67,22 @@ const WHERE_PATTERN = /^where\[(\w+)\](?:\[(\$\w+)\])?$/;
 // conditions[field]=value  (legacy)
 const CONDITIONS_PATTERN = /^conditions\[(\w+)\]$/;
 
-export function parseHirokiQuery(searchParams: URLSearchParams): HirokiQuery {
+/**
+ * Parse URL search params into a `HirokiQuery` AST.
+ *
+ * Supported params:
+ * - `where[field]=value` — equality filter
+ * - `where[field][$gt]=18` — operator filter (`$eq $ne $gt $gte $lt $lte $in $nin $regex`)
+ * - `where[tags][$in]=a,b` — array filter (comma-separated)
+ * - `sort=-name,age` — multi-field sort (`-` prefix = descending)
+ * - `select=name,email` — field projection
+ * - `limit=10` / `offset=5` / `skip=5` — pagination
+ * - `populate=books` — relation population (passed through to adapter)
+ * - `conditions={"field":"value"}` — legacy raw filter (JSON string)
+ * - `conditions[field]=value` — legacy raw filter (bracket notation)
+ */
+export function parseHirokiQuery(searchParams: URLSearchParams, limits?: QueryLimits): HirokiQuery {
+  const lim = { ...DEFAULT_LIMITS, ...limits };
   const query: HirokiQuery = {};
   const filters: HirokiFilter[] = [];
   const legacyConditions: Record<string, unknown> = {};
@@ -61,10 +93,23 @@ export function parseHirokiQuery(searchParams: URLSearchParams): HirokiQuery {
     if (whereMatch) {
       const field = whereMatch[1];
       if (DANGEROUS_FIELDS.has(field)) continue;
+      if (filters.length >= lim.maxFilters) {
+        throw new BadRequestError(`Too many where filters (max ${lim.maxFilters})`, 'QUERY_LIMIT_EXCEEDED');
+      }
       const op: FilterOperator = whereMatch[2] ? (OP_MAP[whereMatch[2]] ?? 'eq') : 'eq';
+
+      if (op === 'regex' && raw.length > lim.maxRegexLength) {
+        throw new BadRequestError(`Regex too long (max ${lim.maxRegexLength} chars)`, 'QUERY_LIMIT_EXCEEDED');
+      }
+
       const value = op === 'in' || op === 'nin'
         ? raw.split(',').map(coerceValue)
         : coerceValue(raw);
+
+      if ((op === 'in' || op === 'nin') && (value as unknown[]).length > lim.maxInValues) {
+        throw new BadRequestError(`Too many values in ${op} filter (max ${lim.maxInValues})`, 'QUERY_LIMIT_EXCEEDED');
+      }
+
       filters.push({ field, op, value });
       continue;
     }
