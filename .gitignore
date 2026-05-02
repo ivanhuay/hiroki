@@ -1,2 +1,12 @@
 node_modules
 .env
+.dist
+coverage
+.DS_Store
+*.log
+dist
+packages/*/dist
+packages/*/coverage
+mkdocs/.vitepress/cache
+tsconfig.tsbuildinfo
+packages/*/tsconfig.tsbuildinfo

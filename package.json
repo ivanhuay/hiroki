@@ -1,35 +1,27 @@
 {
-  "name": "hiroki",
-  "version": "2.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "mocha tests/**.test.js --bail --exit"
-  },
-  "keywords": [
-    "rest",
-    "api",
-    "mongoose",
-    "express",
-    "crud"
+  "name": "hiroki-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
   ],
-  "author": "ivanhuay@gmail.com",
-  "license": "MIT",
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "docs:dev": "vitepress dev mkdocs",
+    "docs:build": "vitepress build mkdocs",
+    "docs:preview": "vitepress preview mkdocs"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ivanhuay/hiroki",
     "web": "https://github.com/ivanhuay/hiroki"
-  },
-  "devDependencies": {
-    "body-parser": "^1.18.3",
-    "eslint": "^5.16.0",
-    "expect.js": "^0.3.1",
-    "express": "^4.16.4",
-    "mocha": "^10.4.0",
-    "supertest": "^3.3.0"
-  },
-  "dependencies": {
-    "mongoose": "^8.2.2",
-    "pluralize": "^8.0.0"
   }
 }

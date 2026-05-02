@@ -1,0 +1,58 @@
+{
+  "name": "hiroki-sequelize",
+  "version": "0.1.0-beta.0",
+  "description": "Sequelize adapter for Hiroki (MySQL / PostgreSQL legacy)",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "jest --passWithNoTests --detectOpenHandles",
+    "lint": "eslint src/**/*.ts",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "hiroki",
+    "sequelize",
+    "adapter",
+    "mysql",
+    "postgresql"
+  ],
+  "author": "ivanhuay@gmail.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ivanhuay/hiroki",
+    "web": "https://github.com/ivanhuay/hiroki"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "peerDependencies": {
+    "sequelize": ">=6.0.0",
+    "hiroki": ">=3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5",
+    "tsup": "^8.5.1"
+  }
+}

@@ -1,80 +1,27 @@
-# Hiroki
-
-[![NPM version][npm-image]][npm-url] [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/73Gnub9RenZ7Vn7XN2Cq7A/7FichnXE69CYoQzoP7ppAd/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/73Gnub9RenZ7Vn7XN2Cq7A/7FichnXE69CYoQzoP7ppAd/tree/master)
-
-Hiroki helps you build REST APIs faster than ever using the open source tools and standards you and your team already know.
-
-## Documentation
-
-Read the full [documentation here](https://ivanhuay.github.io/hiroki/).
-
-## Getting Started
-
-Follow our step-by-step [Getting Started guide](https://ivanhuay.github.io/hiroki/) to begin using Hiroki.
-
-### Installation
-
-```bash
-npm install --save hiroki
-```
-
-### Create a Simple REST API
-
-Here's a basic example to get you started. Note that you may need to install and use the `body-parser` library as well.
-
-```javascript
-const express = require('express');
-const hiroki = require('hiroki');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const app = express();
-
-// Model definition
-const UsersSchema = new mongoose.Schema({name: String});
-const UserModel = mongoose.model('Users', UsersSchema);
-
-// Importing model
-hiroki.importModel(UserModel);
-
-// Body parser middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-// API route to pass data to Hiroki
-app.use('/api/*', async (req, res) => {
-    const path = req.originalUrl;
-    const resp = await hiroki.process(path, {
-        method: req.method,
-        body: req.body
-    });
-    res.status(resp.status || 200).json(resp);
-});
-
-app.listen(8012, () => console.log('Server running on port 8012'));
-```
-
-## Configuration
-
-You can customize Hiroki's behavior by changing its configuration:
-
-```javascript
-hiroki.setConfig({ 
-    basePath: '/api/v2' // default is '/api'
-});
-```
-
-## Changelog
-
-### v2.0.0
-- Hiroki is now backend-agnostic. Express has been removed as a dependency.
-- Mongoose version has been updated.
-- The 'share' feature has been removed. Please check if this impacts your usage.
-
-[Full Changelog](https://ivanhuay.github.io/hiroki/changelog)
-
-## License
-
-Hiroki is licensed under the MIT License.
-
-[npm-image]: https://badge.fury.io/js/hiroki.svg
-[npm-url]: https://npmjs.org/package/hiroki
+---
+layout: home
+hero:
+  name: Hiroki
+  text: REST API in one line.
+  tagline: CRUD engine with pluggable adapters — expose any model as a REST API in seconds.
+  actions:
+    - theme: brand
+      text: Get Started
+      link: /guide/getting-started
+    - theme: alt
+      text: View on GitHub
+      link: https://github.com/ivanhuay/hiroki
+features:
+  - title: Zero boilerplate
+    details: Import a model, get GET / POST / PUT / DELETE endpoints instantly. No route definitions, no controllers.
+  - title: Adapter system
+    details: Mongoose and MemoryAdapter built-in. Ecosystem packages for Drizzle, Sequelize, and any custom database.
+  - title: Hooks & middleware
+    details: Intercept before/after every operation. Auth, auditing, transformations — all without modifying core.
+  - title: TypeScript first
+    details: Full type safety across the entire API surface. Every option, hook, and adapter is typed.
+  - title: Logger integrations
+    details: Drop-in support for pino and winston via hiroki-pino and hiroki-winston. Or implement HirokiLogger directly.
+  - title: Monorepo ecosystem
+    details: Core stays lean. hiroki-drizzle, hiroki-sequelize, hiroki-pino, hiroki-winston are optional packages with peer deps.
+---
