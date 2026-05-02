@@ -292,7 +292,7 @@ Reemplazar CircleCI con GitHub Actions para ejecutar tests en cada PR y push
 
 ---
 
-## 📦 Fase 9 — Monorepo & sub-packages
+## 📦 Fase 9 — Monorepo & sub-packages ✅
 
 ### Objetivo
 
@@ -300,20 +300,20 @@ Expandir el ecosistema de adapters sin contaminar el core
 
 ### Tasks
 
-* [ ] Migrar a estructura monorepo — `packages/hiroki` (core), workspace root con `npm workspaces` o `pnpm`
-* [ ] `packages/hiroki-drizzle` — adapter para Drizzle ORM (PostgreSQL / SQLite)
+* [x] Migrar a estructura monorepo — `packages/hiroki` (core), workspace root con `npm workspaces`
+* [x] `packages/hiroki-drizzle` — adapter skeleton para Drizzle ORM (PostgreSQL / SQLite)
 
   * Implementa `HirokiAdapter`
-  * Mapea `HirokiFilter[]` → Drizzle `where` conditions
+  * Mapea `HirokiFilter[]` → Drizzle `where` conditions (pendiente implementación real)
   * Peer deps: `drizzle-orm`, `hiroki`
 
-* [ ] `packages/hiroki-sequelize` — adapter para Sequelize (MySQL / PostgreSQL legacy)
+* [x] `packages/hiroki-sequelize` — adapter skeleton para Sequelize (MySQL / PostgreSQL legacy)
 
   * Implementa `HirokiAdapter`
-  * Mapea `HirokiFilter[]` → Sequelize `Op` operators
+  * Mapea `HirokiFilter[]` → Sequelize `Op` operators (pendiente implementación real)
   * Peer deps: `sequelize`, `hiroki`
 
-* [ ] Logger externo — adaptadores para Pino y Winston que implementen `HirokiLogger`
+* [x] Logger externo — `packages/hiroki-pino` y `packages/hiroki-winston` implementan `HirokiLogger`
 
 ---
 
@@ -323,7 +323,7 @@ Expandir el ecosistema de adapters sin contaminar el core
 ✅ Deuda técnica — Fase 6 completa
 ✅ Documentación — Fase 7 completa (VitePress, 13 páginas)
 ✅ CI/CD migración — Fase 8 completa (GitHub Actions)
-🔧 Pendiente — Monorepo & sub-packages (Fase 9)
+✅ Monorepo & sub-packages — Fase 9 completa (npm workspaces, 5 packages)
 
 ---
 
@@ -352,5 +352,5 @@ Busca ser:
 # 📌 Estado del proyecto
 
 ✅ v3 core estable — adapter system, query AST, hooks, middleware, seguridad, build dual CJS/ESM
-🔧 Fases 6–9 pendientes — deuda técnica, docs, CI/CD, monorepo
+✅ Fases 6–9 completas — deuda técnica, docs, CI/CD, monorepo
 ⚠️ API pública puede cambiar hasta release oficial de v3

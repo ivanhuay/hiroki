@@ -22,6 +22,7 @@ export default defineConfig({
           { text: 'Configuration', link: '/guide/configuration' },
           { text: 'Hooks & Middleware', link: '/guide/hooks-middleware' },
           { text: 'Security', link: '/guide/security' },
+          { text: 'Logger Integrations', link: '/guide/loggers' },
         ],
       },
       {
@@ -39,6 +40,8 @@ export default defineConfig({
           { text: 'Overview', link: '/adapters/overview' },
           { text: 'MongooseAdapter', link: '/adapters/mongoose' },
           { text: 'MemoryAdapter', link: '/adapters/memory' },
+          { text: 'DrizzleAdapter', link: '/adapters/drizzle' },
+          { text: 'SequelizeAdapter', link: '/adapters/sequelize' },
           { text: 'Custom Adapter', link: '/adapters/custom' },
         ],
       },

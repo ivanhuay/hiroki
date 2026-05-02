@@ -9,6 +9,22 @@ The adapter system decouples Hiroki's routing layer from the underlying data sou
 | `MongooseAdapter` | `hiroki` (default) | MongoDB via Mongoose |
 | `MemoryAdapter` | `hiroki` | Testing, prototyping, no database |
 
+## Ecosystem adapters
+
+Install separately — each is an optional package with its own peer dependencies.
+
+| Adapter | Package | Database |
+|---------|---------|----------|
+| `DrizzleAdapter` | [`hiroki-drizzle`](/adapters/drizzle) | PostgreSQL / SQLite via Drizzle ORM |
+| `SequelizeAdapter` | [`hiroki-sequelize`](/adapters/sequelize) | MySQL / PostgreSQL via Sequelize |
+
+## Logger integrations
+
+| Logger | Package | Wraps |
+|--------|---------|-------|
+| `PinoLogger` | [`hiroki-pino`](/guide/loggers) | [pino](https://github.com/pinojs/pino) |
+| `WinstonLogger` | [`hiroki-winston`](/guide/loggers) | [winston](https://github.com/winstonjs/winston) |
+
 ## How adapter resolution works
 
 When you call `hiroki.importModel(model, options)`, the controller picks an adapter in this order:

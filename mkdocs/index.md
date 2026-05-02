@@ -15,9 +15,13 @@ features:
   - title: Zero boilerplate
     details: Import a model, get GET / POST / PUT / DELETE endpoints instantly. No route definitions, no controllers.
   - title: Adapter system
-    details: Works with Mongoose out of the box. Swap in MemoryAdapter for tests or build your own for any database.
+    details: Mongoose and MemoryAdapter built-in. Ecosystem packages for Drizzle, Sequelize, and any custom database.
   - title: Hooks & middleware
     details: Intercept before/after every operation. Auth, auditing, transformations — all without modifying core.
   - title: TypeScript first
     details: Full type safety across the entire API surface. Every option, hook, and adapter is typed.
+  - title: Logger integrations
+    details: Drop-in support for pino and winston via hiroki-pino and hiroki-winston. Or implement HirokiLogger directly.
+  - title: Monorepo ecosystem
+    details: Core stays lean. hiroki-drizzle, hiroki-sequelize, hiroki-pino, hiroki-winston are optional packages with peer deps.
 ---

@@ -64,8 +64,11 @@ export { MemoryAdapter } from './memory-adapter';
 
 export type {
   ValidModel,
-  ValidationParams
+  ValidationParams,
+  ValidConditions,
 } from './validator';
+
+export type { HirokiLogger, LogLevel, LoggerConfig } from './logger';
 
 export type { HttpErrorResponse } from './errors';
 
