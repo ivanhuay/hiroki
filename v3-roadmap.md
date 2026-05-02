@@ -231,8 +231,8 @@ Evitar exposiciones peligrosas
 
 ### Tasks
 
-* [ ] Field whitelisting
-* [ ] Query sanitization
+* [x] Field whitelisting (`allowedFields` in `ControllerConfig` — filters `create`/`update` body before hooks)
+* [x] Query sanitization (blocks `__proto__`, `constructor`, `prototype` in `where` and `conditions` params)
 * [ ] Limit depth / recursion
 * [ ] Rate limiting hooks
 * [ ] Auth integration examples
@@ -306,11 +306,11 @@ Aumentar confianza en cambios
 
 ### Tasks
 
-* [ ] Unit tests:
+* [x] Unit tests:
 
-  * Controller
-  * Validator
-  * Query parsing
+  * [x] Controller
+  * [x] Validator
+  * [x] Query parsing (`tests/query.test.ts` — 40 cases)
 * [ ] Integration tests:
 
   * end-to-end CRUD

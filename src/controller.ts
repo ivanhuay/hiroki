@@ -22,6 +22,7 @@ export interface ControllerConfig {
   hooks?: ControllerHooks;
   middleware?: HirokiMiddleware[];
   adapter?: HirokiAdapter;
+  allowedFields?: string[];
 }
 
 export interface ProcessParams {
@@ -47,8 +48,8 @@ export interface ParsedQuery {
 }
 
 type ResolvedControllerConfig =
-  Required<Omit<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware' | 'adapter'>> &
-  Pick<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware' | 'adapter'>;
+  Required<Omit<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware' | 'adapter' | 'allowedFields'>> &
+  Pick<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware' | 'adapter' | 'allowedFields'>;
 
 class Controller {
   protected model: HirokiAdapter;
@@ -83,6 +84,12 @@ class Controller {
     this._disabledMethods = this.config.disabledMethod || [];
   }
 
+  private _filterBody(body: Record<string, unknown>): Record<string, unknown> {
+    const allowed = this.config.allowedFields;
+    if (!allowed) return body;
+    return Object.fromEntries(Object.entries(body).filter(([k]) => allowed.includes(k)));
+  }
+
   protected queryGet(query: ExtendedQueryParams): Promise<unknown> {
     if (query.count) {
       return this.model.count(query);
@@ -108,9 +115,9 @@ class Controller {
     validateDisabledMethod('post', this._disabledMethods);
     const hooks = this.config.hooks;
     const ctx = { modelName: this.model.modelName };
-    this.logger.debug(`[${this.model.modelName}] POST keys=${Object.keys(params.body ?? {}).join(',')}`);
 
-    let body = params.body!;
+    let body = this._filterBody(params.body!);
+    this.logger.debug(`[${this.model.modelName}] POST keys=${Object.keys(body).join(',')}`)
     if (hooks?.beforeCreate) body = await hooks.beforeCreate(body, ctx);
 
     const doc = await this.model.create(body);
@@ -132,7 +139,7 @@ class Controller {
       this.config.fastUpdate === 'enabled' ||
       (this.config.fastUpdate === 'optional' && params.query?.fast);
 
-    let body = params.body!;
+    let body = this._filterBody(params.body!);
     if (hooks?.beforeUpdate) body = await hooks.beforeUpdate(body, ctx);
 
     let doc: unknown;

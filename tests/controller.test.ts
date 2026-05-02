@@ -222,7 +222,9 @@ describe('Controller', () => {
           disabledMethod: ['DELETE']
         });
         // GET is not disabled — process() returns a Promise without throwing
-        expect(() => c.process('/api/users', { method: 'GET' })).not.toThrow();
+        let p: Promise<unknown> | undefined;
+        expect(() => { p = c.process('/api/users', { method: 'GET' }) as Promise<unknown>; }).not.toThrow();
+        p?.catch(() => {}); // silence dangling DB query after disconnect
       });
 
       it('can disable multiple methods simultaneously', () => {

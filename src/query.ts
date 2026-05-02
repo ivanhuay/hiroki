@@ -23,6 +23,8 @@ export interface HirokiQuery {
   conditions?: ValidConditions; // legacy escape hatch for raw DB filters
 }
 
+const DANGEROUS_FIELDS = new Set(['__proto__', 'constructor', 'prototype']);
+
 const OP_MAP: Record<string, FilterOperator> = {
   $eq: 'eq',
   $ne: 'ne',
@@ -58,6 +60,7 @@ export function parseHirokiQuery(searchParams: URLSearchParams): HirokiQuery {
     const whereMatch = key.match(WHERE_PATTERN);
     if (whereMatch) {
       const field = whereMatch[1];
+      if (DANGEROUS_FIELDS.has(field)) continue;
       const op: FilterOperator = whereMatch[2] ? (OP_MAP[whereMatch[2]] ?? 'eq') : 'eq';
       const value = op === 'in' || op === 'nin'
         ? raw.split(',').map(coerceValue)
@@ -68,6 +71,7 @@ export function parseHirokiQuery(searchParams: URLSearchParams): HirokiQuery {
 
     const condMatch = key.match(CONDITIONS_PATTERN);
     if (condMatch) {
+      if (DANGEROUS_FIELDS.has(condMatch[1])) continue;
       legacyConditions[condMatch[1]] = coerceValue(raw);
       hasLegacyConditions = true;
       continue;

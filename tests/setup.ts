@@ -13,24 +13,11 @@ beforeAll(async () => {
   await mongoose.connect(mongoUri);
 });
 
-// Cleanup after each test
 afterAll(async () => {
-  // Clear all collections
   const collections = mongoose.connection.collections;
-  
   for (const key in collections) {
-    const collection = collections[key];
-    await collection.deleteMany({});
+    await collections[key].deleteMany({});
   }
-});
-
-// Cleanup after all tests
-afterAll(async () => {
-  // Disconnect mongoose
   await mongoose.disconnect();
-  
-  // Stop the in-memory MongoDB instance
-  if (mongoServer) {
-    await mongoServer.stop();
-  }
+  if (mongoServer) await mongoServer.stop();
 });
