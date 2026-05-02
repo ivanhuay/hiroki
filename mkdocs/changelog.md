@@ -1,8 +1,50 @@
-### Changelog
-* v2.0.0: 
-    * hiroki should be now backend agnostic. Express removed as dependency.
-    * mongoose version updated
-    * share will be removed for this version. Check if this would be usefull.
+# Changelog
+
+## v3.0.0
+
+### Monorepo & ecosystem
+- Migrated to npm workspaces under `packages/`
+- New packages: `hiroki-drizzle` (beta), `hiroki-sequelize` (beta), `hiroki-pino`, `hiroki-winston`
+- CI migrated from CircleCI to GitHub Actions (Node 20/22 matrix)
+
+### Adapter system
+- `HirokiAdapter` interface — pluggable data layer, decoupled from Mongoose
+- `MongooseAdapter` — extracted from core, same behavior
+- `MemoryAdapter` — zero deps, in-memory store, full operator support, `clear()` for tests
+- `AdapterRegistry` — register adapter factories for auto-resolution
+- `adapter` option on `importModel` — inject any adapter directly
+
+### Query abstraction
+- `HirokiQuery` AST — database-agnostic query representation
+- `parseHirokiQuery` — parses `where`, `sort`, `select`, `limit`, `offset` from URL params
+- Filter operators: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`, `nin`, `regex`
+- `HirokiFilter`, `HirokiSort`, `FilterOperator` exported from package
+
+### Hooks & middleware
+- Lifecycle hooks: `beforeCreate`, `afterCreate`, `beforeUpdate`, `afterUpdate`, `beforeDelete`, `afterDelete`
+- Per-resource middleware chain — `(ctx, next) => Promise<unknown>`
+- Supports auth guards, auditing, body transformations
+
+### Security
+- Field whitelisting — `allowedFields` filters body before hooks
+- Query sanitization — blocks `__proto__`, `constructor`, `prototype`
+- Query depth limits — `maxFilters`, `maxInValues`, `maxRegexLength` (400 on violation)
+
+### TypeScript
+- Full migration — no `any` in public surface
+- All public types exported: `HirokiAdapter`, `HirokiQuery`, `HirokiFilter`, `HirokiSort`, `ControllerConfig`, `HirokiLogger`, `ValidConditions` and more
+- Dual CJS + ESM output with `tsup`
+
+### Documentation
+- Full VitePress docs site at [ivanhuay.github.io/hiroki](https://ivanhuay.github.io/hiroki/)
+
+---
+
+## v2.0.0
+
+- Hiroki is now backend-agnostic. Express removed as dependency
+- Mongoose version updated
+- `share` feature removed
 * v0.2.7:
     * `shareFormat` & `beforeShareEnd` methods added to format share response.
     * Node v7 support removed.
