@@ -35,7 +35,10 @@
     "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\" \"*.js\" \"*.json\"",
     "clean": "rm -rf dist",
     "smoke": "node smoke-test.mjs",
-    "prepublishOnly": "npm run build && npm test && npm run smoke"
+    "prepublishOnly": "npm run build && npm test && npm run smoke",
+    "docs:dev": "vitepress dev mkdocs",
+    "docs:build": "vitepress build mkdocs",
+    "docs:preview": "vitepress preview mkdocs"
   },
   "keywords": [
     "rest",
@@ -71,7 +74,8 @@
     "supertest": "^7.0.0",
     "ts-jest": "^29.1.2",
     "tsup": "^8.5.1",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitepress": "^1.6.4"
   },
   "dependencies": {
     "mongoose": "^8.7.2",

@@ -257,7 +257,7 @@ Limpiar el core para facilitar contribuciones y mantenimiento
 
 ---
 
-## 📚 Fase 7 — Documentación
+## 📚 Fase 7 — Documentación ✅
 
 ### Objetivo
 
@@ -265,12 +265,14 @@ Hacer Hiroki fácil de adoptar para humanos y herramientas AI
 
 ### Tasks
 
-* [ ] Getting Started — instalación + primer modelo en < 10 líneas
-* [ ] Why Hiroki — comparación vs boilerplate manual
-* [ ] Examples reales — CRUD con Mongoose, con MemoryAdapter, con hooks, con middleware auth
-* [ ] API reference completa — todos los tipos y opciones documentados
-* [ ] Rate limiting — ejemplo de implementación vía middleware (ya soportado)
-* [ ] Auth integration — ejemplo de guard via middleware + `beforeCreate` hook
+* [x] Getting Started — instalación + primer modelo en < 10 líneas (`mkdocs/guide/getting-started.md`)
+* [x] Why Hiroki — comparación vs boilerplate manual (`mkdocs/guide/why-hiroki.md`)
+* [x] Examples reales — CRUD con Mongoose, con MemoryAdapter, con hooks, con middleware auth (en guide pages)
+* [x] API reference completa — todos los tipos y opciones documentados (`mkdocs/api/`)
+* [x] Rate limiting — ejemplo de implementación vía middleware (`mkdocs/guide/security.md`)
+* [x] Auth integration — ejemplo de guard via middleware + `beforeCreate` hook (`mkdocs/guide/hooks-middleware.md`)
+* [x] VitePress setup — `npm run docs:build` → outputs to `docs/` for GitHub Pages
+* [x] Adapters docs — MongooseAdapter, MemoryAdapter, Custom adapter guide (`mkdocs/adapters/`)
 
 ---
 
@@ -302,7 +304,9 @@ Expandir el ecosistema de adapters sin contaminar el core
 # 🎯 Estado actual
 
 ✅ Core estable — Fases 1–5 completas
-🔧 Pendiente — Deuda técnica (Fase 6), Docs (Fase 7), Monorepo (Fase 8)
+✅ Deuda técnica — Fase 6 completa
+✅ Documentación — Fase 7 completa (VitePress, 13 páginas)
+🔧 Pendiente — Monorepo & sub-packages (Fase 8)
 
 ---
 
