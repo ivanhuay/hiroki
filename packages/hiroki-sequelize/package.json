@@ -1,6 +1,6 @@
 {
   "name": "hiroki-sequelize",
-  "version": "0.1.0",
+  "version": "0.1.0-beta.0",
   "description": "Sequelize adapter for Hiroki (MySQL / PostgreSQL legacy)",
   "type": "module",
   "main": "./dist/index.cjs",

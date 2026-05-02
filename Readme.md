@@ -25,8 +25,8 @@ Hiroki is a monorepo. The core package is all you need to get started — the su
 | Package | Version | Description |
 |---------|---------|-------------|
 | [`hiroki`](./packages/hiroki) | [![NPM version][npm-image]][npm-url] | Core — CRUD engine, MongooseAdapter, MemoryAdapter |
-| [`hiroki-drizzle`](./packages/hiroki-drizzle) | `0.1.0` | Drizzle ORM adapter (PostgreSQL / SQLite) |
-| [`hiroki-sequelize`](./packages/hiroki-sequelize) | `0.1.0` | Sequelize adapter (MySQL / PostgreSQL legacy) |
+| [`hiroki-drizzle`](./packages/hiroki-drizzle) | `0.1.0-beta.0` | Drizzle ORM adapter (PostgreSQL / SQLite) — beta |
+| [`hiroki-sequelize`](./packages/hiroki-sequelize) | `0.1.0-beta.0` | Sequelize adapter (MySQL / PostgreSQL legacy) — beta |
 | [`hiroki-pino`](./packages/hiroki-pino) | `0.1.0` | Pino logger integration |
 | [`hiroki-winston`](./packages/hiroki-winston) | `0.1.0` | Winston logger integration |
 
