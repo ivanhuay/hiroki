@@ -191,181 +191,118 @@ Expandir ecosistema
 
 * [x] `AdapterRegistry` auto-resolution ya integrado en Controller (Fase 2)
 
-### Posibles adapters (externos, fuera del core)
-
-* [ ] PostgreSQL (Drizzle / Prisma) — paquete separado `hiroki-drizzle`
-* [ ] Sequelize (legacy support) — paquete separado `hiroki-sequelize`
-
 ---
 
-# 📊 Observabilidad
-
-### Objetivo
-
-Mejorar debugging y DX
-
-### Tasks
+# 📊 Observabilidad ✅
 
 * [x] Logger base (`ConsoleLogger`)
-* [x] Logging en:
-
-  * [x] Controller — `debug` por operación (método, id, keys); `info` en create/update/delete
-  * [x] Adapter — `MongooseAdapter` y `MemoryAdapter` loguean filter/options/result count en `debug`
-  * [ ] Query parsing — sin logger (función pura, sin side effects)
-
+* [x] Controller — `debug` por operación; `info` en create/update/delete
+* [x] `MongooseAdapter` y `MemoryAdapter` loguean filter/options/result count en `debug`
 * [x] Logger propagado a adapters vía `setLogger?(logger)` en `HirokiAdapter`
-* [x] Adapters reciben logger en constructor y vía `setLogger` (injected adapters)
-
-* [ ] Logger externo (opcional):
-
-  * [ ] Pino
-  * [ ] Winston
 
 ---
 
-# 🔐 Seguridad
+# 🔐 Seguridad ✅
+
+* [x] Field whitelisting (`allowedFields` — filtra body antes de hooks)
+* [x] Query sanitization (bloquea `__proto__`, `constructor`, `prototype`)
+* [x] Limit depth / recursion (`QueryLimits`: `maxFilters`, `maxInValues`, `maxRegexLength` — 400 on violation)
+
+---
+
+# 🧪 Testing ✅
+
+* [x] Unit tests — Controller, Validator, Query parsing (269 tests total)
+* [x] Integration tests — CRUD completo (get/post/put/delete)
+* [x] Edge cases — query inválida, paths malformados, params faltantes, route not found
+* [x] Security tests — field whitelisting, query limits
+
+---
+
+# 📦 Build & Distribución ✅
+
+* [x] Dual CJS + ESM output con **tsup**
+* [x] `package.json` exports con condiciones `import` / `require`
+* [x] CJS interop: `require('hiroki')` retorna singleton directamente
+* [x] Smoke test ESM + CJS verificado en `prepublishOnly`
+* [x] `mongoose` y `pluralize` como `external` (evita conflictos de instancias)
+
+---
+
+# 🧹 Deuda técnica completada ✅
+
+* [x] Remover `any`, refactor `Validator` class → named exports
+* [x] Fix ESM bare imports (`ERR_PACKAGE_PATH_NOT_EXPORTED`)
+* [x] Fix `instanceof mongoose.Model` → duck typing (cross-realm)
+* [x] Fix `InvalidModelError` mensaje, Fix `RouteNotFoundError` fuera de try-catch
+
+---
+
+## 🗺️ Próximas fases
+
+---
+
+## 🔧 Fase 6 — Deuda técnica & DX interna
 
 ### Objetivo
 
-Evitar exposiciones peligrosas
+Limpiar el core para facilitar contribuciones y mantenimiento
 
 ### Tasks
 
-* [x] Field whitelisting (`allowedFields` in `ControllerConfig` — filters `create`/`update` body before hooks)
-* [x] Query sanitization (blocks `__proto__`, `constructor`, `prototype` in `where` and `conditions` params)
-* [x] Limit depth / recursion (`QueryLimits` in `ControllerConfig`: `maxFilters`, `maxInValues`, `maxRegexLength` — throws 400 on violation)
-* [ ] Rate limiting hooks
-* [ ] Auth integration examples
+* [ ] Simplificar `ResolvedControllerConfig` (reemplazar `Required<Omit<...>> & Pick<...>` por tipo explícito)
+* [ ] Separar tipos públicos en `src/types.ts` (extraer interfaces de `controller.ts`, `hooks.ts`, etc.)
+* [ ] Mejorar naming interno (ej: `_disabledMethods` → `disabledMethods`, `_filterBody` → `filterBody`)
+* [ ] Eliminar lógica duplicada (revisar `validateConditions` duplicado entre `mongoose-adapter` y `validator`)
 
 ---
 
-# 📚 Documentación
-
-## 🧩 Docs actuales
-
-* MkDocs (base existente)
-
-## 🆕 Próximos pasos
-
-### 1. Reorganización
-
-* [ ] Getting Started claro
-* [ ] Why Hiroki
-* [ ] Examples reales
-* [ ] API reference completa
-
----
-
-## 🤖 Documentación compatible con IA
+## 📚 Fase 7 — Documentación
 
 ### Objetivo
 
-Hacer que Hiroki sea fácil de usar por herramientas AI (ChatGPT, Copilot, etc.)
+Hacer Hiroki fácil de adoptar para humanos y herramientas AI
 
 ### Tasks
 
-* [ ] Agregar ejemplos claros y simples:
-
-```ts
-hiroki.register(User)
-```
-
-* [x] Evitar ambigüedades en API
-* [x] Tipos bien definidos en TypeScript
-* [x] Comentarios JSDoc en API pública:
-  * `hiroki.importModel` / `importModels` / `process` / `setConfig`
-  * `ControllerConfig` — todos los campos documentados
-  * `HirokiAdapter` — interfaz completa con JSDoc
-  * `parseHirokiQuery` — params soportados documentados
-  * `QueryLimits` — cada campo explicado
-  * `MemoryAdapter` — clase + `clear()`
-
-* [x] Casos de uso explícitos:
-
-  * CRUD básico
-  * filtros
-  * paginación
+* [ ] Getting Started — instalación + primer modelo en < 10 líneas
+* [ ] Why Hiroki — comparación vs boilerplate manual
+* [ ] Examples reales — CRUD con Mongoose, con MemoryAdapter, con hooks, con middleware auth
+* [ ] API reference completa — todos los tipos y opciones documentados
+* [ ] Rate limiting — ejemplo de implementación vía middleware (ya soportado)
+* [ ] Auth integration — ejemplo de guard via middleware + `beforeCreate` hook
 
 ---
 
-## 🧠 AI-friendly design principles
-
-* APIs predecibles
-* nombres explícitos
-* ejemplos cortos y reales
-* evitar “magia implícita”
-* tipos claros
-
----
-
-# 🧪 Testing
+## 📦 Fase 8 — Monorepo & sub-packages
 
 ### Objetivo
 
-Aumentar confianza en cambios
+Expandir el ecosistema de adapters sin contaminar el core
 
 ### Tasks
 
-* [x] Unit tests:
+* [ ] Migrar a estructura monorepo — `packages/hiroki` (core), workspace root con `npm workspaces` o `pnpm`
+* [ ] `packages/hiroki-drizzle` — adapter para Drizzle ORM (PostgreSQL / SQLite)
 
-  * [x] Controller
-  * [x] Validator
-  * [x] Query parsing (`tests/query.test.ts` — 40 cases)
-* [x] Integration tests:
+  * Implementa `HirokiAdapter`
+  * Mapea `HirokiFilter[]` → Drizzle `where` conditions
+  * Peer deps: `drizzle-orm`, `hiroki`
 
-  * end-to-end CRUD (get/post/put/delete test suites)
-* [x] Edge cases:
+* [ ] `packages/hiroki-sequelize` — adapter para Sequelize (MySQL / PostgreSQL legacy)
 
-  * [x] invalid query (malformed conditions JSON → 400)
-  * [x] disabled methods
-  * [x] malformed paths (double-slash normalization, route not found → 404)
-  * [x] missing required params (id, body, conditions)
+  * Implementa `HirokiAdapter`
+  * Mapea `HirokiFilter[]` → Sequelize `Op` operators
+  * Peer deps: `sequelize`, `hiroki`
 
----
-
-# 📦 Build & Distribución
-
-### Objetivo
-
-Garantizar que el paquete publicado funcione correctamente como ESM y CJS
-
-### Tasks
-
-* [x] Agregar extensiones `.js` a todos los imports relativos en fuente TypeScript (requerido para ESM output)
-* [x] Agregar `moduleNameMapper` en Jest para resolver `.js` → `.ts` en tests
-* [x] Smoke test (`smoke-test.mjs`) — verifica exports del build antes de publicar
-* [x] Script `npm run smoke` + integrado en `prepublishOnly`
-* [x] Migrar build a **tsup** (dual CJS + ESM output)
-* [x] `package.json` `exports` con condiciones `import` / `require`
-* [x] CJS interop: `require('hiroki')` retorna singleton directamente (no exports object)
-* [x] Smoke test actualizado para verificar ambos formatos (ESM + CJS)
-* [x] Dependencias `mongoose` y `pluralize` marcadas como `external` — evita bundling y conflictos de instancias
+* [ ] Logger externo — adaptadores para Pino y Winston que implementen `HirokiLogger`
 
 ---
 
-# 🧹 Deuda técnica
+# 🎯 Estado actual
 
-* [x] Remover `any`
-* [x] Refactor `Validator` class → standalone named exports (remove static-only class antipattern)
-* [x] Eliminar código muerto: `validateConditionsString`, `validaMethods`
-* [x] Fix ESM: bare imports causaban `ERR_PACKAGE_PATH_NOT_EXPORTED` al usar el paquete como dependencia
-* [x] Fix `instanceof mongoose.Model` → duck typing (`modelName`, `find`, `schema`) — resuelve fallos cross-realm (npm link, múltiples copias de mongoose)
-* [x] Fix `InvalidModelError` — mensaje mostraba función completa; ahora muestra `model.modelName`
-* [x] Fix `RouteNotFoundError` thrown outside try-catch in `hiroki.process()` — now returns JSON 404 instead of crashing
-* [ ] Simplificar tipos complejos (`Omit + Pick`)
-* [ ] Separar tipos en archivos
-* [ ] Mejorar naming interno
-* [ ] Evitar lógica duplicada
-
----
-
-# 🎯 Prioridades actuales
-
-1. TypeScript sólido
-2. Adapter abstraction
-3. Query parser agnóstico
-4. Logging consistente
-5. Docs claras
+✅ Core estable — Fases 1–5 completas
+🔧 Pendiente — Deuda técnica (Fase 6), Docs (Fase 7), Monorepo (Fase 8)
 
 ---
 
@@ -393,6 +330,6 @@ Busca ser:
 
 # 📌 Estado del proyecto
 
-🚧 En refactor activo hacia v3
-⚠️ API puede cambiar
-✅ Base funcional estable
+✅ v3 core estable — adapter system, query AST, hooks, middleware, seguridad, build dual CJS/ESM
+🔧 Fases 6–8 pendientes — deuda técnica, docs, monorepo
+⚠️ API pública puede cambiar hasta release oficial de v3
