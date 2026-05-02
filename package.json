@@ -3,12 +3,19 @@
   "version": "3.0.0",
   "description": "Automatic REST API CRUD generator for Mongoose models with Express",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
   "files": [
@@ -17,8 +24,8 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json --watch",
+    "build": "tsup",
+    "build:watch": "tsup --watch",
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -27,8 +34,8 @@
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\" \"*.js\" \"*.json\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\" \"*.js\" \"*.json\"",
     "clean": "rm -rf dist",
-    "prebuild": "npm run clean",
-    "prepublishOnly": "npm run build && npm test"
+    "smoke": "node smoke-test.mjs",
+    "prepublishOnly": "npm run build && npm test && npm run smoke"
   },
   "keywords": [
     "rest",
@@ -63,6 +70,7 @@
     "prettier": "^3.2.5",
     "supertest": "^7.0.0",
     "ts-jest": "^29.1.2",
+    "tsup": "^8.5.1",
     "typescript": "^5.4.5"
   },
   "dependencies": {

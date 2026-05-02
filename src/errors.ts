@@ -77,8 +77,11 @@ export class InternalServerError extends HttpError {
  */
 export class InvalidModelError extends BadRequestError {
   constructor(model: unknown) {
+    const label = typeof model === 'function'
+      ? (model as { modelName?: string }).modelName ?? model.name ?? 'unknown'
+      : String(model);
     super(
-      `model "${model}" is not valid.`,
+      `model "${label}" is not valid.`,
       'INVALID_MODEL',
       { providedModel: model }
     );

@@ -1,4 +1,4 @@
-import mongoose, { Model, FilterQuery } from 'mongoose';
+import { Model, FilterQuery } from 'mongoose';
 import {
   InvalidModelError,
   InvalidConditionsError,
@@ -9,7 +9,7 @@ import {
   InvalidMiddlewareError,
   InvalidEnumError,
   DisabledMethodError
-} from './errors';
+} from './errors.js';
 
 export type ValidModel = string | Model<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
@@ -26,8 +26,13 @@ export interface ValidationParams {
 }
 
 export function isMongooseModel(value: unknown): value is Model<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
+  // Use duck typing instead of instanceof to avoid cross-realm failures
+  // (e.g. npm link or multiple mongoose copies resolving to different classes).
+  const v = value as unknown as Record<string, unknown>;
   return typeof value === 'function' &&
-    value.prototype instanceof mongoose.Model;
+    typeof v.modelName === 'string' &&
+    typeof v.find === 'function' &&
+    typeof v.schema === 'object';
 }
 
 export function validateModel(model: unknown): asserts model is ValidModel {

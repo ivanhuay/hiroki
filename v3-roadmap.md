@@ -277,11 +277,34 @@ Aumentar confianza en cambios
 
 ---
 
+# 📦 Build & Distribución
+
+### Objetivo
+
+Garantizar que el paquete publicado funcione correctamente como ESM y CJS
+
+### Tasks
+
+* [x] Agregar extensiones `.js` a todos los imports relativos en fuente TypeScript (requerido para ESM output)
+* [x] Agregar `moduleNameMapper` en Jest para resolver `.js` → `.ts` en tests
+* [x] Smoke test (`smoke-test.mjs`) — verifica exports del build antes de publicar
+* [x] Script `npm run smoke` + integrado en `prepublishOnly`
+* [x] Migrar build a **tsup** (dual CJS + ESM output)
+* [x] `package.json` `exports` con condiciones `import` / `require`
+* [x] CJS interop: `require('hiroki')` retorna singleton directamente (no exports object)
+* [x] Smoke test actualizado para verificar ambos formatos (ESM + CJS)
+* [x] Dependencias `mongoose` y `pluralize` marcadas como `external` — evita bundling y conflictos de instancias
+
+---
+
 # 🧹 Deuda técnica
 
 * [x] Remover `any`
 * [x] Refactor `Validator` class → standalone named exports (remove static-only class antipattern)
 * [x] Eliminar código muerto: `validateConditionsString`, `validaMethods`
+* [x] Fix ESM: bare imports causaban `ERR_PACKAGE_PATH_NOT_EXPORTED` al usar el paquete como dependencia
+* [x] Fix `instanceof mongoose.Model` → duck typing (`modelName`, `find`, `schema`) — resuelve fallos cross-realm (npm link, múltiples copias de mongoose)
+* [x] Fix `InvalidModelError` — mensaje mostraba función completa; ahora muestra `model.modelName`
 * [ ] Simplificar tipos complejos (`Omit + Pick`)
 * [ ] Separar tipos en archivos
 * [ ] Mejorar naming interno

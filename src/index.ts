@@ -9,7 +9,7 @@ export type {
   ImportModelOptions,
   ProcessRequest,
   ProcessResponse
-} from './hiroki.js';
+} from './hiroki';
 
 export type {
   HttpMethod,
@@ -17,33 +17,33 @@ export type {
   ProcessParams,
   RequestParams,
   ExtendedQueryParams
-} from './controller.js';
+} from './controller';
 
 export type {
   QueryParams,
   UpdateSet,
   UpdateOperators,
   ParsedOptions
-} from './model.js';
+} from './model';
 
 export type {
   HirokiAdapter,
   UpdateConfig
-} from './adapter.js';
+} from './adapter';
 
 export { adapterRegistry, AdapterRegistry } from './adapter';
 
 export type {
   MongooseDocument,
   PopulateOptions
-} from './mongoose-adapter.js';
+} from './mongoose-adapter';
 
 export { MongooseAdapter } from './mongoose-adapter';
 
 export type {
   ValidModel,
   ValidationParams
-} from './validator.js';
+} from './validator';
 
 export type { HttpErrorResponse } from './errors';
 
