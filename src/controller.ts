@@ -1,5 +1,6 @@
 import { MongooseAdapter } from './mongoose-adapter';
 import type { HirokiAdapter } from './adapter';
+import { adapterRegistry } from './adapter';
 import pluralize from 'pluralize';
 import { validateEnum, validateDisabledMethod, validatePutParams, validateIdRequired, validateBody } from './validator';
 import type { ValidModel } from './validator';
@@ -20,6 +21,7 @@ export interface ControllerConfig {
   logLevel?: LogLevel;
   hooks?: ControllerHooks;
   middleware?: HirokiMiddleware[];
+  adapter?: HirokiAdapter;
 }
 
 export interface ProcessParams {
@@ -45,8 +47,8 @@ export interface ParsedQuery {
 }
 
 type ResolvedControllerConfig =
-  Required<Omit<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware'>> &
-  Pick<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware'>;
+  Required<Omit<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware' | 'adapter'>> &
+  Pick<ControllerConfig, 'disabledMethod' | 'logger' | 'logLevel' | 'hooks' | 'middleware' | 'adapter'>;
 
 class Controller {
   protected model: HirokiAdapter;
@@ -57,7 +59,9 @@ class Controller {
   private logger: HirokiLogger;
 
   constructor(model: ValidModel, config: ControllerConfig = {}) {
-    this.model = new MongooseAdapter(model);
+    this.model = config.adapter
+      ?? adapterRegistry.resolve(model)
+      ?? new MongooseAdapter(model);
     this.config = {
       fastUpdate: 'disabled',
       disabledPluralize: true,

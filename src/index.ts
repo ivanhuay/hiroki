@@ -57,6 +57,7 @@ export type {
 } from './mongoose-adapter';
 
 export { MongooseAdapter } from './mongoose-adapter';
+export { MemoryAdapter } from './memory-adapter';
 
 export type {
   ValidModel,

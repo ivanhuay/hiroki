@@ -169,17 +169,32 @@ Permitir custom lógica sin modificar core
 
 ---
 
-## 🚀 Fase 5 — Nuevos adapters
+## 🚀 Fase 5 — Nuevos adapters ✅
 
 ### Objetivo
 
 Expandir ecosistema
 
-### Posibles adapters
+### Tasks
 
-* [ ] PostgreSQL (Drizzle / Prisma)
-* [ ] Sequelize (legacy support)
-* [ ] Custom adapter API
+* [x] `MemoryAdapter` — zero deps, in-memory store, implements `HirokiAdapter` completo
+
+  * Soporta todos los operadores: `eq/ne/gt/gte/lt/lte/in/nin/regex`
+  * `sort`, `limit`, `offset`, `select`, legacy `conditions`
+  * `clear()` para reset en tests
+  * Exportado del paquete como `MemoryAdapter`
+
+* [x] `adapter?: HirokiAdapter` en `ControllerConfig` — inyección directa de cualquier adapter
+
+  * `Controller` usa: `config.adapter ?? adapterRegistry.resolve(model) ?? new MongooseAdapter(model)`
+  * `hiroki.importModel('MyModel', { adapter: new MemoryAdapter('MyModel') })` — sin Mongoose
+
+* [x] `AdapterRegistry` auto-resolution ya integrado en Controller (Fase 2)
+
+### Posibles adapters (externos, fuera del core)
+
+* [ ] PostgreSQL (Drizzle / Prisma) — paquete separado `hiroki-drizzle`
+* [ ] Sequelize (legacy support) — paquete separado `hiroki-sequelize`
 
 ---
 

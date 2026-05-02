@@ -48,9 +48,10 @@ class Hiroki {
   }
 
   importModel(model: ValidModel, options?: ImportModelOptions): Controller {
-    validateModel(model);
+    if (!options?.adapter) validateModel(model);
+    const adapterName = options?.adapter?.modelName;
     const m = model as { modelName?: string; name?: string };
-    const modelName = m.modelName ?? m.name ?? String(model);
+    const modelName = adapterName ?? m.modelName ?? m.name ?? String(model);
 
     if (!this.controllers[modelName]) {
       this.controllers[modelName] = new Controller(model, {

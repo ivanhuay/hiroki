@@ -13,6 +13,7 @@ const expectedExports = [
   'default',
   'Hiroki',
   'MongooseAdapter',
+  'MemoryAdapter',
   'AdapterRegistry',
   'adapterRegistry',
   'HttpError',
