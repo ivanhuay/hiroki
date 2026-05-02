@@ -4,7 +4,8 @@ import pluralize from 'pluralize';
 import { validateEnum, validateDisabledMethod, validatePutParams, validateIdRequired, validateBody } from './validator';
 import type { ValidModel } from './validator';
 import { DisabledMethodError, UnexpectedError } from './errors';
-import type { QueryParams } from './model';
+import { parseHirokiQuery } from './query';
+import type { HirokiQuery } from './query';
 import { HirokiLogger, ConsoleLogger, LogLevel } from './logger';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -29,7 +30,7 @@ export interface RequestParams {
   query?: ExtendedQueryParams;
 }
 
-export interface ExtendedQueryParams extends QueryParams {
+export interface ExtendedQueryParams extends HirokiQuery {
   id?: string;
   count?: boolean;
   distinct?: string;
@@ -125,36 +126,24 @@ class Controller {
   protected _getQueryParams(path: string): ParsedQuery {
     const url = new URL(`http://localhost${path}`);
     const searchParams = url.searchParams;
-    const queryParams: Record<string, unknown> = {};
 
-    for (const [key, value] of searchParams.entries()) {
-      queryParams[key] = value;
-      if (queryParams[key] === 'true' || queryParams[key] === 'false') {
-        queryParams[key] = queryParams[key] === 'true';
-      }
-    }
+    const hirokiQuery = parseHirokiQuery(searchParams);
+    const extended: ExtendedQueryParams = { ...hirokiQuery };
+
+    const count = searchParams.get('count');
+    if (count !== null) extended.count = count === 'true';
+
+    const fast = searchParams.get('fast');
+    if (fast !== null) extended.fast = fast === 'true';
+
+    const distinct = searchParams.get('distinct');
+    if (distinct !== null) extended.distinct = distinct;
 
     const pathRegex = new RegExp(`^${this.path}/([\\w\\d]+)`);
     const matchId = path.match(pathRegex);
+    if (matchId) extended.id = matchId[1];
 
-    if (matchId) {
-      queryParams.id = matchId[1];
-    }
-
-    if (path.match(/conditions\[(\w+)\]/ig)) {
-      const conditions: Record<string, unknown> = {};
-
-      for (const [key, value] of Object.entries(queryParams)) {
-        const match = String(key).match(/^conditions\[(\w+)\]$/);
-        if (match) {
-          conditions[match[1]] = value;
-        }
-      }
-
-      queryParams.conditions = conditions;
-    }
-
-    return { query: queryParams as ExtendedQueryParams };
+    return { query: extended };
   }
 
   process(path: string, params: ProcessParams): Promise<unknown> {

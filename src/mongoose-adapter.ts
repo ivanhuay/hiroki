@@ -7,8 +7,9 @@ import mongoose, {
 } from 'mongoose';
 import { validateModel, validateDocumentExist, validateConditions } from './validator';
 import type { ValidModel, ValidConditions } from './validator';
-import type { QueryParams, UpdateSet, ParsedOptions } from './model';
+import type { UpdateSet } from './model';
 import type { HirokiAdapter, UpdateConfig } from './adapter';
+import type { HirokiQuery, HirokiFilter, HirokiSort, FilterOperator } from './query';
 
 export type MongooseDocument = Document & Record<string, unknown>;
 export type PopulateOptions = MongoosePopulateOptions | MongoosePopulateOptions[] | false;
@@ -46,13 +47,13 @@ export class MongooseAdapter implements HirokiAdapter {
     );
   }
 
-  findById(id: string, queryParams?: QueryParams): Promise<unknown> {
-    const populate = this._parsePopulate(queryParams);
+  findById(id: string, hirokiQuery?: HirokiQuery): Promise<unknown> {
+    const populate = this._parsePopulate(hirokiQuery);
+    const select = hirokiQuery?.select?.join(' ') || null;
     let query = this._model.findById(id);
 
-    if (populate) {
-      query = query.populate(populate);
-    }
+    if (select) query = query.select(select) as typeof query;
+    if (populate) query = query.populate(populate);
 
     return query.then((doc) => {
       validateDocumentExist(doc, 404);
@@ -60,29 +61,29 @@ export class MongooseAdapter implements HirokiAdapter {
     });
   }
 
-  find(queryParams: QueryParams): Promise<unknown> {
-    const conditions = this._parseConditions(queryParams.conditions);
-    const populate = this._parsePopulate(queryParams);
-    const select = queryParams.select || null;
-    const options = this._parseOptions(queryParams);
+  find(hirokiQuery: HirokiQuery): Promise<unknown> {
+    const { filter, options } = this._mapQuery(hirokiQuery);
+    const populate = this._parsePopulate(hirokiQuery);
 
-    let query = this._model.find(conditions, select, options);
+    let query = this._model.find(filter, options.select ?? null, {
+      skip: options.skip,
+      limit: options.limit,
+      sort: options.sort,
+    });
 
-    if (populate) {
-      query = query.populate(populate);
-    }
+    if (populate) query = query.populate(populate);
 
     return query;
   }
 
-  count(query?: QueryParams): Promise<number> {
-    const conditions = query ? this._parseConditions(query.conditions) : {};
+  count(hirokiQuery?: HirokiQuery): Promise<number> {
+    const filter = hirokiQuery ? this._mapQuery(hirokiQuery).filter : {};
 
-    if (!Object.keys(conditions).length) {
+    if (!Object.keys(filter).length) {
       return this._model.estimatedDocumentCount();
     }
 
-    return this._model.countDocuments(conditions);
+    return this._model.countDocuments(filter);
   }
 
   distinct(field: string): Promise<unknown[]> {
@@ -167,18 +168,48 @@ export class MongooseAdapter implements HirokiAdapter {
     });
   }
 
-  private _parseOptions(query: QueryParams): ParsedOptions {
-    const options: ParsedOptions = { sort: '_id' };
+  private _mapQuery(hirokiQuery: HirokiQuery): {
+    filter: FilterQuery<MongooseDocument>;
+    options: { skip?: number; limit?: number; sort?: string; select?: string };
+  } {
+    const filter: FilterQuery<MongooseDocument> = {};
 
-    if (query.skip) options.skip = parseInt(String(query.skip));
-    if (query.limit) options.limit = parseInt(String(query.limit));
-    if (query.sort) options.sort = query.sort;
-    if (query.select) options.select = query.select;
+    // Map abstract where filters to Mongoose operators
+    for (const f of hirokiQuery.where ?? []) {
+      Object.assign(filter, this._mapFilter(f));
+    }
 
-    return options;
+    // Merge legacy conditions escape hatch
+    if (hirokiQuery.conditions) {
+      const parsed = validateConditions(hirokiQuery.conditions);
+      if (parsed) Object.assign(filter, parsed);
+    }
+
+    const options: { skip?: number; limit?: number; sort?: string; select?: string } = {
+      sort: '_id',
+    };
+    if (hirokiQuery.offset) options.skip = hirokiQuery.offset;
+    if (hirokiQuery.limit) options.limit = hirokiQuery.limit;
+    if (hirokiQuery.sort?.length) options.sort = this._mapSort(hirokiQuery.sort);
+    if (hirokiQuery.select?.length) options.select = hirokiQuery.select.join(' ');
+
+    return { filter, options };
   }
 
-  private _parsePopulate(query?: QueryParams): PopulateOptions {
+  private _mapFilter(f: HirokiFilter): FilterQuery<MongooseDocument> {
+    const OP_TO_MONGO: Record<FilterOperator, string> = {
+      eq: '$eq', ne: '$ne', gt: '$gt', gte: '$gte',
+      lt: '$lt', lte: '$lte', in: '$in', nin: '$nin', regex: '$regex',
+    };
+    if (f.op === 'eq') return { [f.field]: f.value } as FilterQuery<MongooseDocument>;
+    return { [f.field]: { [OP_TO_MONGO[f.op]]: f.value } } as FilterQuery<MongooseDocument>;
+  }
+
+  private _mapSort(sort: HirokiSort[]): string {
+    return sort.map((s) => `${s.dir === 'desc' ? '-' : ''}${s.field}`).join(' ');
+  }
+
+  private _parsePopulate(query?: HirokiQuery): PopulateOptions {
     if (!query?.populate) return false;
 
     try {

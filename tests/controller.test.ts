@@ -84,10 +84,15 @@ describe('Controller', () => {
       expect(query.id).toBe('507f1f77bcf86cd799439011');
     });
 
-    it('parses string query params', () => {
+    it('parses limit and skip as numbers (offset)', () => {
       const { query } = controller.parseQueryParams('/api/users?limit=10&skip=5');
-      expect(query.limit).toBe('10');
-      expect(query.skip).toBe('5');
+      expect(query.limit).toBe(10);
+      expect(query.offset).toBe(5);
+    });
+
+    it('parses offset param', () => {
+      const { query } = controller.parseQueryParams('/api/users?offset=20');
+      expect(query.offset).toBe(20);
     });
 
     it('coerces "true" string to boolean', () => {
@@ -100,22 +105,50 @@ describe('Controller', () => {
       expect(query.fast).toBe(false);
     });
 
-    it('parses single conditions bracket param', () => {
+    it('parses single conditions bracket param (legacy)', () => {
       const { query } = controller.parseQueryParams('/api/users?conditions[name]=john');
       expect(query.conditions).toEqual({ name: 'john' });
     });
 
-    it('parses multiple conditions bracket params', () => {
+    it('parses multiple conditions bracket params (legacy)', () => {
       const { query } = controller.parseQueryParams(
         '/api/users?conditions[name]=john&conditions[role]=admin'
       );
       expect(query.conditions).toEqual({ name: 'john', role: 'admin' });
     });
 
+    it('parses where filter as HirokiFilter (eq)', () => {
+      const { query } = controller.parseQueryParams('/api/users?where[name]=john');
+      expect(query.where).toEqual([{ field: 'name', op: 'eq', value: 'john' }]);
+    });
+
+    it('parses where filter with operator', () => {
+      const { query } = controller.parseQueryParams('/api/users?where[age][$gt]=18');
+      expect(query.where).toEqual([{ field: 'age', op: 'gt', value: 18 }]);
+    });
+
+    it('parses multiple where filters', () => {
+      const { query } = controller.parseQueryParams('/api/users?where[name]=john&where[age][$gte]=21');
+      expect(query.where).toEqual([
+        { field: 'name', op: 'eq', value: 'john' },
+        { field: 'age', op: 'gte', value: 21 },
+      ]);
+    });
+
+    it('parses where $in filter as array', () => {
+      const { query } = controller.parseQueryParams('/api/users?where[role][$in]=admin,user');
+      expect(query.where).toEqual([{ field: 'role', op: 'in', value: ['admin', 'user'] }]);
+    });
+
     it('combines id extraction with query params', () => {
-      const { query } = controller.parseQueryParams('/api/users/abc123?select=name');
+      const { query } = controller.parseQueryParams('/api/users/abc123?select=name,email');
       expect(query.id).toBe('abc123');
-      expect(query.select).toBe('name');
+      expect(query.select).toEqual(['name', 'email']);
+    });
+
+    it('parses select as array', () => {
+      const { query } = controller.parseQueryParams('/api/users?select=name,email');
+      expect(query.select).toEqual(['name', 'email']);
     });
 
     it('handles populate query param', () => {
@@ -123,9 +156,22 @@ describe('Controller', () => {
       expect(query.populate).toBe('books');
     });
 
-    it('handles sort query param', () => {
+    it('parses sort as HirokiSort array (asc)', () => {
       const { query } = controller.parseQueryParams('/api/users?sort=name');
-      expect(query.sort).toBe('name');
+      expect(query.sort).toEqual([{ field: 'name', dir: 'asc' }]);
+    });
+
+    it('parses sort with dash prefix as desc', () => {
+      const { query } = controller.parseQueryParams('/api/users?sort=-name');
+      expect(query.sort).toEqual([{ field: 'name', dir: 'desc' }]);
+    });
+
+    it('parses multi-field sort', () => {
+      const { query } = controller.parseQueryParams('/api/users?sort=-name,age');
+      expect(query.sort).toEqual([
+        { field: 'name', dir: 'desc' },
+        { field: 'age', dir: 'asc' },
+      ]);
     });
   });
 

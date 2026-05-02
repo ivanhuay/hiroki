@@ -1,4 +1,5 @@
-import type { QueryParams, UpdateSet } from './model';
+import type { HirokiQuery } from './query';
+import type { UpdateSet } from './model';
 import type { ValidConditions } from './validator';
 
 export interface UpdateConfig {
@@ -8,9 +9,9 @@ export interface UpdateConfig {
 export interface HirokiAdapter {
   readonly modelName: string;
   canHandle(resource: unknown): boolean;
-  findById(id: string, query?: QueryParams): Promise<unknown>;
-  find(query: QueryParams): Promise<unknown>;
-  count(query?: QueryParams): Promise<number>;
+  findById(id: string, query?: HirokiQuery): Promise<unknown>;
+  find(query: HirokiQuery): Promise<unknown>;
+  count(query?: HirokiQuery): Promise<number>;
   distinct(field: string): Promise<unknown[]>;
   create(data: Record<string, unknown>): Promise<unknown>;
   updateById(id: string, data: UpdateSet, config?: UpdateConfig): Promise<unknown>;

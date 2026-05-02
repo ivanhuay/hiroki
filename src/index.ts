@@ -20,11 +20,16 @@ export type {
 } from './controller';
 
 export type {
-  QueryParams,
   UpdateSet,
   UpdateOperators,
-  ParsedOptions
 } from './model';
+
+export type {
+  HirokiQuery,
+  HirokiFilter,
+  HirokiSort,
+  FilterOperator,
+} from './query';
 
 export type {
   HirokiAdapter,

@@ -92,7 +92,7 @@ interface HirokiAdapter {
 
 ---
 
-## 🥉 Fase 3 — Query abstraction
+## 🥉 Fase 3 — Query abstraction ✅
 
 ### Objetivo
 
@@ -100,23 +100,38 @@ Soportar múltiples bases de datos
 
 ### Tasks
 
-* [ ] Definir AST de queries:
+* [x] Definir AST de queries (`src/query.ts`):
 
 ```ts
-{
-  where: [],
-  limit: number,
-  offset: number,
-  sort: []
+interface HirokiQuery {
+  where?: HirokiFilter[];   // { field, op, value }
+  limit?: number;
+  offset?: number;
+  sort?: HirokiSort[];      // { field, dir: 'asc' | 'desc' }
+  select?: string[];
+  populate?: string;
+  conditions?: ValidConditions; // legacy escape hatch
 }
 ```
 
-* [ ] Parser agnóstico de query params
-* [ ] Mapper:
+* [x] Parser agnóstico de query params (`parseHirokiQuery`)
 
-  * Mongo → `$gt`, `$in`
-  * SQL → `>`, `IN`
-* [ ] Validación de filtros
+  * `where[field]=value` → `{ field, op: 'eq', value }`
+  * `where[field][$gt]=18` → `{ field, op: 'gt', value: 18 }`
+  * `where[tags][$in]=a,b` → `{ field, op: 'in', value: ['a','b'] }`
+  * `sort=-name,age` → `[{ field: 'name', dir: 'desc' }, ...]`
+  * `select=name,email` → `['name', 'email']`
+  * `limit`/`offset`/`skip` coerced to numbers
+  * `conditions={"..."}` and `conditions[field]=value` kept as legacy
+
+* [x] Mapper Mongoose: `HirokiFilter[]` → `FilterQuery` + options
+
+  * `eq` → direct value, `gt/gte/lt/lte/ne/in/nin/regex` → `$op`
+  * `HirokiSort[]` → Mongoose sort string
+
+* [x] `HirokiAdapter` interface updated to use `HirokiQuery`
+* [x] Controller `_getQueryParams` refactored to use new parser
+* [x] `HirokiQuery`, `HirokiFilter`, `HirokiSort`, `FilterOperator` exported from package
 
 ---
 
