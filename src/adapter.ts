@@ -1,6 +1,7 @@
 import type { HirokiQuery } from './query';
 import type { UpdateSet } from './model';
 import type { ValidConditions } from './validator';
+import type { HirokiLogger } from './logger';
 
 export interface UpdateConfig {
   fast?: boolean;
@@ -9,6 +10,7 @@ export interface UpdateConfig {
 export interface HirokiAdapter {
   readonly modelName: string;
   canHandle(resource: unknown): boolean;
+  setLogger?(logger: HirokiLogger): void;
   findById(id: string, query?: HirokiQuery): Promise<unknown>;
   find(query: HirokiQuery): Promise<unknown>;
   count(query?: HirokiQuery): Promise<number>;

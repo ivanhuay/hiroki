@@ -59,9 +59,6 @@ class Controller {
   private logger: HirokiLogger;
 
   constructor(model: ValidModel, config: ControllerConfig = {}) {
-    this.model = config.adapter
-      ?? adapterRegistry.resolve(model)
-      ?? new MongooseAdapter(model);
     this.config = {
       fastUpdate: 'disabled',
       disabledPluralize: true,
@@ -69,6 +66,11 @@ class Controller {
       ...config
     };
     this.logger = this.config.logger ?? new ConsoleLogger({ logLevel: this.config.logLevel || 'error' });
+    this.model = config.adapter
+      ?? adapterRegistry.resolve(model)
+      ?? new MongooseAdapter(model, this.logger);
+    // Propagate logger to injected or registry-resolved adapters
+    this.model.setLogger?.(this.logger);
     validateEnum(this.config.fastUpdate, ['enabled', 'disabled', 'optional']);
 
     this.routeName = pluralize(this.model.modelName).toLocaleLowerCase();
@@ -94,9 +96,11 @@ class Controller {
   get(params: ExtendedQueryParams): Promise<unknown> {
     validateDisabledMethod('get', this._disabledMethods);
     if (params.id) {
+      this.logger.debug(`[${this.model.modelName}] GET id=${params.id}`);
       return this.model.findById(params.id, params);
     }
 
+    this.logger.debug(`[${this.model.modelName}] GET query=${JSON.stringify(params)}`);
     return this.queryGet(params);
   }
 
@@ -104,11 +108,13 @@ class Controller {
     validateDisabledMethod('post', this._disabledMethods);
     const hooks = this.config.hooks;
     const ctx = { modelName: this.model.modelName };
+    this.logger.debug(`[${this.model.modelName}] POST keys=${Object.keys(params.body ?? {}).join(',')}`);
 
     let body = params.body!;
     if (hooks?.beforeCreate) body = await hooks.beforeCreate(body, ctx);
 
     const doc = await this.model.create(body);
+    this.logger.info(`[${this.model.modelName}] created`);
 
     if (hooks?.afterCreate) await hooks.afterCreate(doc, ctx);
 
@@ -120,6 +126,7 @@ class Controller {
     validatePutParams(params);
     const hooks = this.config.hooks;
     const ctx = { modelName: this.model.modelName };
+    this.logger.debug(`[${this.model.modelName}] PUT id=${params.query?.id ?? 'by-conditions'}`);
 
     const fast =
       this.config.fastUpdate === 'enabled' ||
@@ -134,6 +141,7 @@ class Controller {
     } else {
       doc = await this.model.updateByConditions(params.query?.conditions, body, { fast });
     }
+    this.logger.info(`[${this.model.modelName}] updated`);
 
     if (hooks?.afterUpdate) await hooks.afterUpdate(doc, ctx);
 
@@ -145,10 +153,12 @@ class Controller {
     validateIdRequired(params);
     const hooks = this.config.hooks;
     const ctx = { modelName: this.model.modelName };
+    this.logger.debug(`[${this.model.modelName}] DELETE id=${params.id}`);
 
     if (hooks?.beforeDelete) await hooks.beforeDelete(params.id!, ctx);
 
     const doc = await this.model.delete(params.id!);
+    this.logger.info(`[${this.model.modelName}] deleted id=${params.id}`);
 
     if (hooks?.afterDelete) await hooks.afterDelete(doc, ctx);
 

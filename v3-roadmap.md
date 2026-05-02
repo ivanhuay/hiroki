@@ -207,11 +207,15 @@ Mejorar debugging y DX
 ### Tasks
 
 * [x] Logger base (`ConsoleLogger`)
-* [ ] Logging en:
+* [x] Logging en:
 
-  * [ ] Controller
-  * [ ] Adapter
-  * [ ] Query parsing
+  * [x] Controller — `debug` por operación (método, id, keys); `info` en create/update/delete
+  * [x] Adapter — `MongooseAdapter` y `MemoryAdapter` loguean filter/options/result count en `debug`
+  * [ ] Query parsing — sin logger (función pura, sin side effects)
+
+* [x] Logger propagado a adapters vía `setLogger?(logger)` en `HirokiAdapter`
+* [x] Adapters reciben logger en constructor y vía `setLogger` (injected adapters)
+
 * [ ] Logger externo (opcional):
 
   * [ ] Pino

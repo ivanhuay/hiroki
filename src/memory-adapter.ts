@@ -3,14 +3,21 @@ import type { HirokiAdapter, UpdateConfig } from './adapter';
 import type { UpdateSet } from './model';
 import type { ValidConditions } from './validator';
 import type { HirokiQuery, HirokiFilter, HirokiSort } from './query';
+import type { HirokiLogger } from './logger';
 
 export class MemoryAdapter implements HirokiAdapter {
   readonly modelName: string;
   private store: Map<string, Record<string, unknown>> = new Map();
   private nextId = 1;
+  private logger?: HirokiLogger;
 
-  constructor(modelName: string) {
+  constructor(modelName: string, logger?: HirokiLogger) {
     this.modelName = modelName;
+    this.logger = logger;
+  }
+
+  setLogger(logger: HirokiLogger): void {
+    this.logger = logger;
   }
 
   canHandle(resource: unknown): boolean {
@@ -18,12 +25,14 @@ export class MemoryAdapter implements HirokiAdapter {
   }
 
   async findById(id: string, query?: HirokiQuery): Promise<unknown> {
+    this.logger?.debug(`[${this.modelName}] findById id=${id}`);
     const doc = this.store.get(id);
     if (!doc) throw new DocumentNotFoundError(404);
     return this._select(doc, query?.select);
   }
 
   async find(query: HirokiQuery): Promise<unknown[]> {
+    this.logger?.debug(`[${this.modelName}] find where=${JSON.stringify(query.where)} limit=${query.limit} offset=${query.offset}`);
     let results = Array.from(this.store.values());
 
     if (query.where?.length) {
@@ -44,6 +53,7 @@ export class MemoryAdapter implements HirokiAdapter {
       results = results.map((doc) => this._select(doc, query.select) as Record<string, unknown>);
     }
 
+    this.logger?.debug(`[${this.modelName}] find → ${results.length} results`);
     return results;
   }
 
@@ -60,6 +70,7 @@ export class MemoryAdapter implements HirokiAdapter {
     const id = String(this.nextId++);
     const doc = { ...data, id };
     this.store.set(id, doc);
+    this.logger?.debug(`[${this.modelName}] create → id=${id}`);
     return doc;
   }
 
@@ -88,6 +99,7 @@ export class MemoryAdapter implements HirokiAdapter {
   }
 
   async delete(id: string): Promise<unknown> {
+    this.logger?.debug(`[${this.modelName}] delete id=${id}`);
     const doc = this.store.get(id);
     if (!doc) throw new DocumentNotFoundError(404);
     this.store.delete(id);

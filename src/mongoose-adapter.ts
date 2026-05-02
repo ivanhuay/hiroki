@@ -10,6 +10,7 @@ import type { ValidModel, ValidConditions } from './validator';
 import type { UpdateSet } from './model';
 import type { HirokiAdapter, UpdateConfig } from './adapter';
 import type { HirokiQuery, HirokiFilter, HirokiSort, FilterOperator } from './query';
+import type { HirokiLogger } from './logger';
 
 export type MongooseDocument = Document & Record<string, unknown>;
 export type PopulateOptions = MongoosePopulateOptions | MongoosePopulateOptions[] | false;
@@ -17,8 +18,9 @@ export type PopulateOptions = MongoosePopulateOptions | MongoosePopulateOptions[
 export class MongooseAdapter implements HirokiAdapter {
   private _model: MongooseModel<MongooseDocument>;
   readonly modelName: string;
+  private logger?: HirokiLogger;
 
-  constructor(model: ValidModel) {
+  constructor(model: ValidModel, logger?: HirokiLogger) {
     validateModel(model);
 
     if (typeof model === 'string') {
@@ -28,6 +30,11 @@ export class MongooseAdapter implements HirokiAdapter {
     }
 
     this.modelName = this._model.modelName;
+    this.logger = logger;
+  }
+
+  setLogger(logger: HirokiLogger): void {
+    this.logger = logger;
   }
 
   canHandle(resource: unknown): boolean {
@@ -48,6 +55,7 @@ export class MongooseAdapter implements HirokiAdapter {
   }
 
   findById(id: string, hirokiQuery?: HirokiQuery): Promise<unknown> {
+    this.logger?.debug(`[${this.modelName}] findById id=${id}`);
     const populate = this._parsePopulate(hirokiQuery);
     const select = hirokiQuery?.select?.join(' ') || null;
     let query = this._model.findById(id);
@@ -57,12 +65,14 @@ export class MongooseAdapter implements HirokiAdapter {
 
     return query.then((doc) => {
       validateDocumentExist(doc, 404);
+      this.logger?.debug(`[${this.modelName}] findById found`);
       return doc;
     });
   }
 
   find(hirokiQuery: HirokiQuery): Promise<unknown> {
     const { filter, options } = this._mapQuery(hirokiQuery);
+    this.logger?.debug(`[${this.modelName}] find filter=${JSON.stringify(filter)} options=${JSON.stringify(options)}`);
     const populate = this._parsePopulate(hirokiQuery);
 
     let query = this._model.find(filter, options.select ?? null, {
@@ -73,17 +83,24 @@ export class MongooseAdapter implements HirokiAdapter {
 
     if (populate) query = query.populate(populate);
 
-    return query;
+    return query.then((docs) => {
+      this.logger?.debug(`[${this.modelName}] find → ${(docs as unknown[]).length} results`);
+      return docs;
+    });
   }
 
   count(hirokiQuery?: HirokiQuery): Promise<number> {
     const filter = hirokiQuery ? this._mapQuery(hirokiQuery).filter : {};
+    this.logger?.debug(`[${this.modelName}] count filter=${JSON.stringify(filter)}`);
 
-    if (!Object.keys(filter).length) {
-      return this._model.estimatedDocumentCount();
-    }
+    const p = !Object.keys(filter).length
+      ? this._model.estimatedDocumentCount()
+      : this._model.countDocuments(filter);
 
-    return this._model.countDocuments(filter);
+    return p.then((n) => {
+      this.logger?.debug(`[${this.modelName}] count → ${n}`);
+      return n;
+    });
   }
 
   distinct(field: string): Promise<unknown[]> {
@@ -91,11 +108,16 @@ export class MongooseAdapter implements HirokiAdapter {
   }
 
   create(body: Record<string, unknown>): Promise<unknown> {
+    this.logger?.debug(`[${this.modelName}] create keys=${Object.keys(body).join(',')}`);
     const newDoc = new this._model(body as Partial<MongooseDocument>);
-    return newDoc.save();
+    return newDoc.save().then((doc) => {
+      this.logger?.debug(`[${this.modelName}] create → id=${(doc as Record<string, unknown>)._id}`);
+      return doc;
+    });
   }
 
   updateById(id: string, set: UpdateSet, config: UpdateConfig = {}): Promise<unknown> {
+    this.logger?.debug(`[${this.modelName}] updateById id=${id} fast=${!!config.fast}`);
     if (config.fast) {
       const { $pull, $push, ...$set } = set;
       return this._model.updateOne(
@@ -144,10 +166,14 @@ export class MongooseAdapter implements HirokiAdapter {
   }
 
   delete(id: string): Promise<unknown> {
+    this.logger?.debug(`[${this.modelName}] delete id=${id}`);
     return this.findById(id).then((doc) => {
       return this._model
         .deleteOne({ _id: id } as FilterQuery<MongooseDocument>)
-        .then(() => doc);
+        .then(() => {
+          this.logger?.debug(`[${this.modelName}] delete done id=${id}`);
+          return doc;
+        });
     });
   }
 
