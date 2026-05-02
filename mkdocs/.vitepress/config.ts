@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress';
 export default defineConfig({
   title: 'Hiroki',
   description: 'CRUD engine with pluggable adapters — expose any model as a REST API in seconds.',
+  base: '/hiroki/',
   outDir: '../docs',
   cleanUrls: true,
   srcExclude: ['docs/**', 'v0.2.9/**'],
