@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.0.1
+
+### Documentation
+- Added `AGENTS.md` — machine-readable reference for AI agents, shipped with the npm package at `node_modules/hiroki/AGENTS.md`
+- Added Agent Reference page to VitePress docs site
+
+---
+
 ## v3.0.0
 
 ### Monorepo & ecosystem

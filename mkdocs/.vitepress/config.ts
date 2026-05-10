@@ -24,6 +24,7 @@ export default defineConfig({
           { text: 'Hooks & Middleware', link: '/guide/hooks-middleware' },
           { text: 'Security', link: '/guide/security' },
           { text: 'Logger Integrations', link: '/guide/loggers' },
+          { text: 'Agent Reference', link: '/guide/agents' },
         ],
       },
       {
