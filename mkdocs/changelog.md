@@ -1,5 +1,14 @@
 # Changelog
 
+## v3.1.0
+
+### Features
+- `disabledFields` — blacklist fields from all GET responses, including when the model is populated as a sub-document from another model. Mirror opposite of `allowedFields`: useful when it's easier to hide a few sensitive fields than to whitelist every exposed field.
+  - Takes precedence over `?select=` params that attempt to request a disabled field.
+  - Automatically propagates to cross-model populate via Mongoose select — no extra config required on the referencing model.
+
+---
+
 ## v3.0.1
 
 ### Documentation

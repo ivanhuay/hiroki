@@ -1,6 +1,6 @@
 {
   "name": "hiroki",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "Automatic REST API CRUD generator for Mongoose models with Express",
   "type": "module",
   "main": "./dist/index.cjs",

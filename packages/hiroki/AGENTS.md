@@ -105,6 +105,7 @@ All fields optional. Pass as second arg to `importModel`.
 interface ControllerConfig {
   adapter?: HirokiAdapter;                         // custom adapter (overrides auto-detection)
   allowedFields?: string[];                        // field whitelist — strips all other fields on write
+  disabledFields?: string[];                       // field blacklist — never returned in any GET response or populate
   basePath?: string;                               // route prefix for this resource
   disabledMethod?: string[];                       // e.g. ['DELETE', 'POST']
   disabledPluralize?: boolean;                     // keep /user instead of /users
@@ -397,7 +398,7 @@ if (hasStatus(err)) console.log(err.status);
 
 | Package | Version | Purpose | Status |
 |---------|---------|---------|--------|
-| `hiroki` | 3.0.0 | Core engine | Stable |
+| `hiroki` | 3.1.0 | Core engine | Stable |
 | `hiroki-drizzle` | 0.1.0-beta.0 | Drizzle ORM adapter | Beta (stub) |
 | `hiroki-sequelize` | 0.1.0-beta.0 | Sequelize adapter | Beta (stub) |
 | `hiroki-pino` | 0.1.0 | Pino logger adapter | Stable |
@@ -485,10 +486,15 @@ hiroki.importModel(User, {
 ```ts
 hiroki.importModel(User, {
   allowedFields: ['name', 'email'],     // blocks writing other fields
+  disabledFields: ['password', 'ssn'], // never returned in GET or populate
   queryLimits: { maxFilters: 5 },       // tighter limit for this resource
   middleware: [requireAuth],
 });
 ```
+
+### disabledFields with populate
+
+`disabledFields` propagates automatically to cross-model populate. If `Post` has `{ author: { ref: 'User' } }` and `User` has `disabledFields: ['password']`, then `GET /api/posts?populate=author` will NOT include `password` in the populated author object. No extra config needed on `Post`.
 
 ### Custom adapter (minimal)
 
