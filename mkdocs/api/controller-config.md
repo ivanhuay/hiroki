@@ -14,6 +14,7 @@ interface ControllerConfig {
   middleware?: HirokiMiddleware[];
   adapter?: HirokiAdapter;
   allowedFields?: string[];
+  disabledFields?: string[];
   queryLimits?: QueryLimits;
 }
 ```
@@ -69,6 +70,16 @@ Inject a custom `HirokiAdapter` directly. Skips Mongoose validation and the adap
 ## allowedFields
 
 Whitelist of body field names allowed in `create` and `update` operations. Fields not in the list are stripped **before** hooks run. See [Security](/guide/security).
+
+## disabledFields
+
+Blacklist of field names excluded from **all GET responses** — list, findById, and populate sub-documents. Takes precedence over `?select=` query params that attempt to request a disabled field. See [Security](/guide/security).
+
+```ts
+hiroki.importModel(User, {
+  disabledFields: ['password', 'ssn'],
+});
+```
 
 ## queryLimits
 

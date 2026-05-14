@@ -261,12 +261,12 @@ describe('Controller', () => {
         await expect(c.delete({ id: '123' })).rejects.toThrow(DisabledMethodError);
       });
 
-      it('throws DisabledMethodError for lowercase disabled get', () => {
+      it('throws DisabledMethodError for lowercase disabled get', async () => {
         const c = new TestableController(Users, {
           basePath: '/api',
           disabledMethod: ['get']
         });
-        expect(() => c.get({ id: '123' })).toThrow(DisabledMethodError);
+        await expect(c.get({ id: '123' })).rejects.toThrow(DisabledMethodError);
       });
 
       it('throws DisabledMethodError for lowercase disabled post', async () => {

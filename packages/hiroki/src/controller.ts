@@ -10,6 +10,7 @@ import type { QueryLimits } from './query.js';
 import { HirokiLogger, ConsoleLogger, LogLevel } from './logger.js';
 import type { ControllerHooks, HirokiMiddleware, MiddlewareContext } from './hooks.js';
 import type { HttpMethod, ProcessParams, RequestParams, ExtendedQueryParams, ParsedQuery } from './types.js';
+import { fieldRestrictionsRegistry } from './field-restrictions.js';
 
 export type { HttpMethod, ProcessParams, RequestParams, ExtendedQueryParams, ParsedQuery };
 
@@ -47,6 +48,15 @@ export interface ControllerConfig {
    */
   allowedFields?: string[];
   /**
+   * Blacklist of field names to exclude from all GET responses, including when
+   * this model is populated as a sub-document from another model.
+   * Takes precedence over `?select=` query params that attempt to request a disabled field.
+   *
+   * @example
+   * { disabledFields: ['password', 'ssn'] } // never returned in any GET
+   */
+  disabledFields?: string[];
+  /**
    * Override default query safety limits.
    * Requests that exceed a limit are rejected with HTTP 400.
    *
@@ -66,6 +76,7 @@ type ResolvedControllerConfig = {
   middleware?: HirokiMiddleware[];
   adapter?: HirokiAdapter;
   allowedFields?: string[];
+  disabledFields?: string[];
   queryLimits?: QueryLimits;
 };
 
@@ -97,12 +108,34 @@ class Controller {
 
     this.path = `${this.config.basePath}/${this.routeName}`;
     this.disabledMethods = this.config.disabledMethod || [];
+
+    if (this.config.disabledFields?.length) {
+      fieldRestrictionsRegistry.register(this.model.modelName, this.config.disabledFields);
+    }
   }
 
   private filterBody(body: Record<string, unknown>): Record<string, unknown> {
     const allowed = this.config.allowedFields;
     if (!allowed) return body;
     return Object.fromEntries(Object.entries(body).filter(([k]) => allowed.includes(k)));
+  }
+
+  private filterDisabledFields(result: unknown): unknown {
+    const disabled = this.config.disabledFields;
+    if (!disabled?.length) return result;
+
+    const strip = (obj: unknown): unknown => {
+      if (!obj || typeof obj !== 'object') return obj;
+      if (Array.isArray(obj)) return (obj as unknown[]).map(strip);
+      const plain: Record<string, unknown> =
+        typeof (obj as Record<string, unknown>).toJSON === 'function'
+          ? (obj as { toJSON(): Record<string, unknown> }).toJSON()
+          : { ...(obj as Record<string, unknown>) };
+      disabled.forEach((f) => delete plain[f]);
+      return plain;
+    };
+
+    return strip(result);
   }
 
   protected queryGet(query: ExtendedQueryParams): Promise<unknown> {
@@ -115,15 +148,17 @@ class Controller {
     return this.model.find(query);
   }
 
-  get(params: ExtendedQueryParams): Promise<unknown> {
+  async get(params: ExtendedQueryParams): Promise<unknown> {
     validateDisabledMethod('get', this.disabledMethods);
     if (params.id) {
       this.logger.debug(`[${this.model.modelName}] GET id=${params.id}`);
-      return this.model.findById(params.id, params);
+      const result = await this.model.findById(params.id, params);
+      return this.filterDisabledFields(result);
     }
 
     this.logger.debug(`[${this.model.modelName}] GET query=${JSON.stringify(params)}`);
-    return this.queryGet(params);
+    const result = await this.queryGet(params);
+    return this.filterDisabledFields(result);
   }
 
   async post(params: RequestParams): Promise<unknown> {

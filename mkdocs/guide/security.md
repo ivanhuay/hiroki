@@ -1,5 +1,32 @@
 # Security
 
+## Field blacklisting (response field exclusion)
+
+Use `disabledFields` to permanently exclude sensitive fields from **all GET responses**, including when the model is populated as a sub-document from another model. This takes precedence over `?select=` query params.
+
+```ts
+// password is NEVER returned — not in list, findById, or populate
+hiroki.importModel(User, {
+  disabledFields: ['password', 'ssn'],
+});
+```
+
+This is the mirror opposite of `allowedFields`: use it when it's easier to blacklist a few sensitive fields than to whitelist every field you want to expose.
+
+### Populate respects disabledFields
+
+When another model populates a reference to `User`, the disabled fields are automatically excluded from the populated sub-document:
+
+```ts
+hiroki.importModel(User, { disabledFields: ['password'] });
+hiroki.importModel(Post);  // Post has { author: { ref: 'User' } }
+
+// GET /api/posts?populate=author
+// → populated author will NOT contain password
+```
+
+---
+
 ## Field whitelisting (mass-assignment protection)
 
 Without a whitelist, any field sent in a POST/PUT body reaches the adapter:
