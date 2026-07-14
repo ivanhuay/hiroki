@@ -212,6 +212,11 @@ export class MongooseAdapter implements HirokiAdapter {
       if (parsed) Object.assign(filter, parsed);
     }
 
+    // Trusted server-side filter — applied last so it takes precedence
+    if (hirokiQuery.serverFilter && Object.keys(hirokiQuery.serverFilter).length) {
+      Object.assign(filter, hirokiQuery.serverFilter);
+    }
+
     const options: { skip?: number; limit?: number; sort?: string; select?: string } = {
       sort: '_id',
     };

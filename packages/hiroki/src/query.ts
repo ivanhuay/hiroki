@@ -21,7 +21,13 @@ export interface HirokiQuery {
   sort?: HirokiSort[];
   select?: string[];
   populate?: string;
-  conditions?: ValidConditions; // legacy escape hatch for raw DB filters
+  /** @deprecated Legacy escape hatch — raw DB filter from URL. Use `ProcessParams.serverFilter` instead. */
+  conditions?: ValidConditions;
+  /**
+   * Trusted server-side filter merged into the DB query after all user filters.
+   * Set via `hiroki.process(url, { serverFilter: {...} })` — never derived from user input.
+   */
+  serverFilter?: Record<string, unknown>;
 }
 
 /** Safety caps applied during query parsing. Requests that exceed a limit throw HTTP 400. */

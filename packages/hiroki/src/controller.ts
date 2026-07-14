@@ -182,7 +182,7 @@ class Controller {
     validateDisabledMethod('put', this.disabledMethods);
     validatePutParams(params);
     const hooks = this.config.hooks;
-    const ctx = { modelName: this.model.modelName };
+    const ctx = { modelName: this.model.modelName, id: params.query?.id };
     this.logger.debug(`[${this.model.modelName}] PUT id=${params.query?.id ?? 'by-conditions'}`);
 
     const fast =
@@ -251,6 +251,9 @@ class Controller {
 
   process(path: string, params: ProcessParams): Promise<unknown> {
     const parsedQuery = this.getQueryParams(path);
+    if (params.serverFilter) {
+      parsedQuery.query.serverFilter = params.serverFilter;
+    }
     const { method, body } = params;
     this.logger.debug(`Processing request: ${method} ${path} with body: ${JSON.stringify(body)} and query: ${JSON.stringify(parsedQuery.query)}`);
 
