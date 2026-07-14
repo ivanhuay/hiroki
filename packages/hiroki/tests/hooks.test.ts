@@ -72,6 +72,24 @@ describe('Hooks', () => {
       expect(doc.patched).toBe(true);
       expect(calls).toEqual(['beforeUpdate', 'afterUpdate']);
     });
+
+    it('beforeUpdate ctx includes the document id', async () => {
+      const inserted = await new (Users as unknown as new (d: unknown) => { save(): Promise<Record<string, unknown>> })({
+        name: 'idtest', email: 'id@x.com', role: [], books: []
+      }).save();
+
+      const insertedId = String((inserted as Record<string, unknown>)._id);
+      const capturedCtx: unknown[] = [];
+      const hooks: ControllerHooks = {
+        beforeUpdate: async (body, ctx) => { capturedCtx.push(ctx); return body; },
+      };
+
+      const c = new TestableController(Users, { basePath: '/api', hooks });
+      await c.put({ query: { id: insertedId }, body: { name: 'updated' } });
+
+      expect((capturedCtx[0] as Record<string, unknown>).modelName).toBe('Users');
+      expect((capturedCtx[0] as Record<string, unknown>).id).toBe(insertedId);
+    });
   });
 
   describe('beforeDelete / afterDelete', () => {

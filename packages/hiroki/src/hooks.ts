@@ -2,6 +2,8 @@ import type { HirokiQuery } from './query';
 
 export interface HookContext {
   modelName: string;
+  /** ID of the document being updated. Available in `beforeUpdate` / `afterUpdate`. */
+  id?: string;
 }
 
 export interface MiddlewareContext {

@@ -57,6 +57,10 @@ export class MemoryAdapter implements HirokiAdapter {
       );
     }
 
+    if (query.serverFilter && Object.keys(query.serverFilter).length) {
+      results = results.filter((doc) => this._matchServerFilter(doc, query.serverFilter!));
+    }
+
     if (query.sort?.length) results = this._sort(results, query.sort);
     if (query.offset) results = results.slice(query.offset);
     if (query.limit) results = results.slice(0, query.limit);
@@ -121,6 +125,21 @@ export class MemoryAdapter implements HirokiAdapter {
   clear(): void {
     this.store.clear();
     this.nextId = 1;
+  }
+
+  private _matchServerFilter(doc: Record<string, unknown>, filter: Record<string, unknown>): boolean {
+    for (const [key, val] of Object.entries(filter)) {
+      if (key === '$or' && Array.isArray(val)) {
+        if (!val.some((c) => this._matchServerFilter(doc, c as Record<string, unknown>))) return false;
+        continue;
+      }
+      if (key === '$and' && Array.isArray(val)) {
+        if (!val.every((c) => this._matchServerFilter(doc, c as Record<string, unknown>))) return false;
+        continue;
+      }
+      if (doc[key] !== val) return false;
+    }
+    return true;
   }
 
   private _matchAll(doc: Record<string, unknown>, filters: HirokiFilter[]): boolean {
