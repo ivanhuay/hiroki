@@ -75,7 +75,7 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "mongoose": "^8.7.2",
+    "mongoose": "^8.24.2",
     "pluralize": "^8.0.0"
   }
 }
